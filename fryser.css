@@ -1,9 +1,4 @@
 
-button {
-    width: 49%;
-    border-radius: 15px 15px 0px 0px;
-}
-
 h1 {
     text-align: center;
 }
@@ -17,4 +12,39 @@ summary {
 
 summary::marker {
     content: none;
+}
+
+.dateColour {
+  background-color: lightgreen;
+  margin-right: 5px;
+}
+
+.goesLeft {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.goesRight {
+    margin-left: 10px;
+    flex-shrink: 0;
+}
+
+.itemDiv {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+}
+
+.plus, .minus {
+    border-color: rgb(241, 104, 104);
+    border-radius: 7px;
+    background-color: white;
+    width: 28px;
+
+}
+
+.tabButton {
+    width: 49%;
+    border-radius: 15px 15px 0px 0px;
 }
