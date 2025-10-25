@@ -5,7 +5,7 @@ h1 {
 
 summary {
     font-size: 1.5em;
-    background-color: aqua;
+    background-color: rgba(0, 255, 255, 0.21);
     border: 1px solid;
     text-align: center;
 }
