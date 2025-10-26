@@ -1,10 +1,10 @@
 // const content = new Map();
-const fixedContent = new Map([
-    //[hash, [name, number, type, shelf, keepsInMonths, addedToFreezer]]
-    [3036860, ['brød', 1, 'bread', 1, 5, 1761217795422]],
-    [254164556, ['kylling', 2, 'fowl', 2, 4, 1761217795422]],
-    [1677053109, ['grønne bønner', 1, 'veggie', 2, 4, 1743717600000]]
-])
+const fixedContent = [
+    //[hash, name, number, type, shelf, keepsInMonths, addedToFreezer]
+    [3036860, 'brød', 1, 'bread', 1, 5, 1761217795422],
+    [254164556, 'kylling', 2, 'fowl', 2, 4, 1761217795422],
+    [1677053109, 'grønne bønner', 1, 'veggie', 2, 4, 1743717600000]
+]
 const symbols = new Map([
     ['bread', '&#x1F35E;'],
     ['veggie', '&#x1F346;'],
@@ -88,64 +88,93 @@ function makeHash(string) {  // Use for making unique hash from name
 function fillAllTab() {
     let now = new Date();
     let bgcolour = 'lightgreen';
+    let sortedContent = content;
 
     // let sortedContent = new Map([...content].sort());
-    let sortedContent = new Map( [...fixedContent.entries()].sort((a, b) => 
-        a[1][0].toLowerCase().localeCompare(b[1][0].toLowerCase())
-    ));
+    sortedContent.sort((a, b) => 
+        a[1].toLowerCase().localeCompare(b[1].toLowerCase(), 'da')
+    );
 
     
-    sortedContent.forEach(function(value,key) {
-        let symbol = symbols.get(value[2]);  // Get the symbol maching the type of food
-        let stock = value[1];
+    sortedContent.forEach(function(value) {
+        let symbol = symbols.get(value[3]);  // Get the symbol maching the type of food
+        let stock = value[2];
         // let strippedKey = key.replace(/\s/g, '_');  // Replace spaces with underscore
         // strippedKey = strippedKey.replace(/\æ/g, 'ae');
         // strippedKey = strippedKey.replace(/\ø/g, 'oe');
         // strippedKey = strippedKey.replace(/\å/g, 'aa');
         // strippedKey = strippedKey.replace(/\W/g, '');  // Strip non-alphanumeric word characters
-        let daysLeft = value[4] * 30 - (now.getTime() - value[5])/(3600000*24);
-        let months = Math.round(value[4] - (now.getTime() - value[5])/(3600000*24*30));
+        let daysLeft = value[5] * 30 - (now.getTime() - value[6])/(3600000*24);
+        let months = Math.round(value[5] - (now.getTime() - value[6])/(3600000*24*30));
         if (months < 1) {bgcolour = 'yellow'};
         if (daysLeft < 15) {bgcolour = 'red'};
 
-        allTab.innerHTML += '<div id="' + key + '" class="itemDiv">' +
-        '<span id="edit' + key + '" class="goesLeft">' + symbol + ' ' + value[0][0].toUpperCase() + value[0].slice(1) + '</span>' +
+        allTab.innerHTML += '<div id="' + value[0] + '" class="itemDiv">' +
+        '<span id="edit' + value[0] + '" class="goesLeft">' + symbol + ' ' + value[1][0].toUpperCase() + value[1].slice(1) + '</span>' +
         '<span class="goesRight">' + 
         '<span style="background-color: ' + bgcolour + '"> ' + months + ' mdr </span>  ' +
-        '<span> &#x2263;' + value[3] + '</span> ' + // Four bars symbolizing shelf number
-        '<button id="minus_' + key + '" class="minus"> &#10134; </button> ' + 
-        '<span id="stock_' + key + '">' + stock + '</span> ' + 
-        '<button id="plus_' + key + '" class="plus"> &#10133; </button> </span> </div>'
+        '<span> &#x2263;' + value[4] + '</span> ' + // Four bars symbolizing shelf number
+        '<button id="minus_' + value[0] + '" class="minus"> &#10134; </button> ' + 
+        '<span id="stock_' + value[0] + '">' + stock + '</span> ' + 
+        '<button id="plus_' + value[0] + '" class="plus"> &#10133; </button> </span> </div>'
         
         bgcolour = 'lightgreen';
     });
 }
 
 
+function findRelevantArray(myID) {
+    let relevantArray;
+    content.forEach(function(value) {
+        if (value[0] === Number(myID)) {
+            relevantArray = value;
+        }
+    });
+
+    return relevantArray;
+}
+
+
+function updateRelevantArray(myID, relevantArray) {
+    content.forEach(function(value) {
+        if (value[0] === Number(myID)) {
+            value = relevantArray;
+        }
+    });
+}
+
+
 function allTabHasBeenClicked(event) {
     let clickedID = event.target.id;
-
+    let currentArray;
+    
     if (clickedID.slice(0, 5) == 'minus') {
         myID = clickedID.slice(6);  // Remove 'minus_'
-        let howMany = content.get(Number(myID))[1];
+        currentArray = findRelevantArray(myID);
+        let howMany = currentArray[2];
         if (1 < howMany) {
             howMany -= 1;
-            content.get(Number(myID))[1] = howMany;
+            currentArray[2] = howMany;
+            updateRelevantArray(myID, currentArray);
         } else if (howMany == 1) {
             howMany = 0;
-            content.get(Number(myID))[1] = howMany;
+            currentArray[2] = howMany;
+            updateRelevantArray(myID, currentArray);
             document.getElementById(myID).style.color = 'rgba(40, 90, 240, 0.35)';
         }
         document.getElementById('stock_' + myID).textContent = howMany;
     } else if (clickedID.slice(0, 4) == 'plus') {
         myID = clickedID.slice(5);  // Remove 'plus_'
-        let howMany = content.get(Number(myID))[1];
+        currentArray = findRelevantArray(myID);
+        let howMany = currentArray[2];
         if (1 <= howMany) {
             howMany += 1;
-            content.get(Number(myID))[1] = howMany;
+            currentArray[2] = howMany;
+            updateRelevantArray(myID, currentArray);
         } else if (howMany == 0) {
             howMany = 1;
-            content.get(Number(myID))[1] = howMany;
+            currentArray[2] = howMany;
+            updateRelevantArray(myID, currentArray);
             document.getElementById(myID).style.color = '';
         }
         document.getElementById('stock_' + myID).textContent = howMany;
