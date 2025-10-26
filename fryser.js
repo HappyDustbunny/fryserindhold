@@ -81,7 +81,7 @@ function makeHash(string) {  // Use for making unique hash from name
     hash = (hash << 5) - hash + char.charCodeAt(0);
     hash |= 0; // Constrain to 32bit integer
   }
-  return hash;
+  return Math.abs(hash);
 };
 
 
@@ -109,7 +109,7 @@ function fillAllTab() {
         if (daysLeft < 15) {bgcolour = 'red'};
 
         allTab.innerHTML += '<div id="' + key + '" class="itemDiv">' +
-        '<span class="goesLeft">' + symbol + ' ' + value[0][0].toUpperCase() + value[0].slice(1) + '</span>' +
+        '<span id="edit' + key + '" class="goesLeft">' + symbol + ' ' + value[0][0].toUpperCase() + value[0].slice(1) + '</span>' +
         '<span class="goesRight">' + 
         '<span style="background-color: ' + bgcolour + '"> ' + months + ' mdr </span>  ' +
         '<span> &#x2263;' + value[3] + '</span> ' + // Four bars symbolizing shelf number
@@ -149,7 +149,9 @@ function allTabHasBeenClicked(event) {
             document.getElementById(myID).style.color = '';
         }
         document.getElementById('stock_' + myID).textContent = howMany;
-    } 
+    } else if (clickedID.slice(0, 4) == 'edit') {
+        console.log('Add functionality here');
+    }
 }
 
 
