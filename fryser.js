@@ -18,19 +18,6 @@ const typeTab = document.getElementById('typeTab');
 
 let localContent;
 
-// class Item {
-//     constructor(hash, name, number, type, shelf, keepsInMonths, addedToFreezer) {
-//         this.hash = hash;
-//         this.name = name;
-//         this.number = number;
-//         this.type = type;
-//         this.shelf = shelf;
-//         this.keepsInMonths = keepsInMonths;
-//         this.addedToFreezer = addedToFreezer;
-//     }
-// }
-
-
 document.getElementById('type').addEventListener('click', typeButtonWasClicked);
 document.getElementById('all').addEventListener('click', allButtonWasClicked);
 document.getElementById('allTab').addEventListener('click', function(event) { allTabHasBeenClicked(event); }, true);
@@ -57,19 +44,6 @@ function setUpFunction() {
     
     // // Get fixed content
     content = fixedContent;
-    // fixedContent.forEach(function(value, key) {
-    //     console.log(key, value);
-    //     content.set(key, new Item(key, value[0], value[1], value[2], value[3], value[4], value[5]));
-    // })
-    
-    // // Get local content
-    // if (localStorage.getItem('localContent')) {
-    //     localContent = JSON.parse(localStorage.localContent);
-
-    //     localContent.forEach(function(value, key) {
-    //         content.set(key, new Item(key, value[0], value[1], value[2], value[3], value[4], value[5]));
-    //     })
-    // }
 
     fillAllTab();
 }
@@ -99,11 +73,6 @@ function fillAllTab() {
     sortedContent.forEach(function(value) {
         let symbol = symbols.get(value[3]);  // Get the symbol maching the type of food
         let stock = value[2];
-        // let strippedKey = key.replace(/\s/g, '_');  // Replace spaces with underscore
-        // strippedKey = strippedKey.replace(/\æ/g, 'ae');
-        // strippedKey = strippedKey.replace(/\ø/g, 'oe');
-        // strippedKey = strippedKey.replace(/\å/g, 'aa');
-        // strippedKey = strippedKey.replace(/\W/g, '');  // Strip non-alphanumeric word characters
         let daysLeft = value[5] * 30 - (now.getTime() - value[6])/(3600000*24);
         let months = Math.round(value[5] - (now.getTime() - value[6])/(3600000*24*30));
         if (months < 1) {bgcolour = 'yellow'};
@@ -179,7 +148,7 @@ function allTabHasBeenClicked(event) {
         }
         document.getElementById('stock_' + myID).textContent = howMany;
     } else if (clickedID.slice(0, 4) == 'edit') {
-        console.log('Add functionality here');
+        document.getElementById('addItemPage').style.display = 'block' 
     }
 }
 

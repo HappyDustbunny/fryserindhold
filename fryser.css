@@ -14,9 +14,25 @@ summary::marker {
     content: none;
 }
 
+#addItemPage {
+  display: none;
+  background-color: white;
+  position: absolute;
+  top: 100px;
+  width: 80%;
+  left: 10%;
+  height: 80%;
+  border-radius: 30px;
+  border: 2px gray solid;
+}
+
 .dateColour {
   background-color: lightgreen;
   margin-right: 5px;
+}
+
+.foodType {
+  font-size: 3em;
 }
 
 .goesLeft {
