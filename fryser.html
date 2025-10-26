@@ -49,20 +49,36 @@
     </div>
 
     <div id="addItemPage">
-        <button id="close">Luk</button>
-        <input id="inputBox" type="text">
-        <button>Tilføj</button>
-        <div id="type">
-            <span>Type</span>
-            <button id="bread" class="foodType">&#x1F35E;</button>
-            <button id="veggie" class="foodType">&#x1F346;</button>
-            <button id="cake" class="foodType">&#x1F382;</button>
-            <button id="fish" class="foodType">&#x1F41F;</button>
-            <button id="fowl" class="foodType">&#x1F414;</button>
-            <button id="meat" class="foodType">&#x1F969;</button>
+        <div id="closeDiv">
+            <button id="close">Luk</button>
         </div>
+
+        <h2>Tilføj vare</h2>
+        
+        <div id="inputDiv">
+            <input id="inputBox" type="text">
+            <button>Tilføj</button>
+        </div>
+        <h3>Type</h3>
+        <div id="type">
+            <div id="typeButtonsDiv1">
+                <button id="bread" class="foodType">&#x1F35E;</button>
+                <button id="veggie" class="foodType">&#x1F346;</button>
+                <button id="cake" class="foodType">&#x1F382;</button>
+                <button id="noLabel" class="foodType">	&#8195;</button>
+            </div>
+            <div id="typeButtonsDiv2">
+                <button id="fish" class="foodType">&#x1F41F;</button>
+                <button id="fowl" class="foodType">&#x1F414;</button>
+                <button id="meat" class="foodType">&#x1F969;</button>
+                <button id="whatEvs" class="foodType">&#x1F937;</button>
+            </div>
+        </div>
+        <h3>Holdbarhed</h3>
         <div id="keepsFor">
-            <span>Holdbarhed</span>
+            <button>-3 md</button>
+            <button>-1 md</button>
+            <input id="keepsForText" type="text" disabled>
             <button>+1 md</button>
             <button>+3 md</button>
         </div>

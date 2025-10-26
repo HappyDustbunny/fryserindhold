@@ -148,7 +148,7 @@ function allTabHasBeenClicked(event) {
         }
         document.getElementById('stock_' + myID).textContent = howMany;
     } else if (clickedID.slice(0, 4) == 'edit') {
-        document.getElementById('addItemPage').style.display = 'block' 
+        document.getElementById('addItemPage').style.display = 'flex'; 
     }
 }
 
