@@ -54,7 +54,7 @@ summary::marker {
     gap: 1em;
 }
 
-#keepsFor, #type {
+#type, #numberOfItems, #keepsFor {
     align-self: center;
 }
 
