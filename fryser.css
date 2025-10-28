@@ -3,6 +3,10 @@ h1 {
     text-align: center;
 }
 
+h2 {
+    padding: 0.5em;
+}
+
 h2, h3 {
     align-self: center;
     margin: 0px;
@@ -33,6 +37,8 @@ summary::marker {
     border-radius: 30px;
     border: 2px gray solid;
     padding: 1.5em;
+    background-image: url(https://media.istockphoto.com/id/185071242/photo/seamless-fresh-snow-background.webp?s=2048x2048&w=is&k=20&c=OCcp8SeEfRXIqx3g-bCZXRoWbPArJNpOGKdTdTg3CTI=);
+
 }
 
 #close {
@@ -44,18 +50,13 @@ summary::marker {
     justify-content: end;
 }
 
-#inputBox {
-    width: 60%;
-}
-
-#inputDiv {
-    display: inline-flex;
-    justify-content: center;
-    gap: 1em;
+#inputBox, #numberOfItemsInput {
+    width: 70%;
 }
 
 #inputDiv, #type, #numberOfItems, #keepsFor {
     align-self: center;
+    gap: 0.5em;
 }
 
 #keepsForText {
@@ -70,11 +71,18 @@ summary::marker {
 
 .backgroundDiv {
 	display: flex;
+	flex-direction: column;
 	border: 2px grey solid;
     border-radius: 30px;
-	flex-direction: column;
 	background-color: rgb(243, 243, 250);
 	width: 100%;
+    padding: 18px;
+}
+
+.buttonDiv {
+	display: flex;
+	gap: 0.3em;
+	align-self: center;
 }
 
 .dateColour {
