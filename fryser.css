@@ -37,7 +37,8 @@ summary::marker {
     border-radius: 30px;
     border: 2px gray solid;
     padding: 1.5em;
-    background-image: url(https://media.istockphoto.com/id/185071242/photo/seamless-fresh-snow-background.webp?s=2048x2048&w=is&k=20&c=OCcp8SeEfRXIqx3g-bCZXRoWbPArJNpOGKdTdTg3CTI=);
+    padding-top: 0px;
+    /* background-image: url(https://media.istockphoto.com/id/185071242/photo/seamless-fresh-snow-background.webp?s=2048x2048&w=is&k=20&c=OCcp8SeEfRXIqx3g-bCZXRoWbPArJNpOGKdTdTg3CTI=); */
 
 }
 
@@ -56,7 +57,7 @@ summary::marker {
 
 #inputDiv, #type, #numberOfItems, #keepsFor {
     align-self: center;
-    gap: 0.5em;
+    gap: 1em;
 }
 
 #keepsForText {
@@ -72,11 +73,38 @@ summary::marker {
 .backgroundDiv {
 	display: flex;
 	flex-direction: column;
-	border: 2px grey solid;
-    border-radius: 30px;
-	background-color: rgb(243, 243, 250);
+	border: 1px rgb(192, 237, 255) solid;
+    border-radius: 10px;
+    background-color: rgba(192, 237, 255, 0.2);
 	width: 100%;
     padding: 18px;
+    padding-top: 0px;
+}
+
+.backgroundHeading {
+    align-self: center;
+    margin: 0px;
+    background-color: rgba(153, 222, 238, 0.34);
+    width: 115%;
+    text-align: center;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.backgroundHeading1 {
+  align-self: center;
+  margin: 0px;
+  background-color: rgba(153, 222, 238, 0.84);
+  width: 117%;
+  text-align: center;
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  font-size: x-large;
+  margin-bottom: 18px;
 }
 
 .buttonDiv {
