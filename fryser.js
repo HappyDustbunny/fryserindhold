@@ -26,7 +26,7 @@ document.getElementById('allTab').addEventListener('click', function(event) { al
 function typeButtonWasClicked() {
     document.getElementById('typeTab').style.display = 'block';
     document.getElementById('allTab').style.display = 'none';
-    document.getElementById('type').style.background = 'rgba(0, 255, 255, 0.21)';
+    document.getElementById('type').style.background = 'rgba(153, 222, 238, 0.77)';
     document.getElementById('all').style.background = 'rgba(211, 211, 211, 0.30)';
 }
 
@@ -35,7 +35,7 @@ function allButtonWasClicked() {
     document.getElementById('typeTab').style.display = 'none';
     document.getElementById('allTab').style.display = 'block';
     document.getElementById('type').style.background = 'rgba(211, 211, 211, 0.30)';
-    document.getElementById('all').style.background = 'rgba(0, 255, 255, 0.21)';
+    document.getElementById('all').style.background = 'rgba(153, 222, 238, 0.77)';
 }
 
 

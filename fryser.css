@@ -1,3 +1,6 @@
+button {
+    height: 3vh;
+}
 
 h1 {
     text-align: center;
@@ -10,6 +13,10 @@ h2 {
 h2, h3 {
     align-self: center;
     margin: 0px;
+}
+
+input {
+    text-align: center;
 }
 
 
@@ -31,15 +38,14 @@ summary::marker {
     background-color: white;
     position: absolute;
     top: 100px;
-    width: 70%;
+    width: 80vw;
     left: 10%;
-    height: 80%;
+    /* height: 80%; */
     border-radius: 30px;
-    border: 2px gray solid;
-    padding: 1.5em;
-    padding-top: 0px;
-    /* background-image: url(https://media.istockphoto.com/id/185071242/photo/seamless-fresh-snow-background.webp?s=2048x2048&w=is&k=20&c=OCcp8SeEfRXIqx3g-bCZXRoWbPArJNpOGKdTdTg3CTI=); */
-
+    border: 1px #acbad4 solid;
+    /* padding: 1.5em;
+    padding-top: 0px; */
+    padding-bottom: 2vh;
 }
 
 #close {
@@ -57,7 +63,7 @@ summary::marker {
 
 #inputDiv, #type, #numberOfItems, #keepsFor {
     align-self: center;
-    gap: 1em;
+    gap: 2vh;
 }
 
 #keepsForText {
@@ -68,6 +74,7 @@ summary::marker {
   display: flex;
   justify-content: space-around;
   gap: 0.2em;
+  font-size: 4vw;
 }
 
 .backgroundDiv {
@@ -76,41 +83,48 @@ summary::marker {
 	border: 1px rgb(192, 237, 255) solid;
     border-radius: 10px;
     background-color: rgba(192, 237, 255, 0.2);
-	width: 100%;
-    padding: 18px;
-    padding-top: 0px;
+	width: 80%;
+    /* height: 10vh; */
+    /* padding: 18px; */
+    padding-bottom: 2vh;
 }
 
 .backgroundHeading {
     align-self: center;
     margin: 0px;
     background-color: rgba(153, 222, 238, 0.34);
-    width: 115%;
+    width: 100%;
+    height: 1.8em;
     text-align: center;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 0px;
+    font-size: 1.2em;
+    align-content: center;
 }
 
 .backgroundHeading1 {
-  align-self: center;
-  margin: 0px;
-  background-color: rgba(153, 222, 238, 0.84);
-  width: 117%;
-  text-align: center;
-  border-top-right-radius: 30px;
-  border-top-left-radius: 30px;
-  border-bottom-right-radius: 0px;
-  border-bottom-left-radius: 0px;
-  font-size: x-large;
-  margin-bottom: 18px;
+    align-self: center;
+    margin: 0px;
+    background-color: rgba(153, 222, 238, 0.84);
+    width: 100%;
+    height: 1.8em;
+    text-align: center;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    font-size: x-large;
+    /* margin-bottom: 18px; */
+    align-content: center;
 }
 
 .buttonDiv {
 	display: flex;
 	gap: 0.3em;
 	align-self: center;
+    font-size: 4vw;
 }
 
 .dateColour {
