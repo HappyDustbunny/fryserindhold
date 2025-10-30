@@ -79,7 +79,7 @@ function fillAllTab() {
         if (daysLeft < 15) {bgcolour = 'red'};
 
         allTab.innerHTML += '<div id="' + value[0] + '" class="itemDiv">' +
-        '<span id="edit' + value[0] + '" class="goesLeft">' + symbol + ' ' + value[1][0].toUpperCase() + value[1].slice(1) + '</span>' +
+        '<span id="edit_' + value[0] + '" class="goesLeft">' + symbol + ' ' + value[1][0].toUpperCase() + value[1].slice(1) + '</span>' +
         '<span class="goesRight">' + 
         '<span style="background-color: ' + bgcolour + '"> ' + months + ' mdr </span>  ' +
         '<span> &#x2263;' + value[4] + '</span> ' + // Four bars symbolizing shelf number
@@ -148,10 +148,26 @@ function allTabHasBeenClicked(event) {
         }
         document.getElementById('stock_' + myID).textContent = howMany;
     } else if (clickedID.slice(0, 4) == 'edit') {
-        document.getElementById('addItemPage').style.display = 'flex'; 
+        myID = clickedID.slice(5);  // Remove 'edit_';
+        currentArray = findRelevantArray(myID);
+        document.getElementById('addItemPage').style.display = 'flex';
+        document.getElementById('inputBox').value = currentArray[1];
+        document.getElementById('numberOfItemsInput').value = currentArray[2];
+        document.getElementById('keepsForText').value = currentArray[5] + ' mdr';
+        document.getElementById(currentArray[3]).style.borderStyle = 'inset';
+        shaddowFoodTypes();
+        document.getElementById(currentArray[3]).classList.remove('shaddowed');
     }
 }
 
+
+function shaddowFoodTypes() {
+    document.querySelectorAll('.foodType').forEach(button => button.classList.add('shaddowed'));
+}
+
+function UnshaddowFoodTypes() {
+    document.querySelectorAll('.foodType').forEach(button => button.classList.remove('shaddowed'));
+}
 
 
 // Usefull snippets
