@@ -13,6 +13,7 @@ const symbols = new Map([
     ['fowl', '&#x1F414;'],
     ['meat', '&#x1F969;']
 ]);
+const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
 const allTab = document.getElementById('allTab');
 const typeTab = document.getElementById('typeTab');
 
@@ -23,6 +24,9 @@ document.getElementById('type').addEventListener('click', typeButtonWasClicked);
 document.getElementById('all').addEventListener('click', allButtonWasClicked);
 document.getElementById('allTab').addEventListener('click', function(event) { allTabHasBeenClicked(event); }, true);
 document.getElementById('addNew').addEventListener('click', addNewItem);
+document.getElementById('addItem').addEventListener('click', addItem);
+document.getElementById('closeButton').addEventListener('click', closeButtonClicked);
+document.getElementById('confirmButton').addEventListener('click', confirmButtonHasBeenClicked);
 document.getElementById('increment').addEventListener('click', incrementNumberOfItemsCounter);
 
 
@@ -64,7 +68,7 @@ function makeHash(string) {  // Use for making unique hash from name
 
 function fillAllTab() {
     let now = new Date();
-    let bgcolour = 'lightgreen';
+    let bgColourClass = 'bglightgreen';
     let sortedContent = content;
 
     // let sortedContent = new Map([...content].sort());
@@ -76,21 +80,22 @@ function fillAllTab() {
     sortedContent.forEach(function(value) {
         let symbol = symbols.get(value[3]);  // Get the symbol maching the type of food
         let stock = value[2];
+        let monthFrosen = monthNames[new Date(value[6]).getMonth()];
         let daysLeft = value[5] * 30 - (now.getTime() - value[6])/(3600000*24);
         let months = Math.round(value[5] - (now.getTime() - value[6])/(3600000*24*30));
-        if (months < 1) {bgcolour = 'yellow'};
-        if (daysLeft < 15) {bgcolour = 'red'};
+        if (months < 1) {bgColourClass = 'yellow'};
+        if (daysLeft < 15) {bgColourClass = 'bgred'};
 
         allTab.innerHTML += '<div id="' + value[0] + '" class="itemDiv">' +
         '<span id="edit_' + value[0] + '" class="goesLeft">' + symbol + ' ' + value[1][0].toUpperCase() + value[1].slice(1) + '</span>' +
-        '<span class="goesRight">' + 
-        '<span style="background-color: ' + bgcolour + '"> ' + months + ' mdr </span>  ' +
+        '<span class="goesRight">' + monthFrosen + ' ' +
+        '<span class="' + bgColourClass + '"> ' + months + ' mdr </span>  ' +
         '<span> &#x2263;' + value[4] + '</span> ' + // Four bars symbolizing shelf number
         '<button id="minus_' + value[0] + '" class="minus"> &#10134; </button> ' + 
         '<span id="stock_' + value[0] + '">' + stock + '</span> ' + 
         '<button id="plus_' + value[0] + '" class="plus"> &#10133; </button> </span> </div>'
         
-        bgcolour = 'lightgreen';
+        bgColourClass = 'bglightgreen';
     });
 }
 
@@ -156,10 +161,24 @@ function allTabHasBeenClicked(event) {
     }
 }
 
+function addItem() {
+        document.getElementById('addItemPage').style.display = 'flex';
+}
+
 
 function addNewItem() {
     document.getElementById('addItemPage').style.display = 'flex';
     document.getElementById('plusToolTip').style.display = 'none';
+}
+
+
+function closeButtonClicked() {
+    document.getElementById('addItemPage').style.display = 'none';
+}
+
+
+function confirmButtonHasBeenClicked() {
+    // TODO: Add content here. Remember to hide +button when not relevant
 }
 
 
