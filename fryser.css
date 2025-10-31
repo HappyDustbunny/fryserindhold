@@ -40,12 +40,16 @@ summary::marker {
     top: 7vh;
     width: 86vw;
     left: 7vw;
-    /* height: 80%; */
     border-radius: 30px;
     border: 1px #acbad4 solid;
-    /* padding: 1.5em;
-    padding-top: 0px; */
     padding-bottom: 2vh;
+}
+
+#addNew, #increment {
+	width: 37vw;
+	height: 5vh;
+	border-radius: 15px;
+    background-color: rgba(153, 222, 238, 0.77);
 }
 
 #close {
@@ -68,6 +72,21 @@ summary::marker {
 
 #keepsForText {
     width: 50px;
+}
+
+#plusToolTip {
+	display: none;
+    justify-content: center;
+	gap: 0.5em;
+	background-color: white;
+	position: absolute;
+	top: 7vh;
+	width: 86vw;
+	left: 7vw;
+	border-radius: 30px;
+	border: 1px #acbad4 solid;
+	padding-top: 2vh;
+	padding-bottom: 2vh;
 }
 
 #typeButtonsDiv1, #typeButtonsDiv2 {

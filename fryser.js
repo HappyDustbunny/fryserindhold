@@ -17,10 +17,13 @@ const allTab = document.getElementById('allTab');
 const typeTab = document.getElementById('typeTab');
 
 let localContent;
+let currentArray;
 
 document.getElementById('type').addEventListener('click', typeButtonWasClicked);
 document.getElementById('all').addEventListener('click', allButtonWasClicked);
 document.getElementById('allTab').addEventListener('click', function(event) { allTabHasBeenClicked(event); }, true);
+document.getElementById('addNew').addEventListener('click', addNewItem);
+document.getElementById('increment').addEventListener('click', incrementNumberOfItemsCounter);
 
 
 function typeButtonWasClicked() {
@@ -115,7 +118,6 @@ function updateRelevantArray(myID, relevantArray) {
 
 function allTabHasBeenClicked(event) {
     let clickedID = event.target.id;
-    let currentArray;
     
     if (clickedID.slice(0, 5) == 'minus') {
         myID = clickedID.slice(6);  // Remove 'minus_'
@@ -135,18 +137,12 @@ function allTabHasBeenClicked(event) {
     } else if (clickedID.slice(0, 4) == 'plus') {
         myID = clickedID.slice(5);  // Remove 'plus_'
         currentArray = findRelevantArray(myID);
-        let howMany = currentArray[2];
-        if (1 <= howMany) {
-            howMany += 1;
-            currentArray[2] = howMany;
-            updateRelevantArray(myID, currentArray);
-        } else if (howMany == 0) {
-            howMany = 1;
-            currentArray[2] = howMany;
-            updateRelevantArray(myID, currentArray);
-            document.getElementById(myID).style.color = '';
-        }
-        document.getElementById('stock_' + myID).textContent = howMany;
+
+        document.getElementById('plusToolTip').style.display = 'flex';
+        let clickedTop =  document.getElementById(clickedID).getBoundingClientRect().top;
+        if (clickedTop < 300) { clickedTop += 30} else {clickedTop -= 80};
+        document.getElementById('plusToolTip').style.top = clickedTop + 'px';
+        
     } else if (clickedID.slice(0, 4) == 'edit') {
         myID = clickedID.slice(5);  // Remove 'edit_';
         currentArray = findRelevantArray(myID);
@@ -158,6 +154,29 @@ function allTabHasBeenClicked(event) {
         shaddowFoodTypes();
         document.getElementById(currentArray[3]).classList.remove('shaddowed');
     }
+}
+
+
+function addNewItem() {
+    document.getElementById('addItemPage').style.display = 'flex';
+    document.getElementById('plusToolTip').style.display = 'none';
+}
+
+
+function incrementNumberOfItemsCounter() {
+            let howMany = currentArray[2];
+        if (1 <= howMany) {
+            howMany += 1;
+            currentArray[2] = howMany;
+            updateRelevantArray(myID, currentArray);
+        } else if (howMany == 0) {
+            howMany = 1;
+            currentArray[2] = howMany;
+            updateRelevantArray(myID, currentArray);
+            document.getElementById(myID).style.color = '';
+        }
+        document.getElementById('stock_' + myID).textContent = howMany;
+        document.getElementById('plusToolTip').style.display = 'none';
 }
 
 
