@@ -23,6 +23,8 @@ let currentArray;
 document.getElementById('type').addEventListener('click', typeButtonWasClicked);
 document.getElementById('all').addEventListener('click', allButtonWasClicked);
 document.getElementById('allTab').addEventListener('click', function(event) { allTabHasBeenClicked(event); }, true);
+document.getElementById('typeButtonsDiv1').addEventListener('click', function(event) { typeHasBeenClicked(event); }, true);
+document.getElementById('typeButtonsDiv2').addEventListener('click', function(event) { typeHasBeenClicked(event); }, true);
 document.getElementById('addNew').addEventListener('click', addNewItem);
 document.getElementById('addItem').addEventListener('click', addItem);
 document.getElementById('closeButton').addEventListener('click', closeButtonClicked);
@@ -87,7 +89,7 @@ function fillAllTab() {
         if (daysLeft < 15) {bgColourClass = 'bgred'};
 
         allTab.innerHTML += '<div id="' + value[0] + '" class="itemDiv">' +
-        '<span id="edit_' + value[0] + '" class="goesLeft">' + symbol + ' ' + value[1][0].toUpperCase() + value[1].slice(1) + '</span>' +
+        '<span id="edit_' + value[0] + '" class="goesLeft">' + symbol + ' ' + capitalizeFirst(value[1]) + '</span>' +
         '<span class="goesRight">' + monthFrosen + ' ' +
         '<span class="' + bgColourClass + '"> ' + months + ' mdr </span>  ' +
         '<span> &#x2263;' + value[4] + '</span> ' + // Four bars symbolizing shelf number
@@ -118,6 +120,15 @@ function updateRelevantArray(myID, relevantArray) {
             value = relevantArray;
         }
     });
+}
+
+
+function typeHasBeenClicked(event) {
+    let clickedType = event.target.id;
+    if (clickedType != 'typeButtonsDiv1' && clickedType != 'typeButtonsDiv2') {
+        unPressFoodTypes();
+        document.getElementById(clickedType).classList.add('foodTypeActive');
+    }
 }
 
 
@@ -152,19 +163,22 @@ function allTabHasBeenClicked(event) {
         myID = clickedID.slice(5);  // Remove 'edit_';
         currentArray = findRelevantArray(myID);
         document.getElementById('addItemPage').style.display = 'flex';
-        document.getElementById('inputBox').value = currentArray[1];
-        document.getElementById('numberOfItemsInput').value = currentArray[2];
+        document.getElementById('inputBox').value = capitalizeFirst(currentArray[1]) + '  ' + monthNames[new Date().getMonth()] + ' ';
+        // document.getElementById('numberOfItemsInput').value = currentArray[2];
         document.getElementById('keepsForText').value = currentArray[5] + ' mdr';
-        document.getElementById(currentArray[3]).style.borderStyle = 'inset';
+        document.getElementById(currentArray[3]).classList.add('foodTypeActive');
+        // document.getElementById(currentArray[3]).style.borderStyle = 'inset';
         shaddowFoodTypes();
         document.getElementById(currentArray[3]).classList.remove('shaddowed');
     }
 }
 
 function addItem() {
-        document.getElementById('addItemPage').style.display = 'flex';
+    clearAddItemPage();
+    document.getElementById('addItemPage').style.display = 'flex';
+    document.getElementById('addItem').style.display = 'none';
 }
-
+    
 
 function addNewItem() {
     document.getElementById('addItemPage').style.display = 'flex';
@@ -174,11 +188,15 @@ function addNewItem() {
 
 function closeButtonClicked() {
     document.getElementById('addItemPage').style.display = 'none';
+    document.getElementById('addItem').style.display = 'block';
+    unshaddowFoodTypes();
+    unPressFoodTypes();
 }
 
 
 function confirmButtonHasBeenClicked() {
     // TODO: Add content here. Remember to hide +button when not relevant
+    closeButtonClicked();
 }
 
 
@@ -200,13 +218,37 @@ function incrementNumberOfItemsCounter() {
 
 
 function shaddowFoodTypes() {
-    document.querySelectorAll('.foodType').forEach(button => button.classList.add('shaddowed'));
+    document.querySelectorAll('.foodType').forEach(button => {
+        button.classList.add('shaddowed');
+        button.disabled = true;
+    });
+    // document.querySelectorAll('.foodType').forEach(button => button.disabled = true);
 }
 
-function UnshaddowFoodTypes() {
-    document.querySelectorAll('.foodType').forEach(button => button.classList.remove('shaddowed'));
+function unshaddowFoodTypes() {
+    document.querySelectorAll('.foodType').forEach(button => {
+        button.classList.remove('shaddowed');
+        button.disabled = false;
+    });
 }
 
+
+function unPressFoodTypes() {
+    document.querySelectorAll('.foodType').forEach(button => button.classList.remove('foodTypeActive'));
+}
+
+
+function clearAddItemPage() {
+    document.getElementById('inputBox').value = monthNames[new Date().getMonth()] + ' ';;
+    document.getElementById('numberOfItemsInput').value = '1';
+    document.getElementById('keepsForText').value = '3 mdr';
+    unPressFoodTypes();
+    unshaddowFoodTypes();
+}
+
+function capitalizeFirst(string) {
+    return string[0].toUpperCase() + string.slice(1)
+}
 
 // Usefull snippets
 

@@ -19,7 +19,6 @@ input {
     text-align: center;
 }
 
-
 summary {
     font-size: 1.5em;
     background-color: rgba(0, 255, 255, 0.21);
@@ -90,8 +89,8 @@ summary::marker {
     align-self: center;
 }
 
-#inputBox, #numberOfItemsInput {
-    width: 70%;
+#inputBox {
+    text-align: end;
 }
 
 #inputDiv, #type, #numberOfItems, #keepsFor {
@@ -200,6 +199,13 @@ summary::marker {
   height: 1.5em;
   border-radius: 7px;
 }
+
+.foodTypeActive {
+    box-shadow: none;
+    border: inset;
+    background-color: white;
+}
+
 .shaddowed {
     color: transparent;
     text-shadow: 0 0 0 #a2aac8;
