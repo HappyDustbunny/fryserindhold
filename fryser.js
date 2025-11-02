@@ -19,18 +19,32 @@ const typeTab = document.getElementById('typeTab');
 
 let localContent;
 let currentArray;
+let curItemObj;
 
 document.getElementById('type').addEventListener('click', typeButtonWasClicked);
 document.getElementById('all').addEventListener('click', allButtonWasClicked);
 document.getElementById('allTab').addEventListener('click', function(event) { allTabHasBeenClicked(event); }, true);
 document.getElementById('typeButtonsDiv1').addEventListener('click', function(event) { typeHasBeenClicked(event); }, true);
 document.getElementById('typeButtonsDiv2').addEventListener('click', function(event) { typeHasBeenClicked(event); }, true);
+document.getElementById('changeNumberDiv').addEventListener('click', function(event) {changeNumberButtonHasBeenClicked(event); }, true);
+document.getElementById('changeMonthsDiv').addEventListener('click', function(event) { changeMonthButtonHasBeenClicked(event); }, true);
 document.getElementById('addNew').addEventListener('click', addNewItem);
 document.getElementById('addItem').addEventListener('click', addItem);
 document.getElementById('closeButton').addEventListener('click', closeButtonClicked);
 document.getElementById('confirmButton').addEventListener('click', confirmButtonHasBeenClicked);
 document.getElementById('increment').addEventListener('click', incrementNumberOfItemsCounter);
 
+class itemObj {
+    constructor(hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer) {
+        this.hash = hash;
+        this.itemName = itemName;
+        this.number = number;
+        this.type = type;
+        this.shelf = shelf;
+        this.keepsInMonths = keepsInMonths;
+        this.addedToFreezer = addedToFreezer;
+            }
+}
 
 function typeButtonWasClicked() {
     document.getElementById('typeTab').style.display = 'block';
@@ -55,6 +69,7 @@ function setUpFunction() {
     content = fixedContent;
 
     fillAllTab();
+    curItemObj = new itemObj(1, 'none', 1, 'noLabel', 1, 3, 176207000000); // hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer
 }
 
 
@@ -128,7 +143,47 @@ function typeHasBeenClicked(event) {
     if (clickedType != 'typeButtonsDiv1' && clickedType != 'typeButtonsDiv2') {
         unPressFoodTypes();
         document.getElementById(clickedType).classList.add('foodTypeActive');
+        curItemObj.itemName = clickedType;
     }
+}
+
+
+function changeNumberButtonHasBeenClicked(event) {
+    let clickedModifier = event.target.id;
+
+    if (clickedModifier == 'numberMinus1') {
+        curItemObj.number -= 1;
+        if (curItemObj.number < 2) { document.getElementById('numberMinus1').disabled = true; }
+    } else if (clickedModifier == 'numberPlus1') {
+        curItemObj.number += 1;
+        document.getElementById('numberMinus1').disabled = false;
+    }
+
+    document.getElementById('numberOfItemsInput').value = curItemObj.number;
+}
+
+
+function changeMonthButtonHasBeenClicked(event) {
+    let clickedModifier = event.target.id;
+    
+    if (clickedModifier == 'minus3' && 4 < curItemObj.keepsInMonths) {
+        curItemObj.keepsInMonths -= 3;
+        if (curItemObj.keepsInMonths < 4) { document.getElementById('minus3').disabled = true; }
+    } else if (clickedModifier == 'minus1' && 1 < curItemObj.keepsInMonths) {
+        curItemObj.keepsInMonths -= 1;
+        if (curItemObj.keepsInMonths < 2) { document.getElementById('minus1').disabled = true; }
+        if (curItemObj.keepsInMonths < 4) { document.getElementById('minus3').disabled = true; }
+    } else if (clickedModifier == 'plus1') {
+        curItemObj.keepsInMonths += 1;
+        if (3 < curItemObj.keepsInMonths) { document.getElementById('minus3').disabled = false; }
+        if (1 < curItemObj.keepsInMonths) { document.getElementById('minus1').disabled = false; }
+    } else if (clickedModifier == 'plus3') {
+        curItemObj.keepsInMonths += 3;
+        document.getElementById('minus1').disabled = false;
+        document.getElementById('minus3').disabled = false;
+    }
+
+    document.getElementById('keepsForText').value = curItemObj.keepsInMonths + ' mdr';
 }
 
 
@@ -163,9 +218,13 @@ function allTabHasBeenClicked(event) {
         myID = clickedID.slice(5);  // Remove 'edit_';
         currentArray = findRelevantArray(myID);
         document.getElementById('addItemPage').style.display = 'flex';
+        document.getElementById('addItem').style.display = 'none';  // TODO: Resolve currentArray vs curItemObj
         document.getElementById('inputBox').value = capitalizeFirst(currentArray[1]) + '  ' + monthNames[new Date().getMonth()] + ' ';
-        // document.getElementById('numberOfItemsInput').value = currentArray[2];
+        document.getElementById('numberOfItemsInput').value = currentArray[2];
+        if (currentArray[2] < 2) { document.getElementById('numberMinus1').disabled = true; }
         document.getElementById('keepsForText').value = currentArray[5] + ' mdr';
+        if (currentArray[5] < 4) { document.getElementById('minus3').disabled = true; }
+        if (currentArray[5] < 2) { document.getElementById('minus1').disabled = true; }
         document.getElementById(currentArray[3]).classList.add('foodTypeActive');
         // document.getElementById(currentArray[3]).style.borderStyle = 'inset';
         shaddowFoodTypes();
@@ -241,7 +300,10 @@ function unPressFoodTypes() {
 function clearAddItemPage() {
     document.getElementById('inputBox').value = monthNames[new Date().getMonth()] + ' ';;
     document.getElementById('numberOfItemsInput').value = '1';
+    document.getElementById('numberMinus1').disabled = true;
     document.getElementById('keepsForText').value = '3 mdr';
+    document.getElementById('minus1').disabled = true;
+    document.getElementById('minus3').disabled = true;
     unPressFoodTypes();
     unshaddowFoodTypes();
 }

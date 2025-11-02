@@ -65,10 +65,10 @@
         </div>
         <div id="numberOfItems" class="backgroundDiv">
             <p class="backgroundHeading">Antal</p>
-            <div class="buttonDiv">
-                <button id="trashCan">&#x1F5D1;</button>
-                <input id="numberOfItemsInput" type="text">
-                <button>+1</button>
+            <div id="changeNumberDiv" class="buttonDiv">
+                <button id="numberMinus1">-1</button>
+                <input id="numberOfItemsInput" type="text" disabled>
+                <button id="numberPlus1">+1</button>
             </div>
         </div>
         <div id="type" class="backgroundDiv">
@@ -88,17 +88,17 @@
         </div>
         <div id="keepsFor" class="backgroundDiv">
             <p class="backgroundHeading">Holdbarhed</p>
-            <div class="buttonDiv">
-                <button>-3</button>
-                <button>-1</button>
+            <div id="changeMonthsDiv" class="buttonDiv">
+                <button id="minus3">-3</button>
+                <button id="minus1">-1</button>
                 <input id="keepsForText" type="text" disabled>
-                <!-- <input id="keepsForText" type="text" value="3 mdr" disabled> -->
-                <button>+1</button>
-                <button>+3</button>
+                <button id="plus1">+1</button>
+                <button id="plus3">+3</button>
             </div>
         </div>
         <button id="confirmButton"> Bekræft </button>
     </div>
+    <button id="trashCan">&#x1F5D1;</button>
     <button id="addItem">+</button>
 </body>
 </html>
