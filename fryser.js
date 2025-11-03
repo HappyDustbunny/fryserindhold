@@ -1,6 +1,6 @@
 // const content = new Map();
 const fixedContent = [
-    //[hash, name, number, type, shelf, keepsInMonths, addedToFreezer]
+    //[hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer]
     [3036860, 'brød', 1, 'bread', 1, 5, 1761217795422],
     [254164556, 'kylling', 2, 'fowl', 2, 4, 1761217795422],
     [1677053109, 'grønne bønner', 1, 'veggie', 2, 4, 1743717600000]
@@ -18,7 +18,6 @@ const allTab = document.getElementById('allTab');
 const typeTab = document.getElementById('typeTab');
 
 let localContent;
-let currentArray;
 let curItemObj;
 
 document.getElementById('type').addEventListener('click', typeButtonWasClicked);
@@ -69,7 +68,7 @@ function setUpFunction() {
     content = fixedContent;
 
     fillAllTab();
-    curItemObj = new itemObj(1, 'none', 1, 'noLabel', 1, 3, 176207000000); // hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer
+    clearAddItemPage();
 }
 
 
@@ -117,7 +116,7 @@ function fillAllTab() {
 }
 
 
-function findRelevantArray(myID) {
+function findRelevantObject(myID) {
     let relevantArray;
     content.forEach(function(value) {
         if (value[0] === Number(myID)) {
@@ -125,11 +124,13 @@ function findRelevantArray(myID) {
         }
     });
 
-    return relevantArray;
+    let relevantObject = new itemObj(...relevantArray);  // Transform the relevant array to the relevant object
+    return relevantObject;
 }
 
 
-function updateRelevantArray(myID, relevantArray) {
+function updateRelevantObject(myID, relevantObject) {
+    let relevantArray = Object.keys(relevantObject);  // Transform the relevant object to the relevant array
     content.forEach(function(value) {
         if (value[0] === Number(myID)) {
             value = relevantArray;
@@ -166,8 +167,9 @@ function changeNumberButtonHasBeenClicked(event) {
 function changeMonthButtonHasBeenClicked(event) {
     let clickedModifier = event.target.id;
     
-    if (clickedModifier == 'minus3' && 4 < curItemObj.keepsInMonths) {
+    if (clickedModifier == 'minus3' && 3 < curItemObj.keepsInMonths) {
         curItemObj.keepsInMonths -= 3;
+        if (curItemObj.keepsInMonths < 2) { document.getElementById('minus1').disabled = true; }
         if (curItemObj.keepsInMonths < 4) { document.getElementById('minus3').disabled = true; }
     } else if (clickedModifier == 'minus1' && 1 < curItemObj.keepsInMonths) {
         curItemObj.keepsInMonths -= 1;
@@ -175,8 +177,8 @@ function changeMonthButtonHasBeenClicked(event) {
         if (curItemObj.keepsInMonths < 4) { document.getElementById('minus3').disabled = true; }
     } else if (clickedModifier == 'plus1') {
         curItemObj.keepsInMonths += 1;
-        if (3 < curItemObj.keepsInMonths) { document.getElementById('minus3').disabled = false; }
         if (1 < curItemObj.keepsInMonths) { document.getElementById('minus1').disabled = false; }
+        if (3 < curItemObj.keepsInMonths) { document.getElementById('minus3').disabled = false; }
     } else if (clickedModifier == 'plus3') {
         curItemObj.keepsInMonths += 3;
         document.getElementById('minus1').disabled = false;
@@ -192,22 +194,19 @@ function allTabHasBeenClicked(event) {
     
     if (clickedID.slice(0, 5) == 'minus') {
         myID = clickedID.slice(6);  // Remove 'minus_'
-        currentArray = findRelevantArray(myID);
-        let howMany = currentArray[2];
-        if (1 < howMany) {
-            howMany -= 1;
-            currentArray[2] = howMany;
-            updateRelevantArray(myID, currentArray);
-        } else if (howMany == 1) {
-            howMany = 0;
-            currentArray[2] = howMany;
-            updateRelevantArray(myID, currentArray);
+        curItemObj = findRelevantObject(myID);
+        if (1 < curItemObj.number) {
+            curItemObj.number -= 1;
+            updateRelevantObject(myID, curItemObj);
+        } else if (curItemObj.number == 1) {
+            curItemObj.number = 0;
+            updateRelevantObject(myID, curItemObj);
             document.getElementById(myID).style.color = 'rgba(40, 90, 240, 0.35)';
         }
         document.getElementById('stock_' + myID).textContent = howMany;
     } else if (clickedID.slice(0, 4) == 'plus') {
         myID = clickedID.slice(5);  // Remove 'plus_'
-        currentArray = findRelevantArray(myID);
+        curItemObj = findRelevantObject(myID);
 
         document.getElementById('plusToolTip').style.display = 'flex';
         let clickedTop =  document.getElementById(clickedID).getBoundingClientRect().top;
@@ -216,19 +215,18 @@ function allTabHasBeenClicked(event) {
         
     } else if (clickedID.slice(0, 4) == 'edit') {
         myID = clickedID.slice(5);  // Remove 'edit_';
-        currentArray = findRelevantArray(myID);
+        curItemObj = findRelevantObject(myID);
         document.getElementById('addItemPage').style.display = 'flex';
-        document.getElementById('addItem').style.display = 'none';  // TODO: Resolve currentArray vs curItemObj
-        document.getElementById('inputBox').value = capitalizeFirst(currentArray[1]) + '  ' + monthNames[new Date().getMonth()] + ' ';
-        document.getElementById('numberOfItemsInput').value = currentArray[2];
-        if (currentArray[2] < 2) { document.getElementById('numberMinus1').disabled = true; }
-        document.getElementById('keepsForText').value = currentArray[5] + ' mdr';
-        if (currentArray[5] < 4) { document.getElementById('minus3').disabled = true; }
-        if (currentArray[5] < 2) { document.getElementById('minus1').disabled = true; }
-        document.getElementById(currentArray[3]).classList.add('foodTypeActive');
-        // document.getElementById(currentArray[3]).style.borderStyle = 'inset';
+        document.getElementById('addItem').style.display = 'none'; 
+        document.getElementById('inputBox').value = capitalizeFirst(curItemObj.itemName) + '  ' + monthNames[new Date().getMonth()] + ' ';
+        document.getElementById('numberOfItemsInput').value = curItemObj.number;
+        if (curItemObj.number < 2) { document.getElementById('numberMinus1').disabled = true; }
+        document.getElementById('keepsForText').value = curItemObj.keepsInMonths + ' mdr';
+        if (curItemObj.keepsInMonths < 4) { document.getElementById('minus3').disabled = true; }
+        if (curItemObj.keepsInMonths < 2) { document.getElementById('minus1').disabled = true; }
+        document.getElementById(curItemObj.type).classList.add('foodTypeActive');
         shaddowFoodTypes();
-        document.getElementById(currentArray[3]).classList.remove('shaddowed');
+        document.getElementById(curItemObj.type).classList.remove('shaddowed');
     }
 }
 
@@ -260,15 +258,15 @@ function confirmButtonHasBeenClicked() {
 
 
 function incrementNumberOfItemsCounter() {
-            let howMany = currentArray[2];
+            let howMany = curItemObj.number;
         if (1 <= howMany) {
             howMany += 1;
-            currentArray[2] = howMany;
-            updateRelevantArray(myID, currentArray);
+            curItemObj.number = howMany;
+            updateRelevantObject(myID, curItemObj);
         } else if (howMany == 0) {
             howMany = 1;
-            currentArray[2] = howMany;
-            updateRelevantArray(myID, currentArray);
+            curItemObj.number = howMany;
+            updateRelevantObject(myID, curItemObj);
             document.getElementById(myID).style.color = '';
         }
         document.getElementById('stock_' + myID).textContent = howMany;
@@ -306,6 +304,7 @@ function clearAddItemPage() {
     document.getElementById('minus3').disabled = true;
     unPressFoodTypes();
     unshaddowFoodTypes();
+    curItemObj = new itemObj(1, 'none', 1, 'noLabel', 1, 3, 176207000000); // hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer
 }
 
 function capitalizeFirst(string) {
