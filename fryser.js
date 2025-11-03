@@ -130,12 +130,13 @@ function findRelevantObject(myID) {
 
 
 function updateRelevantObject(myID, relevantObject) {
-    let relevantArray = Object.keys(relevantObject);  // Transform the relevant object to the relevant array
-    content.forEach(function(value) {
-        if (value[0] === Number(myID)) {
-            value = relevantArray;
-        }
-    });
+    let relevantArray = Object.values(relevantObject);  // Transform the relevant object to the relevant array
+    content = content.map(x => (x[0] === Number(myID) ? relevantArray : x))
+    // content.forEach(function(value, index) {
+    //     if (value[0] === Number(myID)) {
+    //         value[index] = relevantArray;
+    //     }
+    // });
 }
 
 
@@ -203,7 +204,7 @@ function allTabHasBeenClicked(event) {
             updateRelevantObject(myID, curItemObj);
             document.getElementById(myID).style.color = 'rgba(40, 90, 240, 0.35)';
         }
-        document.getElementById('stock_' + myID).textContent = howMany;
+        document.getElementById('stock_' + myID).textContent = curItemObj.number;
     } else if (clickedID.slice(0, 4) == 'plus') {
         myID = clickedID.slice(5);  // Remove 'plus_'
         curItemObj = findRelevantObject(myID);
@@ -258,19 +259,13 @@ function confirmButtonHasBeenClicked() {
 
 
 function incrementNumberOfItemsCounter() {
-            let howMany = curItemObj.number;
-        if (1 <= howMany) {
-            howMany += 1;
-            curItemObj.number = howMany;
-            updateRelevantObject(myID, curItemObj);
-        } else if (howMany == 0) {
-            howMany = 1;
-            curItemObj.number = howMany;
-            updateRelevantObject(myID, curItemObj);
-            document.getElementById(myID).style.color = '';
-        }
-        document.getElementById('stock_' + myID).textContent = howMany;
-        document.getElementById('plusToolTip').style.display = 'none';
+    if (curItemObj.number == 0) {
+        document.getElementById(myID).style.color = '';
+    }
+    curItemObj.number += 1;
+    updateRelevantObject(myID, curItemObj);
+    document.getElementById('stock_' + myID).textContent = curItemObj.number;
+    document.getElementById('plusToolTip').style.display = 'none';
 }
 
 
