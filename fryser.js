@@ -65,7 +65,7 @@ function setUpFunction() {
     allButtonWasClicked();
     
     // // Get fixed content
-    content = fixedContent;
+    content = fixedContent;  // TODO: Hmm... Thinking needed here
 
     fillAllTab();
     clearAddItemPage();
@@ -86,6 +86,8 @@ function fillAllTab() {
     let now = new Date();
     let bgColourClass = 'bglightgreen';
     let sortedContent = content;
+
+    allTab.innerHTML = '';
 
     // let sortedContent = new Map([...content].sort());
     sortedContent.sort((a, b) => 
@@ -145,7 +147,7 @@ function typeHasBeenClicked(event) {
     if (clickedType != 'typeButtonsDiv1' && clickedType != 'typeButtonsDiv2') {
         unPressFoodTypes();
         document.getElementById(clickedType).classList.add('foodTypeActive');
-        curItemObj.itemName = clickedType;
+        curItemObj.type = clickedType;
     }
 }
 
@@ -210,24 +212,46 @@ function allTabHasBeenClicked(event) {
         curItemObj = findRelevantObject(myID);
 
         document.getElementById('plusToolTip').style.display = 'flex';
+        document.getElementById('addItem').style.display = 'none'; 
+
         let clickedTop =  document.getElementById(clickedID).getBoundingClientRect().top;
         if (clickedTop < 300) { clickedTop += 30} else {clickedTop -= 80};
         document.getElementById('plusToolTip').style.top = clickedTop + 'px';
+
+        document.getElementById('inputBox').value = capitalizeFirst(curItemObj.itemName) + '  ' + monthNames[new Date().getMonth()] + ' ';
+        shaddowFoodTypes();
+        document.getElementById(curItemObj.type).classList.remove('shaddowed');
+        
+        document.getElementById('numberOfItemsInput').value = 1;
+        document.getElementById('numberMinus1').disabled = true;
+        
+        document.getElementById('keepsForText').value = curItemObj.keepsInMonths + ' mdr';
+        document.getElementById('minus3').disabled = false;
+        document.getElementById('minus1').disabled = false;
+        if (curItemObj.keepsInMonths < 4) { document.getElementById('minus3').disabled = true; }
+        if (curItemObj.keepsInMonths < 2) { document.getElementById('minus1').disabled = true; }
         
     } else if (clickedID.slice(0, 4) == 'edit') {
         myID = clickedID.slice(5);  // Remove 'edit_';
         curItemObj = findRelevantObject(myID);
+        
         document.getElementById('addItemPage').style.display = 'flex';
         document.getElementById('addItem').style.display = 'none'; 
+        
         document.getElementById('inputBox').value = capitalizeFirst(curItemObj.itemName) + '  ' + monthNames[new Date().getMonth()] + ' ';
+        
+        shaddowFoodTypes();
+        document.getElementById(curItemObj.type).classList.remove('shaddowed');
+        
         document.getElementById('numberOfItemsInput').value = curItemObj.number;
         if (curItemObj.number < 2) { document.getElementById('numberMinus1').disabled = true; }
+        
         document.getElementById('keepsForText').value = curItemObj.keepsInMonths + ' mdr';
+        document.getElementById('minus3').disabled = false;
+        document.getElementById('minus1').disabled = false;
         if (curItemObj.keepsInMonths < 4) { document.getElementById('minus3').disabled = true; }
         if (curItemObj.keepsInMonths < 2) { document.getElementById('minus1').disabled = true; }
         document.getElementById(curItemObj.type).classList.add('foodTypeActive');
-        shaddowFoodTypes();
-        document.getElementById(curItemObj.type).classList.remove('shaddowed');
     }
 }
 
@@ -253,8 +277,13 @@ function closeButtonClicked() {
 
 
 function confirmButtonHasBeenClicked() {
-    // TODO: Add content here. Remember to hide +button when not relevant
+    let newHash = makeHash(document.getElementById('inputBox').value);
+    curItemObj.hash = newHash;
+    curItemObj.itemName = document.getElementById('inputBox').value.slice(-4); // TODO: Fix slice
+    curItemObj.addedToFreezer = new Date().getTime();
+    content.push(Object.values(curItemObj));
     closeButtonClicked();
+    fillAllTab();
 }
 
 
@@ -295,7 +324,7 @@ function clearAddItemPage() {
     document.getElementById('numberOfItemsInput').value = '1';
     document.getElementById('numberMinus1').disabled = true;
     document.getElementById('keepsForText').value = '3 mdr';
-    document.getElementById('minus1').disabled = true;
+    document.getElementById('minus1').disabled = false;
     document.getElementById('minus3').disabled = true;
     unPressFoodTypes();
     unshaddowFoodTypes();
