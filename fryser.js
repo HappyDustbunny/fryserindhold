@@ -3,7 +3,10 @@ const fixedContent = [
     //[hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer]
     [3036860, 'brød', 1, 'bread', 1, 5, 1761217795422],
     [254164556, 'kylling', 2, 'fowl', 2, 4, 1761217795422],
-    [1677053109, 'grønne bønner', 1, 'veggie', 2, 4, 1743717600000]
+    [1677053109, 'grønne bønner', 1, 'veggie', 2, 4, 1743717600000],
+    [11802677, "is", 1, "cake+", 1, 3, 1762349662007],
+    [1180267467, "is", 1, "cake", 1, 3, 1762349662007],
+    [11867467, "okse", 1, "meat", 1, 3, 1762349662007]
 ]
 const symbols = new Map([
     ['bread', '&#x1F35E;'],
@@ -80,6 +83,29 @@ function makeHash(string) {  // Use for making unique hash from name
   }
   return Math.abs(hash);
 };
+
+
+function fillTypeTab() { // TODO: Refactor this
+    let breadArray = [];
+    let veggieArray = [];
+    let cakeArray = [];
+    let fishArray = [];
+    let fowlArray = [];
+    let meatArray = [];
+    let whatEvsArray = [];
+    let noneArray = [];
+    content.forEach(function(value) {
+        if (value[3] === 'bread') {breadArray.push(value)}
+        else if (value[3] === 'veggie') {veggieArray.push(value)}
+        else if (value[3] === 'cake') {cakeArray.push(value)}
+        else if (value[3] === 'fish') {fishArray.push(value)}
+        else if (value[3] === 'fowl') {fowlArray.push(value)}
+        else if (value[3] === 'meat') {meatArray.push(value)}
+        else if (value[3] === 'whatEvs') {whatEvsArray.push(value)}
+        else if (value[3] === 'none') {noneArray.push(value)}
+    })
+    console.log(breadArray, veggieArray, cakeArray, fishArray, fowlArray, meatArray, whatEvsArray, noneArray);
+}
 
 
 function fillAllTab() {
