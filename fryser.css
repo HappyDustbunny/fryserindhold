@@ -91,11 +91,25 @@ summary::marker {
 
 #inputBox {
     text-align: end;
+    width: 55vw;
+    border: none;
 }
 
 #inputDiv, #type, #numberOfItems, #keepsFor {
     align-self: center;
     gap: 2vh;
+}
+
+#inputBoxDiv {
+    display: flex;
+    border: 1px solid #c1c1c1;
+    background-color: white;
+}
+
+#inputBoxMonth {
+    width: 7vw;
+    border: none;
+    color: coral;
 }
 
 #keepsForText {
