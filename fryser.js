@@ -4,8 +4,8 @@ const fixedContent = [
     [3036860, 'brød', 1, 'bread', 1, 5, 1761217795422],
     [254164556, 'kylling', 2, 'fowl', 2, 4, 1761217795422],
     [1677053109, 'grønne bønner', 1, 'veggie', 2, 4, 1743717600000],
-    [11802677, "is", 1, "cake+", 1, 3, 1762349662007],
-    [1180267467, "is", 1, "cake", 1, 3, 1762349662007],
+    [11802677, "is", 1, "cake", 1, 3, 1762349662007],
+    [1180267467, "kage", 1, "cake", 1, 3, 1762349662007],
     [11867467, "okse", 1, "meat", 1, 3, 1762349662007]
 ]
 const symbols = new Map([
@@ -14,7 +14,9 @@ const symbols = new Map([
     ['cake', '&#x1F382;'],
     ['fish', '&#x1F41F;'],
     ['fowl', '&#x1F414;'],
-    ['meat', '&#x1F969;']
+    ['meat', '&#x1F969;'],
+    ['whatEvs', '&#x1F937'],
+    ['noLabel', '&#8195']
 ]);
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
 const allTab = document.getElementById('allTab');
@@ -53,6 +55,7 @@ function typeButtonWasClicked() {
     document.getElementById('allTab').style.display = 'none';
     document.getElementById('type').style.background = 'rgba(153, 222, 238, 0.77)';
     document.getElementById('all').style.background = 'rgba(211, 211, 211, 0.30)';
+    fillTypeTab();
 }
 
 
@@ -85,26 +88,42 @@ function makeHash(string) {  // Use for making unique hash from name
 };
 
 
-function fillTypeTab() { // TODO: Refactor this
-    let breadArray = [];
-    let veggieArray = [];
-    let cakeArray = [];
-    let fishArray = [];
-    let fowlArray = [];
-    let meatArray = [];
-    let whatEvsArray = [];
-    let noneArray = [];
+function fillTypeTab() { 
+    let now = new Date();
+    let bgColourClass = 'bglightgreen';
+    
+    for (const value of symbols.keys()) {  // Grey out categories without content
+        let currentElement = document.getElementById(value);
+        currentElement.nextElementSibling.innerHTML = '';
+        currentElement.style.backgroundColor = 'rgba(84, 255, 255, 0.21)';  // Restore colour for categories that have recieved content since last repaint
+    }
+
     content.forEach(function(value) {
-        if (value[3] === 'bread') {breadArray.push(value)}
-        else if (value[3] === 'veggie') {veggieArray.push(value)}
-        else if (value[3] === 'cake') {cakeArray.push(value)}
-        else if (value[3] === 'fish') {fishArray.push(value)}
-        else if (value[3] === 'fowl') {fowlArray.push(value)}
-        else if (value[3] === 'meat') {meatArray.push(value)}
-        else if (value[3] === 'whatEvs') {whatEvsArray.push(value)}
-        else if (value[3] === 'none') {noneArray.push(value)}
-    })
-    console.log(breadArray, veggieArray, cakeArray, fishArray, fowlArray, meatArray, whatEvsArray, noneArray);
+        let currentElement = document.getElementById(value[3]);
+
+        let stock = value[2];
+        let monthFrosen = monthNames[new Date(value[6]).getMonth()];
+        let daysLeft = value[5] * 30 - (now.getTime() - value[6])/(3600000*24);
+        let months = Math.round(value[5] - (now.getTime() - value[6])/(3600000*24*30));
+        if (months < 1) {bgColourClass = 'yellow'};
+        if (daysLeft < 15) {bgColourClass = 'bgred'};
+
+        currentElement.nextElementSibling.innerHTML += '<div id="' + value[0] + '" class="itemDiv">' +
+        '<span id="edit_' + value[0] + '" class="goesLeft">' + ' ' + capitalizeFirst(value[1]) + '</span>' +
+        '<span class="goesRight">' + monthFrosen + ' ' +
+        '<span class="' + bgColourClass + '"> ' + months + ' mdr </span>  ' +
+        '<span> &#x2263;' + value[4] + '</span> ' + // Four bars symbolizing shelf number
+        '<button id="minus_' + value[0] + '" class="minus"> &#10134; </button> ' + 
+        '<span id="stock_' + value[0] + '">' + stock + '</span> ' + 
+        '<button id="plus_' + value[0] + '" class="plus"> &#10133; </button> </span> </div>';
+    });
+
+    for (const value of symbols.keys()) {  // Grey out categories without content
+        let currentElement = document.getElementById(value);
+        if (currentElement.nextElementSibling.innerHTML === '') {
+            currentElement.style.backgroundColor = 'rgba(84, 255, 255, 0.1)';
+        }
+    }
 }
 
 
@@ -176,7 +195,7 @@ function typeHasBeenClicked(event) {
     if (clickedType != 'typeButtonsDiv1' && clickedType != 'typeButtonsDiv2') {
         unPressFoodTypes();
         document.getElementById(clickedType).classList.add('foodTypeActive');
-        curItemObj.type = clickedType;
+        curItemObj.type = clickedType.replace('Type', '');
     }
 }
 
@@ -308,18 +327,20 @@ function closeButtonClicked() {
 
 
 function confirmButtonHasBeenClicked() {
-    let newHash = makeHash(document.getElementById('inputBox').value + document.getElementById('inputBoxMonth').value);
-    if (findRelevantObject(newHash)) {
-        oldItem = findRelevantObject(newHash);
-        oldItem.number += curItemObj.number;
-        updateRelevantObject(newHash, oldItem);
-    } else {
-        curItemObj.hash = newHash;
-        curItemObj.itemName = document.getElementById('inputBox').value;
-        curItemObj.addedToFreezer = new Date().getTime();
-        content.push(Object.values(curItemObj));
+    if (document.getElementById('inputBox').value != '') {
+        let newHash = makeHash(document.getElementById('inputBox').value + document.getElementById('inputBoxMonth').value);
+        if (findRelevantObject(newHash)) {
+            oldItem = findRelevantObject(newHash);
+            oldItem.number += curItemObj.number;
+            updateRelevantObject(newHash, oldItem);
+        } else {
+            curItemObj.hash = newHash;
+            curItemObj.itemName = document.getElementById('inputBox').value;
+            curItemObj.addedToFreezer = new Date().getTime();
+            content.push(Object.values(curItemObj));
+        }
     }
-
+    
     closeButtonClicked();
     fillAllTab();
 }
