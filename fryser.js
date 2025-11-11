@@ -1,12 +1,12 @@
 // const content = new Map();
 const fixedContent = [
     //[hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer]
-    [3036860, 'brød', 1, 'bread', 1, 5, 1761217795422],
-    [254164556, 'kylling', 2, 'fowl', 2, 4, 1761217795422],
-    [1677053109, 'grønne bønner', 1, 'veggie', 2, 4, 1743717600000],
-    [11802677, "is", 1, "cake", 1, 3, 1762349662007],
-    [1180267467, "kage", 1, "cake", 1, 3, 1762349662007],
-    [11867467, "okse", 1, "meat", 1, 3, 1762349662007]
+    [3036860, 'brød', 1, 'bread', 1, 5, 1761217795422, true],
+    [254164556, 'kylling', 2, 'fowl', 2, 4, 1761217795422, true],
+    [1677053109, 'grønne bønner', 1, 'veggie', 2, 4, 1743717600000, true],
+    [11802677, "is", 1, "cake", 1, 3, 1762349662007, true],
+    [1180267467, "kage", 1, "cake", 1, 3, 1762349662007, true],
+    [11867467, "okse", 1, "meat", 1, 3, 1762349662007, true]
 ]
 const symbols = new Map([
     ['bread', '&#x1F35E;'],
@@ -39,7 +39,7 @@ document.getElementById('confirmButton').addEventListener('click', confirmButton
 document.getElementById('increment').addEventListener('click', incrementNumberOfItemsCounter);
 
 class itemObj {
-    constructor(hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer) {
+    constructor(hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer, showInAllTab) {
         this.hash = hash;
         this.itemName = itemName;
         this.number = number;
@@ -47,6 +47,7 @@ class itemObj {
         this.shelf = shelf;
         this.keepsInMonths = keepsInMonths;
         this.addedToFreezer = addedToFreezer;
+        this.showInAllTab = showInAllTab;
             }
 }
 
@@ -100,7 +101,8 @@ function fillTypeTab() {
 
     content.forEach(function(value) {
         let currentElement = document.getElementById(value[3]);
-
+        
+        let minusOrTrashCan = ' &#10134; ';
         let stock = value[2];
         let monthFrosen = monthNames[new Date(value[6]).getMonth()];
         let daysLeft = value[5] * 30 - (now.getTime() - value[6])/(3600000*24);
@@ -113,7 +115,7 @@ function fillTypeTab() {
         '<span class="goesRight">' + monthFrosen + ' ' +
         '<span class="' + bgColourClass + '"> ' + months + ' mdr </span>  ' +
         '<span> &#x2263;' + value[4] + '</span> ' + // Four bars symbolizing shelf number
-        '<button id="minus_' + value[0] + '" class="minus"> &#10134; </button> ' + 
+        '<button id="minus_' + value[0] + '" class="minus"> ' + minusOrTrashCan + ' </button> ' + 
         '<span id="stock_' + value[0] + '">' + stock + '</span> ' + 
         '<button id="plus_' + value[0] + '" class="plus"> &#10133; </button> </span> </div>';
     });
@@ -141,24 +143,28 @@ function fillAllTab() {
 
     
     sortedContent.forEach(function(value) {
-        let symbol = symbols.get(value[3]);  // Get the symbol maching the type of food
-        let stock = value[2];
-        let monthFrosen = monthNames[new Date(value[6]).getMonth()];
-        let daysLeft = value[5] * 30 - (now.getTime() - value[6])/(3600000*24);
-        let months = Math.round(value[5] - (now.getTime() - value[6])/(3600000*24*30));
-        if (months < 1) {bgColourClass = 'yellow'};
-        if (daysLeft < 15) {bgColourClass = 'bgred'};
-
-        allTab.innerHTML += '<div id="' + value[0] + '" class="itemDiv">' +
-        '<span id="edit_' + value[0] + '" class="goesLeft">' + symbol + ' ' + capitalizeFirst(value[1]) + '</span>' +
-        '<span class="goesRight">' + monthFrosen + ' ' +
-        '<span class="' + bgColourClass + '"> ' + months + ' mdr </span>  ' +
-        '<span> &#x2263;' + value[4] + '</span> ' + // Four bars symbolizing shelf number
-        '<button id="minus_' + value[0] + '" class="minus"> &#10134; </button> ' + 
-        '<span id="stock_' + value[0] + '">' + stock + '</span> ' + 
-        '<button id="plus_' + value[0] + '" class="plus"> &#10133; </button> </span> </div>'
-        
-        bgColourClass = 'bglightgreen';
+        if (value[7]) {
+            let symbol = symbols.get(value[3]);  // Get the symbol maching the type of food
+            let minusOrTrashCan = ' &#10134; ';
+            let stock = value[2];
+            let monthFrosen = monthNames[new Date(value[6]).getMonth()];
+            let daysLeft = value[5] * 30 - (now.getTime() - value[6])/(3600000*24);
+            let months = Math.round(value[5] - (now.getTime() - value[6])/(3600000*24*30));
+            if (months < 1) {bgColourClass = 'yellow'};
+            if (daysLeft < 15) {bgColourClass = 'bgred'};
+            if (stock == 0) { minusOrTrashCan = ' &#x1F5D1; ' }
+    
+            allTab.innerHTML += '<div id="' + value[0] + '" class="itemDiv">' +
+            '<span id="edit_' + value[0] + '" class="goesLeft">' + symbol + ' ' + capitalizeFirst(value[1]) + '</span>' +
+            '<span class="goesRight">' + monthFrosen + ' ' +
+            '<span class="' + bgColourClass + '"> ' + months + ' mdr </span>  ' +
+            '<span> &#x2263;' + value[4] + '</span> ' + // Four bars symbolizing shelf number
+            '<button id="minus_' + value[0] + '" class="minus"> ' + minusOrTrashCan + ' </button> ' + 
+            '<span id="stock_' + value[0] + '">' + stock + '</span> ' + 
+            '<button id="plus_' + value[0] + '" class="plus"> &#10133; </button> </span> </div>'
+            
+            bgColourClass = 'bglightgreen';
+        }
     });
 }
 
@@ -181,12 +187,7 @@ function findRelevantObject(myID) {
 
 function updateRelevantObject(myID, relevantObject) {
     let relevantArray = Object.values(relevantObject);  // Transform the relevant object to the relevant array
-    content = content.map(x => (x[0] === Number(myID) ? relevantArray : x))
-    // content.forEach(function(value, index) {
-    //     if (value[0] === Number(myID)) {
-    //         value[index] = relevantArray;
-    //     }
-    // });
+    content = content.map(x => (x[0] === Number(myID) ? relevantArray : x));
 }
 
 
@@ -249,12 +250,20 @@ function allTabHasBeenClicked(event) {
         if (1 < curItemObj.number) {
             curItemObj.number -= 1;
             updateRelevantObject(myID, curItemObj);
+            document.getElementById('stock_' + myID).textContent = curItemObj.number;
         } else if (curItemObj.number == 1) {
             curItemObj.number = 0;
             updateRelevantObject(myID, curItemObj);
             document.getElementById(myID).style.color = 'rgba(40, 90, 240, 0.35)';
+            document.getElementById('minus_' + myID).textContent = ' \u{1F5D1} ';  // Trash can
+            document.getElementById('stock_' + myID).textContent = curItemObj.number;
+        } else if (curItemObj.number == 0) {
+            curItemObj.showInAllTab = false;
+            document.getElementById(myID).style.color = '';
+            document.getElementById('minus_' + myID).textContent = ' \u{2796} ';  // Minus
+            updateRelevantObject(myID, curItemObj);
+            fillAllTab();
         }
-        document.getElementById('stock_' + myID).textContent = curItemObj.number;
     } else if (clickedID.slice(0, 4) == 'plus') {
         myID = clickedID.slice(5);  // Remove 'plus_'
         curItemObj = findRelevantObject(myID);
@@ -337,6 +346,7 @@ function confirmButtonHasBeenClicked() {
             curItemObj.hash = newHash;
             curItemObj.itemName = document.getElementById('inputBox').value;
             curItemObj.addedToFreezer = new Date().getTime();
+            curItemObj.showInAllTab = true;
             content.push(Object.values(curItemObj));
         }
     }
@@ -349,6 +359,7 @@ function confirmButtonHasBeenClicked() {
 function incrementNumberOfItemsCounter() {
     if (curItemObj.number == 0) {
         document.getElementById(myID).style.color = '';
+        document.getElementById('minus_' + myID).textContent = ' \u{2796} '  // Minus
     }
     curItemObj.number += 1;
     updateRelevantObject(myID, curItemObj);
