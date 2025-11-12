@@ -5,7 +5,7 @@ const fixedContent = [
     [254164556, 'kylling', 2, 'fowl', 2, 4, 1761217795422, true],
     [1677053109, 'grønne bønner', 1, 'veggie', 2, 4, 1743717600000, true],
     [11802677, "is", 1, "cake", 1, 3, 1762349662007, true],
-    [1180267467, "kage", 1, "cake", 1, 3, 1762349662007, true],
+    [1180267467, "kage", 0, "cake", 1, 3, 1762349662007, true],
     [11867467, "okse", 1, "meat", 1, 3, 1762349662007, true]
 ]
 const symbols = new Map([
@@ -27,7 +27,8 @@ let curItemObj;
 
 document.getElementById('type').addEventListener('click', typeButtonWasClicked);
 document.getElementById('all').addEventListener('click', allButtonWasClicked);
-document.getElementById('allTab').addEventListener('click', function(event) { allTabHasBeenClicked(event); }, true);
+document.getElementById('allTab').addEventListener('click', function(event) { tabHasBeenClicked(event); }, true);
+document.getElementById('typeTab').addEventListener('click', function(event) { tabHasBeenClicked(event); }, true);
 document.getElementById('typeButtonsDiv1').addEventListener('click', function(event) { typeHasBeenClicked(event); }, true);
 document.getElementById('typeButtonsDiv2').addEventListener('click', function(event) { typeHasBeenClicked(event); }, true);
 document.getElementById('changeNumberDiv').addEventListener('click', function(event) {changeNumberButtonHasBeenClicked(event); }, true);
@@ -51,11 +52,23 @@ class itemObj {
             }
 }
 
+
+function setUpFunction() {
+    // // Get fixed content
+    content = fixedContent;  // TODO: Hmm... Thinking needed here
+    
+    allButtonWasClicked();
+    fillAllTab();
+    clearAddItemPage();
+}
+
+
 function typeButtonWasClicked() {
     document.getElementById('typeTab').style.display = 'block';
     document.getElementById('allTab').style.display = 'none';
     document.getElementById('type').style.background = 'rgba(153, 222, 238, 0.77)';
     document.getElementById('all').style.background = 'rgba(211, 211, 211, 0.30)';
+    document.getElementById('plusToolTip').style.display = 'none';
     fillTypeTab();
 }
 
@@ -65,17 +78,7 @@ function allButtonWasClicked() {
     document.getElementById('allTab').style.display = 'block';
     document.getElementById('type').style.background = 'rgba(211, 211, 211, 0.30)';
     document.getElementById('all').style.background = 'rgba(153, 222, 238, 0.77)';
-}
-
-
-function setUpFunction() {
-    allButtonWasClicked();
-    
-    // // Get fixed content
-    content = fixedContent;  // TODO: Hmm... Thinking needed here
-
     fillAllTab();
-    clearAddItemPage();
 }
 
 
@@ -89,47 +92,62 @@ function makeHash(string) {  // Use for making unique hash from name
 };
 
 
-function fillTypeTab() { 
+function fillTypeTab() {
+    allTab.innerHTML = '';  // Avoid HTML-elements with same ID
+
     let now = new Date();
     let bgColourClass = 'bglightgreen';
     
-    for (const value of symbols.keys()) {  // Grey out categories without content
+    for (const value of symbols.keys()) {  // Scrub categories in Type tab
         let currentElement = document.getElementById(value);
         currentElement.nextElementSibling.innerHTML = '';
         currentElement.style.backgroundColor = 'rgba(84, 255, 255, 0.21)';  // Restore colour for categories that have recieved content since last repaint
     }
 
     content.forEach(function(value) {
-        let currentElement = document.getElementById(value[3]);
-        
-        let minusOrTrashCan = ' &#10134; ';
-        let stock = value[2];
-        let monthFrosen = monthNames[new Date(value[6]).getMonth()];
-        let daysLeft = value[5] * 30 - (now.getTime() - value[6])/(3600000*24);
-        let months = Math.round(value[5] - (now.getTime() - value[6])/(3600000*24*30));
-        if (months < 1) {bgColourClass = 'yellow'};
-        if (daysLeft < 15) {bgColourClass = 'bgred'};
+        if (value[7]) {
+            let currentElement = document.getElementById(value[3]);
+            
+            let minusOrTrashCan = ' &#10134; ';
+            let stock = value[2];
+            let monthFrosen = monthNames[new Date(value[6]).getMonth()];
+            let daysLeft = value[5] * 30 - (now.getTime() - value[6])/(3600000*24);
+            let months = Math.round(value[5] - (now.getTime() - value[6])/(3600000*24*30));
+            if (months < 1) {bgColourClass = 'yellow'};
+            if (daysLeft < 15) {bgColourClass = 'bgred'};
+            let noLeft = '';
+            if (stock == 0) { minusOrTrashCan = ' &#x1F5D1; '; noLeft = 'noLeft'};
+    
+            currentElement.nextElementSibling.innerHTML += '<div id="' + value[0] + '" class="itemDiv ' + noLeft + '">' +
+            '<span id="edit_' + value[0] + '" class="goesLeft">' + ' ' + capitalizeFirst(value[1]) + '</span>' +
+            '<span class="goesRight">' + monthFrosen + ' ' +
+            '<span class="' + bgColourClass + '"> ' + months + ' mdr </span>  ' +
+            '<span> &#x2263;' + value[4] + '</span> ' + // Four bars symbolizing shelf number
+            '<button id="minus_' + value[0] + '" class="minus"> ' + minusOrTrashCan + ' </button> ' + 
+            '<span id="stock_' + value[0] + '">' + stock + '</span> ' + 
+            '<button id="plus_' + value[0] + '" class="plus"> &#10133; </button> </span> </div>';
 
-        currentElement.nextElementSibling.innerHTML += '<div id="' + value[0] + '" class="itemDiv">' +
-        '<span id="edit_' + value[0] + '" class="goesLeft">' + ' ' + capitalizeFirst(value[1]) + '</span>' +
-        '<span class="goesRight">' + monthFrosen + ' ' +
-        '<span class="' + bgColourClass + '"> ' + months + ' mdr </span>  ' +
-        '<span> &#x2263;' + value[4] + '</span> ' + // Four bars symbolizing shelf number
-        '<button id="minus_' + value[0] + '" class="minus"> ' + minusOrTrashCan + ' </button> ' + 
-        '<span id="stock_' + value[0] + '">' + stock + '</span> ' + 
-        '<button id="plus_' + value[0] + '" class="plus"> &#10133; </button> </span> </div>';
+            bgColourClass = 'bglightgreen';
+        }
     });
 
     for (const value of symbols.keys()) {  // Grey out categories without content
         let currentElement = document.getElementById(value);
-        if (currentElement.nextElementSibling.innerHTML === '') {
+        if (currentElement.nextElementSibling.innerHTML === '') {  // TODO: Fix this with classList.add/remove
             currentElement.style.backgroundColor = 'rgba(84, 255, 255, 0.1)';
+            currentElement.style.color = 'gray';
         }
     }
 }
 
 
 function fillAllTab() {
+    for (const value of symbols.keys()) {  // Remove content in order to avoid HTML-elements with same ID
+        let currentElement = document.getElementById(value);
+        currentElement.nextElementSibling.innerHTML = '';
+        currentElement.style.backgroundColor = 'rgba(84, 255, 255, 0.21)';  // Restore colour for categories that have recieved content since last repaint
+    }
+
     let now = new Date();
     let bgColourClass = 'bglightgreen';
     let sortedContent = content;
@@ -152,9 +170,10 @@ function fillAllTab() {
             let months = Math.round(value[5] - (now.getTime() - value[6])/(3600000*24*30));
             if (months < 1) {bgColourClass = 'yellow'};
             if (daysLeft < 15) {bgColourClass = 'bgred'};
-            if (stock == 0) { minusOrTrashCan = ' &#x1F5D1; ' }
+            let noLeft = '';
+            if (stock == 0) { minusOrTrashCan = ' &#x1F5D1; '; noLeft = 'noLeft';};
     
-            allTab.innerHTML += '<div id="' + value[0] + '" class="itemDiv">' +
+            allTab.innerHTML += '<div id="' + value[0] + '" class="itemDiv ' + noLeft + '">' +
             '<span id="edit_' + value[0] + '" class="goesLeft">' + symbol + ' ' + capitalizeFirst(value[1]) + '</span>' +
             '<span class="goesRight">' + monthFrosen + ' ' +
             '<span class="' + bgColourClass + '"> ' + months + ' mdr </span>  ' +
@@ -241,7 +260,7 @@ function changeMonthButtonHasBeenClicked(event) {
 }
 
 
-function allTabHasBeenClicked(event) {
+function tabHasBeenClicked(event) {
     let clickedID = event.target.id;
     
     if (clickedID.slice(0, 5) == 'minus') {
@@ -254,15 +273,19 @@ function allTabHasBeenClicked(event) {
         } else if (curItemObj.number == 1) {
             curItemObj.number = 0;
             updateRelevantObject(myID, curItemObj);
-            document.getElementById(myID).style.color = 'rgba(40, 90, 240, 0.35)';
+            document.getElementById(myID).classList.add('noLeft');
             document.getElementById('minus_' + myID).textContent = ' \u{1F5D1} ';  // Trash can
             document.getElementById('stock_' + myID).textContent = curItemObj.number;
         } else if (curItemObj.number == 0) {
             curItemObj.showInAllTab = false;
-            document.getElementById(myID).style.color = '';
+            document.getElementById(myID).classList.remove('noLeft');
             document.getElementById('minus_' + myID).textContent = ' \u{2796} ';  // Minus
             updateRelevantObject(myID, curItemObj);
-            fillAllTab();
+            if (event.currentTarget.id === 'typeTab') {  // Necessary as each clear the other in order to avoid ID collisions
+                fillTypeTab();
+            } else {
+                fillAllTab();
+            }
         }
     } else if (clickedID.slice(0, 4) == 'plus') {
         myID = clickedID.slice(5);  // Remove 'plus_'
@@ -358,7 +381,7 @@ function confirmButtonHasBeenClicked() {
 
 function incrementNumberOfItemsCounter() {
     if (curItemObj.number == 0) {
-        document.getElementById(myID).style.color = '';
+        document.getElementById(myID).classList.remove('noLeft');
         document.getElementById('minus_' + myID).textContent = ' \u{2796} '  // Minus
     }
     curItemObj.number += 1;
