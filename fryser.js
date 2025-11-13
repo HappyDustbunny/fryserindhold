@@ -24,6 +24,7 @@ const typeTab = document.getElementById('typeTab');
 
 let localContent;
 let curItemObj;
+let numberOfShelves = 3;  // TODO: Set this the first time the PWA is run
 
 document.getElementById('type').addEventListener('click', typeButtonWasClicked);
 document.getElementById('all').addEventListener('click', allButtonWasClicked);
@@ -37,7 +38,9 @@ document.getElementById('addNew').addEventListener('click', addNewItem);
 document.getElementById('addItem').addEventListener('click', addItem);
 document.getElementById('closeButton').addEventListener('click', closeButtonClicked);
 document.getElementById('confirmButton').addEventListener('click', confirmButtonHasBeenClicked);
+document.getElementById('setUpConfirmButton').addEventListener('click', setUpConfirmButtonHasBeenClicked);
 document.getElementById('increment').addEventListener('click', incrementNumberOfItemsCounter);
+document.getElementById('numberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
 
 class itemObj {
     constructor(hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer, showInAllTab) {
@@ -56,10 +59,54 @@ class itemObj {
 function setUpFunction() {
     // // Get fixed content
     content = fixedContent;  // TODO: Hmm... Thinking needed here
+
+    if (!localStorage.numberOfShelves) {
+        askForNumberOfShelves();
+    } else {
+        allButtonWasClicked();
+        fillAllTab();
+        clearAddItemPage();
+    }
+    
+}
+
+
+function askForNumberOfShelves() {
+    document.getElementById('typeTab').style.display = 'none';
+    document.getElementById('allTab').style.display = 'none';
+    document.getElementById('setUpDiv').style.display = 'flex';
+
+    fillShelveDiv('numberOfShelvesDiv', 8);
+
+}
+
+
+function numberOfShelvesHasBeenClicked(event) {
+    let clickedNumber = event.target.id;
+    if (clickedNumber != 'numberOfShelvesDiv') {
+        document.querySelectorAll('.shelveNum').forEach(button => button.classList.remove('numberActive'));
+        document.getElementById(clickedNumber).classList.add('numberActive');
+        localStorage.numberOfShelves = Number(clickedNumber.slice(12));
+    }
+}
+
+
+function setUpConfirmButtonHasBeenClicked() {
+    document.getElementById('setUpDiv').style.display = 'none';
     
     allButtonWasClicked();
     fillAllTab();
     clearAddItemPage();
+}
+
+
+
+function fillShelveDiv(relevantDiv, numberOfShelves) {
+    currentdiv = document.getElementById(relevantDiv);
+    currentdiv.innerHTML = '';
+    for (let n = 1; n <= numberOfShelves; n++) {
+        currentdiv.innerHTML += '<button id="shelveNumber' + n + '" class="shelveNum">' + n + '</button>';
+    }
 }
 
 
@@ -341,6 +388,7 @@ function addItem() {
     document.getElementById('addItemPage').style.display = 'flex';
     document.getElementById('addItem').style.display = 'none';
     clearAddItemPage();
+    fillShelveDiv('changeShelveDiv', localStorage.numberOfShelves);
 }
     
 

@@ -69,7 +69,7 @@
     <div id="addItemPage">
         <p class="backgroundHeading1">Tilføj vare</p>
         <button id="closeButton">&times;</button>
-        <div id="inputDiv" class="backgroundDiv">
+        <div id="inputDiv" class="backgroundDiv centerDialog">
             <p class="backgroundHeading">Indhold</p>
             <div class="buttonDiv">
                 <div id="inputBoxDiv">
@@ -78,7 +78,7 @@
                 </div>
             </div>
         </div>
-        <div id="numberOfItems" class="backgroundDiv">
+        <div id="numberOfItems" class="backgroundDiv centerDialog">
             <p class="backgroundHeading">Antal</p>
             <div id="changeNumberDiv" class="buttonDiv">
                 <button id="numberMinus1">-1</button>
@@ -86,7 +86,11 @@
                 <button id="numberPlus1">+1</button>
             </div>
         </div>
-        <div id="type" class="backgroundDiv">
+        <div id="shelveNumber" class="backgroundDiv centerDialog">
+            <p class="backgroundHeading">Hylde &#x2263;</p>
+            <div id="changeShelveDiv" class="buttonDiv"></div>
+        </div>
+        <div id="type" class="backgroundDiv centerDialog">
             <p class="backgroundHeading">Type</p>
             <div id="typeButtonsDiv1">
                 <button id="breadType" class="foodType">&#x1F35E;</button>
@@ -101,7 +105,7 @@
                 <button id="whatEvsType" class="foodType">&#x1F937;</button>
             </div>
         </div>
-        <div id="keepsFor" class="backgroundDiv">
+        <div id="keepsFor" class="backgroundDiv centerDialog">
             <p class="backgroundHeading">Holdbarhed</p>
             <div id="changeMonthsDiv" class="buttonDiv">
                 <button id="minus3">-3</button>
@@ -111,16 +115,23 @@
                 <button id="plus3">+3</button>
             </div>
         </div>
-        <div id="shelveNumber" class="backgroundDiv">
-            <p class="backgroundHeading">Hylde &#x2263;</p>
-            <div id="changeShelveDiv" class="buttonDiv">
-                <button id="minus1shelve">-1</button>
-                <input id="keepsForText" type="text" disabled>
-                <button id="plus1shelve">+1</button>
-            </div>
-        </div>
-        <button id="confirmButton"> Bekræft </button>
+        <button id="confirmButton" class="confirmationButton"> Bekræft </button>
     </div>
     <button id="addItem">+</button>
+    <div id="setUpDiv" class="centerDialog">
+        <p class="backgroundHeading1">Velkommen</p>
+        <div id="introDiv" class="backgroundDiv centerDialog">
+            <p class="backgroundHeading">Introduktion</p>
+            <p class="textP"> Denne app kan hjælpe med at holde styr på indholdet af dit fryserskab. <br>
+                Du kan installere den ved at trykke på de tre prikker ved siden af der 
+                hvor du tilføjer tabs til din browser, og trykke på "Tilføj til hjemmeskærm" </p>
+            </div>
+        <div id="choseNumberOfShelves" class="backgroundDiv centerDialog">
+            <p class="backgroundHeading"> Antal hylder </p>
+            <p class="textP">Vælg antallet af hylder i dit fryserskab</p>
+            <div id="numberOfShelvesDiv"></div>
+        </div>
+        <button id="setUpConfirmButton" class="confirmationButton"> Bekræft </button>
+    </div>
 </body>
 </html>

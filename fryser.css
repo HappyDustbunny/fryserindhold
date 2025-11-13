@@ -49,7 +49,7 @@ summary::marker {
     opacity: 0.8;
 }
 
-#addItemPage {
+#addItemPage, #setUpDiv {
     display: none;
     flex-direction: column;
     gap: 0.5em;
@@ -57,7 +57,7 @@ summary::marker {
     position: absolute;
     top: 7vh;
     width: 86vw;
-    left: 7vw;
+    left: 8vw;
     border-radius: 30px;
     border: 1px #acbad4 solid;
     padding-bottom: 2vh;
@@ -82,11 +82,18 @@ summary::marker {
     justify-content: end;
 }
 
-#confirmButton {
+.confirmationButton {
     background-image: linear-gradient(#05b020, #0bfb31, #0bfb31, #0bfb31, #0bfb31, #05b020);
     width: 30vw;
     border-radius: 10px;
     align-self: center;
+}
+
+#changeShelveDiv, #numberOfShelvesDiv {
+    display: flex;
+    align-self: center;
+    width: inherit;
+    justify-content: space-around;
 }
 
 #inputBox {
@@ -95,7 +102,8 @@ summary::marker {
     border: none;
 }
 
-#inputDiv, #type, #numberOfItems, #keepsFor, #shelveNumber {
+/* #inputDiv, #type, #numberOfItems, #keepsFor, #shelveNumber, #introDiv, #setUpDiv, #choseNumberOfShelves  */
+.centerDialog {
     align-self: center;
     gap: 2vh;
 }
@@ -129,6 +137,10 @@ summary::marker {
 	border: 1px #acbad4 solid;
 	padding-top: 2vh;
 	padding-bottom: 2vh;
+}
+
+#setUpDiv {
+    display: none;
 }
 
 #typeButtonsDiv1, #typeButtonsDiv2 {
@@ -246,6 +258,16 @@ summary::marker {
     color: rgba(40, 90, 240, 0.35);
 }
 
+.shelveNum {  /* Needs to come before .numberActive */
+	background: #c4f1ff;
+    border-radius: 5px;
+}
+
+.numberActive {
+  border: 1px inset;
+  background: white;
+}
+
 .plus, .minus {
     border-color: rgb(241, 104, 104);
     border-radius: 7px;
@@ -257,4 +279,9 @@ summary::marker {
 .tabButton {
     width: 49%;
     border-radius: 15px 15px 0px 0px;
+}
+
+.textP {
+    padding-left: 1em;
+    padding-right: 1em;
 }
