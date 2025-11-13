@@ -139,8 +139,13 @@ summary::marker {
 	padding-bottom: 2vh;
 }
 
-#setUpDiv {
+#setUpDiv, #tabButtons {
     display: none;
+}
+
+#tabButtons {
+    display: flex;
+    justify-content: space-between;
 }
 
 #typeButtonsDiv1, #typeButtonsDiv2 {
@@ -261,6 +266,7 @@ summary::marker {
 .shelveNum {  /* Needs to come before .numberActive */
 	background: #c4f1ff;
     border-radius: 5px;
+    width: 6em;
 }
 
 .numberActive {
@@ -277,8 +283,13 @@ summary::marker {
 }
 
 .tabButton {
-    width: 49%;
+    width: 33vw;
     border-radius: 15px 15px 0px 0px;
+    background: rgba(211, 211, 211, 0.30);
+}
+
+.tabActive {
+    background: rgba(153, 222, 238, 0.77);
 }
 
 .textP {

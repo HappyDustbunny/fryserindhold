@@ -28,8 +28,10 @@ let numberOfShelves = 3;  // TODO: Set this the first time the PWA is run
 
 document.getElementById('type').addEventListener('click', typeButtonWasClicked);
 document.getElementById('all').addEventListener('click', allButtonWasClicked);
-document.getElementById('allTab').addEventListener('click', function(event) { tabHasBeenClicked(event); }, true);
+document.getElementById('oldest').addEventListener('click', oldestButtonWasClicked);
 document.getElementById('typeTab').addEventListener('click', function(event) { tabHasBeenClicked(event); }, true);
+document.getElementById('allTab').addEventListener('click', function(event) { tabHasBeenClicked(event); }, true);
+document.getElementById('oldestTab').addEventListener('click', function(event) { tabHasBeenClicked(event); }, true);
 document.getElementById('typeButtonsDiv1').addEventListener('click', function(event) { typeHasBeenClicked(event); }, true);
 document.getElementById('typeButtonsDiv2').addEventListener('click', function(event) { typeHasBeenClicked(event); }, true);
 document.getElementById('changeNumberDiv').addEventListener('click', function(event) {changeNumberButtonHasBeenClicked(event); }, true);
@@ -41,6 +43,7 @@ document.getElementById('confirmButton').addEventListener('click', confirmButton
 document.getElementById('setUpConfirmButton').addEventListener('click', setUpConfirmButtonHasBeenClicked);
 document.getElementById('increment').addEventListener('click', incrementNumberOfItemsCounter);
 document.getElementById('numberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
+document.getElementById('changeShelveDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
 
 class itemObj {
     constructor(hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer, showInAllTab) {
@@ -83,10 +86,14 @@ function askForNumberOfShelves() {
 
 function numberOfShelvesHasBeenClicked(event) {
     let clickedNumber = event.target.id;
-    if (clickedNumber != 'numberOfShelvesDiv') {
+    if (clickedNumber != 'numberOfShelvesDiv' || clickedNumber != 'changeShelveDiv' ) {
         document.querySelectorAll('.shelveNum').forEach(button => button.classList.remove('numberActive'));
         document.getElementById(clickedNumber).classList.add('numberActive');
-        localStorage.numberOfShelves = Number(clickedNumber.slice(12));
+        if (localStorage.numberOfShelves) {
+            curItemObj.shelf = Number(clickedNumber.slice(12));
+        } else {
+            localStorage.numberOfShelves = Number(clickedNumber.slice(12));
+        }
     }
 }
 
@@ -112,9 +119,13 @@ function fillShelveDiv(relevantDiv, numberOfShelves) {
 
 function typeButtonWasClicked() {
     document.getElementById('typeTab').style.display = 'block';
+    document.getElementById('type').classList.add('tabActive');
     document.getElementById('allTab').style.display = 'none';
-    document.getElementById('type').style.background = 'rgba(153, 222, 238, 0.77)';
-    document.getElementById('all').style.background = 'rgba(211, 211, 211, 0.30)';
+    document.getElementById('all').classList.remove('tabActive');
+    document.getElementById('oldestTab').style.display = 'none';
+    document.getElementById('oldest').classList.remove('tabActive');
+    // document.getElementById('type').style.background = 'rgba(153, 222, 238, 0.77)';
+    // document.getElementById('all').style.background = 'rgba(211, 211, 211, 0.30)';
     document.getElementById('plusToolTip').style.display = 'none';
     fillTypeTab();
 }
@@ -122,10 +133,25 @@ function typeButtonWasClicked() {
 
 function allButtonWasClicked() {
     document.getElementById('typeTab').style.display = 'none';
+    document.getElementById('type').classList.remove('tabActive');
     document.getElementById('allTab').style.display = 'block';
-    document.getElementById('type').style.background = 'rgba(211, 211, 211, 0.30)';
-    document.getElementById('all').style.background = 'rgba(153, 222, 238, 0.77)';
+    document.getElementById('all').classList.add('tabActive');
+    document.getElementById('oldestTab').style.display = 'none';
+    document.getElementById('oldest').classList.remove('tabActive');
+    // document.getElementById('type').style.background = 'rgba(211, 211, 211, 0.30)';
+    // document.getElementById('all').style.background = 'rgba(153, 222, 238, 0.77)';
     fillAllTab();
+}
+
+function oldestButtonWasClicked() {
+    document.getElementById('typeTab').style.display = 'none';
+    document.getElementById('type').classList.remove('tabActive');
+    document.getElementById('allTab').style.display = 'none';
+    document.getElementById('all').classList.remove('tabActive');
+    document.getElementById('oldestTab').style.display = 'block';
+    document.getElementById('oldest').classList.add('tabActive');
+    
+    fillOldestTab();
 }
 
 
@@ -140,16 +166,17 @@ function makeHash(string) {  // Use for making unique hash from name
 
 
 function fillTypeTab() {
-    allTab.innerHTML = '';  // Avoid HTML-elements with same ID
-
-    let now = new Date();
-    let bgColourClass = 'bglightgreen';
-    
     for (const value of symbols.keys()) {  // Scrub categories in Type tab
         let currentElement = document.getElementById(value);
         currentElement.nextElementSibling.innerHTML = '';
         currentElement.style.backgroundColor = 'rgba(84, 255, 255, 0.21)';  // Restore colour for categories that have recieved content since last repaint
     }
+    
+    allTab.innerHTML = '';  // Avoid HTML-elements with same ID
+    oldestTab.innerHTML = '';
+
+    let now = new Date();
+    let bgColourClass = 'bglightgreen';
 
     content.forEach(function(value) {
         if (value[7]) {
@@ -189,17 +216,19 @@ function fillTypeTab() {
 
 
 function fillAllTab() {
-    for (const value of symbols.keys()) {  // Remove content in order to avoid HTML-elements with same ID
+    for (const value of symbols.keys()) {  // Remove content from Type-tab in order to avoid HTML-elements with same ID
         let currentElement = document.getElementById(value);
         currentElement.nextElementSibling.innerHTML = '';
         currentElement.style.backgroundColor = 'rgba(84, 255, 255, 0.21)';  // Restore colour for categories that have recieved content since last repaint
     }
+    
+    allTab.innerHTML = '';
+    oldestTab.innerHTML = '';
 
     let now = new Date();
     let bgColourClass = 'bglightgreen';
     let sortedContent = content;
 
-    allTab.innerHTML = '';
 
     // let sortedContent = new Map([...content].sort());
     sortedContent.sort((a, b) => 
@@ -232,6 +261,52 @@ function fillAllTab() {
             bgColourClass = 'bglightgreen';
         }
     });
+}
+
+
+function fillOldestTab() {
+    for (const value of symbols.keys()) {  // Remove content from Type-tab in order to avoid HTML-elements with same ID
+        let currentElement = document.getElementById(value);
+        currentElement.nextElementSibling.innerHTML = '';
+        currentElement.style.backgroundColor = 'rgba(84, 255, 255, 0.21)';  // Restore colour for categories that have recieved content since last repaint
+    }
+
+    allTab.innerHTML = '';
+    oldestTab.innerHTML = '';
+
+    let now = new Date();
+    let bgColourClass = 'bglightgreen';
+    let sortedContent = content;
+
+    // TODO: Sort after what spoils first
+
+    sortedContent.forEach(function(value) {
+        if (value[7]) {
+            let symbol = symbols.get(value[3]);  // Get the symbol maching the type of food
+            let minusOrTrashCan = ' &#10134; ';
+            let stock = value[2];
+            let monthFrosen = monthNames[new Date(value[6]).getMonth()];
+            let daysLeft = value[5] * 30 - (now.getTime() - value[6])/(3600000*24);
+            let months = Math.round(value[5] - (now.getTime() - value[6])/(3600000*24*30));
+            if (months < 1) {bgColourClass = 'yellow'};
+            if (daysLeft < 15) {bgColourClass = 'bgred'};
+            let noLeft = '';
+            if (stock == 0) { minusOrTrashCan = ' &#x1F5D1; '; noLeft = 'noLeft';};
+    
+            oldestTab.innerHTML += '<div id="' + value[0] + '" class="itemDiv ' + noLeft + '">' +
+            '<span id="edit_' + value[0] + '" class="goesLeft">' + symbol + ' ' + capitalizeFirst(value[1]) + '</span>' +
+            '<span class="goesRight">' + monthFrosen + ' ' +
+            '<span class="' + bgColourClass + '"> ' + months + ' mdr </span>  ' +
+            '<span> &#x2263;' + value[4] + '</span> ' + // Four bars symbolizing shelf number
+            '<button id="minus_' + value[0] + '" class="minus"> ' + minusOrTrashCan + ' </button> ' + 
+            '<span id="stock_' + value[0] + '">' + stock + '</span> ' + 
+            '<button id="plus_' + value[0] + '" class="plus"> &#10133; </button> </span> </div>'
+            
+            bgColourClass = 'bglightgreen';
+        }
+    });
+
+
 }
 
 
@@ -328,11 +403,22 @@ function tabHasBeenClicked(event) {
             document.getElementById(myID).classList.remove('noLeft');
             document.getElementById('minus_' + myID).textContent = ' \u{2796} ';  // Minus
             updateRelevantObject(myID, curItemObj);
-            if (event.currentTarget.id === 'typeTab') {  // Necessary as each clear the other in order to avoid ID collisions
-                fillTypeTab();
-            } else {
-                fillAllTab();
+            switch(event.currentTarget.id) {
+                case 'typeTab':
+                    fillTypeTab();
+                    break;
+                case 'allTab':
+                    fillAllTab();
+                    break;
+                case 'oldestTab()':
+                    fillOldestTab();
+                    break;
             }
+            // if (event.currentTarget.id === 'typeTab') {  // Necessary as each clear the other in order to avoid ID collisions
+            //     fillTypeTab();
+            // } else {
+            //     fillAllTab();
+            // }
         }
     } else if (clickedID.slice(0, 4) == 'plus') {
         myID = clickedID.slice(5);  // Remove 'plus_'
@@ -364,13 +450,14 @@ function tabHasBeenClicked(event) {
         curItemObj = findRelevantObject(myID);
         
         document.getElementById('addItemPage').style.display = 'flex';
+        fillShelveDiv('changeShelveDiv', localStorage.numberOfShelves);
         document.getElementById('addItem').style.display = 'none'; 
         
         document.getElementById('inputBox').value = capitalizeFirst(curItemObj.itemName);
         document.getElementById('inputBoxMonth').value = monthNames[new Date().getMonth()] + ' ';
         
         shaddowFoodTypes();
-        document.getElementById(curItemObj.type).classList.remove('shaddowed');
+        document.getElementById(curItemObj.type + 'Type').classList.remove('shaddowed');
         
         document.getElementById('numberOfItemsInput').value = curItemObj.number;
         if (curItemObj.number < 2) { document.getElementById('numberMinus1').disabled = true; }
