@@ -3,6 +3,8 @@ button {
 }
 
 h1 {
+    margin: 0px;
+    flex: 1;
     text-align: center;
 }
 
@@ -70,6 +72,15 @@ summary::marker {
     background-color: rgba(153, 222, 238, 0.77);
 }
 
+#burger {
+    font-size: 1.6em;
+    color: rgb(170, 170, 170);
+    writing-mode: vertical-rl;
+    border: inherit;
+    background: inherit;
+    width: 7vw;
+}
+
 #closeButton {
     position: relative;
     top: -5vh;
@@ -94,6 +105,12 @@ summary::marker {
     align-self: center;
     width: inherit;
     justify-content: space-around;
+}
+
+#headingContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2vh;
 }
 
 #inputBox {
@@ -141,6 +158,10 @@ summary::marker {
 
 #setUpDiv, #tabButtons {
     display: none;
+}
+
+#spacerDiv {
+    width: 7vw;
 }
 
 #tabButtons {
