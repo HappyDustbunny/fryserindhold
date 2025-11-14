@@ -1,10 +1,11 @@
 // const content = new Map();
 const fixedContent = [
-    //[hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer]
-    [3036860, 'brød', 1, 'bread', 1, 5, 1761217795422, true],
+    //[hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer, showItem]
+    [3036860, 'brød', 1, 'bread', 1, 3, 1762349662007, true],
+    // [3036860, 'brød', 1, 'bread', 1, 5, 1761217795422, true],
     [254164556, 'kylling', 2, 'fowl', 2, 4, 1761217795422, true],
-    [1677053109, 'grønne bønner', 1, 'veggie', 2, 4, 1743717600000, true],
-    [11802677, "is", 1, "cake", 1, 3, 1762349662007, true],
+    [1677053109, 'grønne bønner', 1, 'veggie', 2, 8, 1743617600000, true],
+    [11802677, "is", 1, "cake", 1, 1, 1762349662007, true],
     [1180267467, "kage", 0, "cake", 1, 3, 1762349662007, true],
     [11867467, "okse", 1, "meat", 1, 3, 1762349662007, true]
 ]
@@ -185,17 +186,24 @@ function fillTypeTab() {
             let minusOrTrashCan = ' &#10134; ';
             let stock = value[2];
             let monthFrosen = monthNames[new Date(value[6]).getMonth()];
-            let daysLeft = value[5] * 30 - (now.getTime() - value[6])/(3600000*24);
+            let daysLeft = Math.round(value[5] * 30 - (now.getTime() - value[6])/(3600000*24));
             let months = Math.round(value[5] - (now.getTime() - value[6])/(3600000*24*30));
-            if (months < 1) {bgColourClass = 'yellow'};
-            if (daysLeft < 15) {bgColourClass = 'bgred'};
+            let timeUnit = 'mdr';
+            if (months <= 1) {
+                bgColourClass = 'bgYellow';
+                months = daysLeft;
+                if (daysLeft < 15) { bgColourClass = 'bgred' };
+                timeUnit = 'dg';
+            }
+            // if (months < 1) {bgColourClass = 'yellow'};
+            // if (daysLeft < 15) {bgColourClass = 'bgred'};
             let noLeft = '';
             if (stock == 0) { minusOrTrashCan = ' &#x1F5D1; '; noLeft = 'noLeft'};
     
             currentElement.nextElementSibling.innerHTML += '<div id="' + value[0] + '" class="itemDiv ' + noLeft + '">' +
             '<span id="edit_' + value[0] + '" class="goesLeft">' + ' ' + capitalizeFirst(value[1]) + '</span>' +
             '<span class="goesRight">' + monthFrosen + ' ' +
-            '<span class="' + bgColourClass + '"> ' + months + ' mdr </span>  ' +
+            '<span class="' + bgColourClass + '"> ' + months + ' ' + timeUnit + ' </span>  ' +
             '<span> &#x2263;' + value[4] + '</span> ' + // Four bars symbolizing shelf number
             '<button id="minus_' + value[0] + '" class="minus"> ' + minusOrTrashCan + ' </button> ' + 
             '<span id="stock_' + value[0] + '">' + stock + '</span> ' + 
@@ -242,17 +250,24 @@ function fillAllTab() {
             let minusOrTrashCan = ' &#10134; ';
             let stock = value[2];
             let monthFrosen = monthNames[new Date(value[6]).getMonth()];
-            let daysLeft = value[5] * 30 - (now.getTime() - value[6])/(3600000*24);
+            let daysLeft = Math.round(value[5] * 30 - (now.getTime() - value[6])/(3600000*24));
             let months = Math.round(value[5] - (now.getTime() - value[6])/(3600000*24*30));
-            if (months < 1) {bgColourClass = 'yellow'};
-            if (daysLeft < 15) {bgColourClass = 'bgred'};
+            let timeUnit = 'mdr';
+            if (months <= 1) {
+                bgColourClass = 'bgYellow';
+                months = daysLeft;
+                if (daysLeft < 15) { bgColourClass = 'bgred' };
+                timeUnit = 'dg';
+            }
+            // if (months < 1) {bgColourClass = 'yellow'};
+            // if (daysLeft < 15) {bgColourClass = 'bgred'};
             let noLeft = '';
             if (stock == 0) { minusOrTrashCan = ' &#x1F5D1; '; noLeft = 'noLeft';};
     
             allTab.innerHTML += '<div id="' + value[0] + '" class="itemDiv ' + noLeft + '">' +
             '<span id="edit_' + value[0] + '" class="goesLeft">' + symbol + ' ' + capitalizeFirst(value[1]) + '</span>' +
             '<span class="goesRight">' + monthFrosen + ' ' +
-            '<span class="' + bgColourClass + '"> ' + months + ' mdr </span>  ' +
+            '<span class="' + bgColourClass + '"> ' + months + ' ' + timeUnit + ' </span>  ' +
             '<span> &#x2263;' + value[4] + '</span> ' + // Four bars symbolizing shelf number
             '<button id="minus_' + value[0] + '" class="minus"> ' + minusOrTrashCan + ' </button> ' + 
             '<span id="stock_' + value[0] + '">' + stock + '</span> ' + 
@@ -276,9 +291,13 @@ function fillOldestTab() {
 
     let now = new Date();
     let bgColourClass = 'bglightgreen';
-    let sortedContent = content;
-
-    // TODO: Sort after what spoils first
+    
+    // Sort after what spoils first
+    let sortedContent = content.sort(function(a, b) {
+        return ((Math.round(a[5] - (now.getTime() - a[6])/(3600000*24*30))) 
+        - (Math.round(b[5] - (now.getTime() - b[6])/(3600000*24*30))) 
+        || a[1] - b[1])  // ...And then alphabetically for equally old food
+    });
 
     sortedContent.forEach(function(value) {
         if (value[7]) {
@@ -286,17 +305,22 @@ function fillOldestTab() {
             let minusOrTrashCan = ' &#10134; ';
             let stock = value[2];
             let monthFrosen = monthNames[new Date(value[6]).getMonth()];
-            let daysLeft = value[5] * 30 - (now.getTime() - value[6])/(3600000*24);
+            let daysLeft = Math.round(value[5] * 30 - (now.getTime() - value[6])/(3600000*24));
             let months = Math.round(value[5] - (now.getTime() - value[6])/(3600000*24*30));
-            if (months < 1) {bgColourClass = 'yellow'};
-            if (daysLeft < 15) {bgColourClass = 'bgred'};
+            let timeUnit = 'mdr';
+            if (months <= 1) {
+                bgColourClass = 'bgYellow';
+                months = daysLeft;
+                if (daysLeft < 15) { bgColourClass = 'bgred' };
+                timeUnit = 'dg';
+            }
             let noLeft = '';
             if (stock == 0) { minusOrTrashCan = ' &#x1F5D1; '; noLeft = 'noLeft';};
     
             oldestTab.innerHTML += '<div id="' + value[0] + '" class="itemDiv ' + noLeft + '">' +
             '<span id="edit_' + value[0] + '" class="goesLeft">' + symbol + ' ' + capitalizeFirst(value[1]) + '</span>' +
             '<span class="goesRight">' + monthFrosen + ' ' +
-            '<span class="' + bgColourClass + '"> ' + months + ' mdr </span>  ' +
+            '<span class="' + bgColourClass + '"> ' + months + ' ' + timeUnit + ' </span>  ' +
             '<span> &#x2263;' + value[4] + '</span> ' + // Four bars symbolizing shelf number
             '<button id="minus_' + value[0] + '" class="minus"> ' + minusOrTrashCan + ' </button> ' + 
             '<span id="stock_' + value[0] + '">' + stock + '</span> ' + 
@@ -410,7 +434,7 @@ function tabHasBeenClicked(event) {
                 case 'allTab':
                     fillAllTab();
                     break;
-                case 'oldestTab()':
+                case 'oldestTab':
                     fillOldestTab();
                     break;
             }

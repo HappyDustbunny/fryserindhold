@@ -212,6 +212,13 @@ summary::marker {
     text-align: end;
 }
 
+.bgYellow {
+    background-color: yellow;
+    display: inline-block;
+    width: 15vw;
+    text-align: end;
+}
+
 .buttonDiv {
 	display: flex;
 	gap: 0.3em;
