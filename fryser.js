@@ -7,7 +7,8 @@ const fixedContent = [
     [1677053109, 'grønne bønner', 1, 'veggie', 2, 8, 1743617600000, true],
     [11802677, "is", 1, "cake", 1, 1, 1762349662007, true],
     [1180267467, "kage", 0, "cake", 1, 3, 1762349662007, true],
-    [11867467, "okse", 1, "meat", 1, 3, 1762349662007, true]
+    [11867467, "okse", 1, "meat", 1, 3, 1762349662007, true],
+    [1186743467, "bao", 1, "meal", 1, 3, 1762349772007, true]
 ]
 const symbols = new Map([
     ['bread', '&#x1F35E;'],
@@ -17,7 +18,7 @@ const symbols = new Map([
     ['fowl', '&#x1F414;'],
     ['meat', '&#x1F969;'],
     ['whatEvs', '&#x1F937'],
-    ['noLabel', '&#8195']
+    ['meal', '&#x1F37D;&#xFE0F;']
 ]);
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
 const allTab = document.getElementById('allTab');
@@ -27,6 +28,11 @@ let localContent;
 let curItemObj;
 let numberOfShelves = 3;  // TODO: Set this the first time the PWA is run
 
+window.addEventListener('click', function(event) {closeMenuByClickingAnywhere(event); }, true);
+
+document.getElementById('burger').addEventListener('click', showMenu);
+// document.getElementById('changeNumberOfShelvesButton').addEventListener('click', changeNumberOfShelvesButtonHasBeenClicked);
+document.getElementById('menuDiv').addEventListener('click', function(event) {menuWasClicked(event); }, true);
 document.getElementById('type').addEventListener('click', typeButtonWasClicked);
 document.getElementById('all').addEventListener('click', allButtonWasClicked);
 document.getElementById('oldest').addEventListener('click', oldestButtonWasClicked);
@@ -45,6 +51,84 @@ document.getElementById('setUpConfirmButton').addEventListener('click', setUpCon
 document.getElementById('increment').addEventListener('click', incrementNumberOfItemsCounter);
 document.getElementById('numberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
 document.getElementById('changeShelveDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
+
+
+function showMenu() {
+    setTimeout(() => {
+        document.getElementById('menuDiv').style.display = 'flex';
+    }, 10);
+}
+
+
+function closeMenu() {
+    document.getElementById('menuDiv').style.display = 'none';
+}
+
+
+function closeMenuByClickingAnywhere(event) {
+    if (!document.getElementById('menuDiv').contains(event.target)) {
+        closeMenu();
+    }
+}
+
+
+function menuWasClicked(event) {
+    let clickedID = event.target.id;
+    
+    document.getElementById(clickedID).classList.add('buttonPressed');
+    setTimeout(() => {
+       document.getElementById(clickedID).classList.remove('buttonPressed');
+       closeMenu();
+       handleMenu(clickedID); 
+    }, 200);
+}
+
+
+function handleMenu(clickedID) {
+    switch(clickedID) {
+        case 'changeNumberOfShelvesButton':
+            changeNumberOfShelves();
+            break;
+        case 'backUpButton':
+            backUp();
+            break;
+        case 'restoreBackUpButton':
+            restoreBackUp();
+            break;
+        case 'deleteAllButton':
+            deleteAll();
+            break;
+    }
+}
+
+
+function changeNumberOfShelves() {
+    console.log('changeNumberOfShelves');
+}
+
+
+function backUp() {
+    console.log('backUp');
+}
+
+
+function restoreBackUp() {
+    console.log('restoreBackUp');
+}
+
+
+function deleteAll() {
+    console.log('deleteAll');
+}
+// function changeNumberOfShelvesButtonHasBeenClicked(){
+//     document.getElementById('changeNumberOfShelvesButton').classList.add('buttonPressed');
+//     setTimeout(() => {
+//         document.getElementById('changeNumberOfShelvesButton').classList.remove('buttonPressed');
+//         closeMenu();
+//         console.log('rap');
+//     }, 200);
+// }
+
 
 class itemObj {
     constructor(hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer, showInAllTab) {

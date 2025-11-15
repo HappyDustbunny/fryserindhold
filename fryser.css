@@ -51,7 +51,7 @@ summary::marker {
     opacity: 0.8;
 }
 
-#addItemPage, #setUpDiv {
+#addItemPage, #setUpDiv, #menuDiv {
     display: none;
     flex-direction: column;
     gap: 0.5em;
@@ -139,6 +139,15 @@ summary::marker {
 
 #keepsForText {
     width: 50px;
+}
+
+#menuDiv {
+    top: 3vh;
+    left: 1vh;
+    width: 64vw;
+    padding: 1vh;
+    border-top-left-radius: 0px;
+    background: rgb(242, 242, 242);
 }
 
 #plusToolTip {
@@ -247,6 +256,11 @@ summary::marker {
     font-size: 4vw;
 }
 
+.buttonPressed {
+    border: inset;
+    background-color: #c1c1c1;
+}
+
 .dateColour {
   background-color: lightgreen;
   margin-right: 5px;
@@ -285,6 +299,13 @@ summary::marker {
       display: flex;
       justify-content: space-between;
       align-items: center;
+}
+
+.menuButton {
+    width: 60vw;
+    align-self: center;
+    background: rgba(194, 235, 244, 0.77);
+    border-radius: 10px;
 }
 
 .noLeft {
