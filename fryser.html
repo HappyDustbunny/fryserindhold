@@ -20,6 +20,7 @@
 
         <div id="menuDiv" class="menuClass">
             <button id="changeNumberOfShelvesButton" class="menuButton"> Ret antal hylder </button>
+            <button id="veganButton" class="menuButton"> Vegansk eller ej </button>
             <button id="backUpButton" class="menuButton"> Tag backup </button>
             <button id="restoreBackUpButton" class="menuButton"> Genskab backup </button>
             <button id="deleteAllButton" class="menuButton"> Slet alt </button>
@@ -113,13 +114,13 @@
                 <button id="veggieType" class="foodType"> &#x1F346; </button>
                 <button id="cakeType" class="foodType"> &#x1F382; </button>
                 <button id="mealType" class="foodType">	&#x1F37D;&#xFE0F; </button>
-            </div>
-            <div id="typeButtonsDiv2">
-                <button id="fishType" class="foodType">&#x1F41F;</button>
-                <button id="fowlType" class="foodType">&#x1F414;</button>
-                <button id="meatType" class="foodType">&#x1F969;</button>
+                <button id="fishType" class="foodType nonVegansk">&#x1F41F;</button>
+                <button id="fowlType" class="foodType nonVegansk">&#x1F414;</button>
+                <button id="meatType" class="foodType nonVegansk">&#x1F969;</button>
                 <button id="whatEvsType" class="foodType">&#x1F937;</button>
             </div>
+            <!-- <div id="typeButtonsDiv2">
+            </div> -->
         </div>
         <div id="keepsFor" class="backgroundDiv centerDialog">
             <p class="backgroundHeading">Holdbarhed</p>
@@ -159,6 +160,18 @@
             BEMÆRK: Hvis du retter til færre hylder, vil alle varer der nu er 
             tilknyttet et højere hyldenummer blive vist som hylde 1</p>
             <div id="newNumberOfShelvesDiv"></div>
+        </div>
+        <button id="changeShelvesConfirmButton" class="confirmationButton"> Bekræft </button>
+    </div>
+
+    <div id="choseVeganOrNot" class="centerDialog">
+        <p class="backgroundHeading1">Vegansk eller ej?</p>
+        <div id="choseNumberOfShelves" class="backgroundDiv centerDialog">
+            <!-- <p class="backgroundHeading"> Vælg hvilke kategorier der skal vises </p> -->
+            <p> Vælg hvilke kategorier der skal vises </p>
+            <button>Vegansk</button>
+            <button>Alle kategorier</button>
+            <!-- <div id="newNumberOfShelvesDiv"></div> -->
         </div>
         <button id="changeShelvesConfirmButton" class="confirmationButton"> Bekræft </button>
     </div>

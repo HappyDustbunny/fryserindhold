@@ -41,7 +41,7 @@ document.getElementById('typeTab').addEventListener('click', function(event) { t
 document.getElementById('allTab').addEventListener('click', function(event) { tabHasBeenClicked(event); }, true);
 document.getElementById('oldestTab').addEventListener('click', function(event) { tabHasBeenClicked(event); }, true);
 document.getElementById('typeButtonsDiv1').addEventListener('click', function(event) { typeHasBeenClicked(event); }, true);
-document.getElementById('typeButtonsDiv2').addEventListener('click', function(event) { typeHasBeenClicked(event); }, true);
+// document.getElementById('typeButtonsDiv2').addEventListener('click', function(event) { typeHasBeenClicked(event); }, true);
 document.getElementById('changeNumberDiv').addEventListener('click', function(event) {changeNumberButtonHasBeenClicked(event); }, true);
 document.getElementById('changeMonthsDiv').addEventListener('click', function(event) { changeMonthButtonHasBeenClicked(event); }, true);
 document.getElementById('addNew').addEventListener('click', addNewItem);
@@ -90,6 +90,9 @@ function handleMenu(clickedID) {
     switch(clickedID) {
         case 'changeNumberOfShelvesButton':
             changeNumberOfShelves();
+            break;
+        case 'veganButton':
+            document.getElementById('choseVeganOrNot').style.display = 'flex';  // TODO: Make buttons in choseVeganOrNot add or remove class nonVegan apporpriately
             break;
         case 'backUpButton':
             backUp();
@@ -467,7 +470,8 @@ function updateRelevantObject(myID, relevantObject) {
 
 function typeHasBeenClicked(event) {
     let clickedType = event.target.id;
-    if (clickedType != 'typeButtonsDiv1' && clickedType != 'typeButtonsDiv2') {
+    if (clickedType != 'typeButtonsDiv1') {
+    // if (clickedType != 'typeButtonsDiv1' && clickedType != 'typeButtonsDiv2') {
         unPressFoodTypes();
         document.getElementById(clickedType).classList.add('foodTypeActive');
         curItemObj.type = clickedType.replace('Type', '');
