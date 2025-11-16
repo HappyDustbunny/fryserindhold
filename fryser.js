@@ -1,7 +1,7 @@
 // const content = new Map();
 const fixedContent = [
     //[hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer, showItem]
-    [3036860, 'brød', 1, 'bread', 1, 3, 1762349662007, true],
+    [3036860, 'brød', 1, 'bread', 4, 3, 1762349662007, true],
     // [3036860, 'brød', 1, 'bread', 1, 5, 1761217795422, true],
     [254164556, 'kylling', 2, 'fowl', 2, 4, 1761217795422, true],
     [1677053109, 'grønne bønner', 1, 'veggie', 2, 8, 1743617600000, true],
@@ -26,7 +26,8 @@ const typeTab = document.getElementById('typeTab');
 
 let localContent;
 let curItemObj;
-let numberOfShelves = 3;  // TODO: Set this the first time the PWA is run
+let numberOfShelves;
+let chosenShelf;
 
 window.addEventListener('click', function(event) {closeMenuByClickingAnywhere(event); }, true);
 
@@ -48,9 +49,10 @@ document.getElementById('addItem').addEventListener('click', addItem);
 document.getElementById('closeButton').addEventListener('click', closeButtonClicked);
 document.getElementById('confirmButton').addEventListener('click', confirmButtonHasBeenClicked);
 document.getElementById('setUpConfirmButton').addEventListener('click', setUpConfirmButtonHasBeenClicked);
+document.getElementById('changeShelvesConfirmButton').addEventListener('click', changeShelvesConfirmButtonHasBeenClicked);
 document.getElementById('increment').addEventListener('click', incrementNumberOfItemsCounter);
 document.getElementById('numberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
-document.getElementById('changeShelveDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
+document.getElementById('newNumberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
 
 
 function showMenu() {
@@ -103,7 +105,11 @@ function handleMenu(clickedID) {
 
 
 function changeNumberOfShelves() {
-    console.log('changeNumberOfShelves');
+    document.getElementById('changeShelvesDiv').style.display = 'flex';
+    fillShelveDiv('newNumberOfShelvesDiv', 8);
+
+    // Highlight current number of shelves
+    document.getElementById('shelveNumber' + localStorage.numberOfShelves).classList.add('numberActive');
 }
 
 
@@ -170,25 +176,44 @@ function askForNumberOfShelves() {
 
 
 function numberOfShelvesHasBeenClicked(event) {
-    let clickedNumber = event.target.id;
-    if (clickedNumber != 'numberOfShelvesDiv' || clickedNumber != 'changeShelveDiv' ) {
+    let clickedNumberID = event.target.id;
+    if (clickedNumberID != 'numberOfShelvesDiv' || clickedNumberID != 'changeShelveDiv' ) {
+        chosenShelf = Number(clickedNumberID.slice(12));
         document.querySelectorAll('.shelveNum').forEach(button => button.classList.remove('numberActive'));
-        document.getElementById(clickedNumber).classList.add('numberActive');
-        if (localStorage.numberOfShelves) {
-            curItemObj.shelf = Number(clickedNumber.slice(12));
-        } else {
-            localStorage.numberOfShelves = Number(clickedNumber.slice(12));
-        }
+        document.getElementById(clickedNumberID).classList.add('numberActive');
     }
 }
 
 
 function setUpConfirmButtonHasBeenClicked() {
     document.getElementById('setUpDiv').style.display = 'none';
+    localStorage.numberOfShelves = chosenShelf;
+
+    document.getElementById('numberOfShelvesDiv').innerHTML = ''; // Remove shelve-number buttons to avoid id-clashes
     
     allButtonWasClicked();
     fillAllTab();
     clearAddItemPage();
+}
+
+
+function changeShelvesConfirmButtonHasBeenClicked() {
+    document.getElementById('changeShelvesDiv').style.display = 'none';
+
+    if (chosenShelf < localStorage.numberOfShelves) {
+        content.forEach(function(value) {
+            if (chosenShelf < value[4]) { value[4] = 1 }  // Move all shelf content to lowest shelf for the items on higher shelfnumber than the new shelf number
+        }); 
+    }
+
+    localStorage.numberOfShelves = chosenShelf;
+    
+    document.getElementById('newNumberOfShelvesDiv').innerHTML = ''; // Remove shelve-number buttons to avoid id-clashes
+    
+    allButtonWasClicked();
+    fillAllTab();
+    clearAddItemPage();
+
 }
 
 

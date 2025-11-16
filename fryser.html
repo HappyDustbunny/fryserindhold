@@ -134,6 +134,7 @@
         <button id="confirmButton" class="confirmationButton"> Bekræft </button>
     </div>
     <button id="addItem">+</button>
+
     <div id="setUpDiv" class="centerDialog">
         <p class="backgroundHeading1">Velkommen</p>
         <div id="introDiv" class="backgroundDiv centerDialog">
@@ -141,13 +142,25 @@
             <p class="textP"> Denne app kan hjælpe med at holde styr på indholdet af dit fryserskab. <br>
                 Du kan installere den ved at trykke på de tre prikker ved siden af der 
                 hvor du tilføjer tabs til din browser, og trykke på "Tilføj til hjemmeskærm" </p>
-            </div>
+        </div>
         <div id="choseNumberOfShelves" class="backgroundDiv centerDialog">
             <p class="backgroundHeading"> Antal hylder </p>
             <p class="textP">Vælg antallet af hylder i dit fryserskab</p>
             <div id="numberOfShelvesDiv"></div>
         </div>
         <button id="setUpConfirmButton" class="confirmationButton"> Bekræft </button>
+    </div>
+
+    <div id="changeShelvesDiv" class="centerDialog">
+        <p class="backgroundHeading1">Ret antal hylder</p>
+        <div id="choseNumberOfShelves" class="backgroundDiv centerDialog">
+            <p class="backgroundHeading"> Antal hylder </p>
+            <p class="textP">Ret antallet af hylder i appen <br>
+            BEMÆRK: Hvis du retter til færre hylder, vil alle varer der nu er 
+            tilknyttet et højere hyldenummer blive vist som hylde 1</p>
+            <div id="newNumberOfShelvesDiv"></div>
+        </div>
+        <button id="changeShelvesConfirmButton" class="confirmationButton"> Bekræft </button>
     </div>
 </body>
 </html>

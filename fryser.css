@@ -51,7 +51,7 @@ summary::marker {
     opacity: 0.8;
 }
 
-#addItemPage, #setUpDiv, #menuDiv {
+#addItemPage, #setUpDiv, #menuDiv, #changeShelvesDiv {
     display: none;
     flex-direction: column;
     gap: 0.5em;
@@ -100,7 +100,7 @@ summary::marker {
     align-self: center;
 }
 
-#changeShelveDiv, #numberOfShelvesDiv {
+#changeShelveDiv, #numberOfShelvesDiv, #newNumberOfShelvesDiv {
     display: flex;
     align-self: center;
     width: inherit;
