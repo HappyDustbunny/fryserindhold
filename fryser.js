@@ -24,7 +24,6 @@ const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep
 const allTab = document.getElementById('allTab');
 const typeTab = document.getElementById('typeTab');
 
-let localContent;
 let curItemObj;
 let numberOfShelves;
 let chosenShelf;
@@ -154,8 +153,13 @@ class itemObj {
 
 
 function setUpFunction() {
-    // // Get fixed content
-    content = fixedContent;  // TODO: Hmm... Thinking needed here
+    // // Get locally stored content
+
+    if (localStorage.getItem('content')) {
+        content = JSON.parse(localStorage.content);
+    } else {
+        content = fixedContent;
+    }
 
     if (!localStorage.numberOfShelves) {
         askForNumberOfShelves();
@@ -488,6 +492,8 @@ function changeNumberButtonHasBeenClicked(event) {
     } else if (clickedModifier == 'numberPlus1') {
         curItemObj.number += 1;
         document.getElementById('numberMinus1').disabled = false;
+
+        localStorage.content = JSON.stringify(content);
     }
 
     document.getElementById('numberOfItemsInput').value = curItemObj.number;
@@ -645,6 +651,8 @@ function confirmButtonHasBeenClicked() {
             content.push(Object.values(curItemObj));
         }
     }
+
+    localStorage.content = JSON.stringify(content);
     
     closeButtonClicked();
     fillAllTab();
@@ -660,6 +668,8 @@ function incrementNumberOfItemsCounter() {
     updateRelevantObject(myID, curItemObj);
     document.getElementById('stock_' + myID).textContent = curItemObj.number;
     document.getElementById('plusToolTip').style.display = 'none';
+
+    localStorage.content = JSON.stringify(content);
 }
 
 

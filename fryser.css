@@ -313,6 +313,11 @@ summary::marker {
     color: rgba(40, 90, 240, 0.35);
 }
 
+.notImplemented {
+    background-color: darkgray;
+    color: gray;
+}
+
 .shelveNum {  /* Needs to come before .numberActive */
 	background: #c4f1ff;
     border-radius: 5px;

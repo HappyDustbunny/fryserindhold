@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fryserindhold</title>
+    <link rel="icon" href="images/favicon.ico" sizes="any">
     <link rel="stylesheet" href="fryser.css">
     <script src="fryser.js" defer></script>
+    <link rel="manifest" href="manifest.json">
 </head>
 
 <body onload="setUpFunction()">
@@ -20,10 +22,10 @@
 
         <div id="menuDiv" class="menuClass">
             <button id="changeNumberOfShelvesButton" class="menuButton"> Ret antal hylder </button>
-            <button id="veganButton" class="menuButton"> Vegansk eller ej </button>
-            <button id="backUpButton" class="menuButton"> Tag backup </button>
-            <button id="restoreBackUpButton" class="menuButton"> Genskab backup </button>
-            <button id="deleteAllButton" class="menuButton"> Slet alt </button>
+            <button id="veganButton" class="menuButton notImplemented" disabled> Vegansk eller ej </button>
+            <button id="backUpButton" class="menuButton notImplemented" disabled> Tag backup </button>
+            <button id="restoreBackUpButton" class="menuButton notImplemented" disabled> Genskab backup </button>
+            <button id="deleteAllButton" class="menuButton notImplemented" disabled> Slet alt </button>
         </div>
 
         <div id="tabButtons">
