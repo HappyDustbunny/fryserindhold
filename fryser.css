@@ -107,6 +107,14 @@ summary::marker {
     justify-content: space-around;
 }
 
+#dropDownItems {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 20px;
+    width: 64vw;
+}
+
 #headingContainer {
     display: flex;
     align-items: center;
@@ -117,6 +125,7 @@ summary::marker {
     text-align: end;
     width: 55vw;
     border: none;
+    outline: none;
 }
 
 /* #inputDiv, #type, #numberOfItems, #keepsFor, #shelveNumber, #introDiv, #setUpDiv, #choseNumberOfShelves  */
@@ -176,6 +185,11 @@ summary::marker {
 #tabButtons {
     display: flex;
     justify-content: space-between;
+}
+
+#textBoxDiv {
+    flex-direction: column;
+    position: relative;
 }
 
 #typeButtonsDiv1, #typeButtonsDiv2 {
@@ -265,6 +279,11 @@ summary::marker {
 .dateColour {
   background-color: lightgreen;
   margin-right: 5px;
+}
+
+.dropDownButton {
+    background-color: white;
+    border: 1px solid lightgray;
 }
 
 .foodType {

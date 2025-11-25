@@ -151,6 +151,77 @@ class itemObj {
             }
 }
 
+// ************ Trie implementation borrowed from https://medium.com/@johnadjanohoun/understanding-and-implementing-a-trie-prefix-tree-in-javascript-2417dd5b361c
+
+
+class TrieNode {
+    constructor() {
+        this.children = {};
+        this.value = '';
+        this.isEndOfWord = false;
+    }
+}
+
+class Trie {
+    constructor() {
+        this.root = new TrieNode();
+    }
+
+    insert(word) {
+        let node = this.root;
+        for (let char of word) {
+            if (!node.children[char]) {
+                node.children[char] = new TrieNode();
+                node.value = char;
+            }
+            node = node.children[char];
+        }
+        node.isEndOfWord = true;
+    }
+
+    search(word) {
+        let node = this._searchPrefix(word);
+        return node !== null && node.isEndOfWord;
+    }
+
+    startsWith(prefix) {
+        return this._searchPrefix(prefix) !== null;
+    }
+
+    retriveFrom(prefix) {
+        let words = [];
+        let currentWord = '';
+        let node = this.root;
+        for (let char of prefix) {
+            if (!node.children[char]) {
+                return null;
+            }
+            while (!node.children[char].isEndOfWord) {
+                currentWord += node.value;
+                node = node.children[char];
+            }
+            words.push(currentWord);
+        }
+
+        return words;
+    }
+
+    _searchPrefix(prefix) {
+        let node = this.root;
+        for (let char of prefix) {
+            if (!node.children[char]) {
+                return null;
+            }
+            node = node.children[char];
+        }
+        return node;
+    }
+}
+
+const trie = new Trie();
+
+// ********* Trie implementation end ***********************************************************************************************************************
+
 
 function setUpFunction() {
     // // Get locally stored content
