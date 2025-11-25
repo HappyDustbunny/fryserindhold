@@ -40,7 +40,6 @@ document.getElementById('typeTab').addEventListener('click', function(event) { t
 document.getElementById('allTab').addEventListener('click', function(event) { tabHasBeenClicked(event); }, true);
 document.getElementById('oldestTab').addEventListener('click', function(event) { tabHasBeenClicked(event); }, true);
 document.getElementById('typeButtonsDiv1').addEventListener('click', function(event) { typeHasBeenClicked(event); }, true);
-// document.getElementById('typeButtonsDiv2').addEventListener('click', function(event) { typeHasBeenClicked(event); }, true);
 document.getElementById('changeNumberDiv').addEventListener('click', function(event) {changeNumberButtonHasBeenClicked(event); }, true);
 document.getElementById('changeMonthsDiv').addEventListener('click', function(event) { changeMonthButtonHasBeenClicked(event); }, true);
 document.getElementById('addNew').addEventListener('click', addNewItem);
@@ -52,6 +51,8 @@ document.getElementById('changeShelvesConfirmButton').addEventListener('click', 
 document.getElementById('increment').addEventListener('click', incrementNumberOfItemsCounter);
 document.getElementById('numberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
 document.getElementById('newNumberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
+document.getElementById('inputBox').addEventListener('keyup', inputBoxHasChanges);
+document.getElementById('dropDownItemDiv').addEventListener('click', function(event) { dropDownHaveBeenClicked(event); }, true);
 
 
 function showMenu() {
@@ -154,71 +155,71 @@ class itemObj {
 // ************ Trie implementation borrowed from https://medium.com/@johnadjanohoun/understanding-and-implementing-a-trie-prefix-tree-in-javascript-2417dd5b361c
 
 
-class TrieNode {
-    constructor() {
-        this.children = {};
-        this.value = '';
-        this.isEndOfWord = false;
-    }
-}
+// class TrieNode {
+//     constructor() {
+//         this.children = {};
+//         this.value = '';
+//         this.isEndOfWord = false;
+//     }
+// }
 
-class Trie {
-    constructor() {
-        this.root = new TrieNode();
-    }
+// class Trie {
+//     constructor() {
+//         this.root = new TrieNode();
+//     }
 
-    insert(word) {
-        let node = this.root;
-        for (let char of word) {
-            if (!node.children[char]) {
-                node.children[char] = new TrieNode();
-                node.value = char;
-            }
-            node = node.children[char];
-        }
-        node.isEndOfWord = true;
-    }
+//     insert(word) {
+//         let node = this.root;
+//         for (let char of word) {
+//             if (!node.children[char]) {
+//                 node.children[char] = new TrieNode();
+//                 node.value = char;
+//             }
+//             node = node.children[char];
+//         }
+//         node.isEndOfWord = true;
+//     }
 
-    search(word) {
-        let node = this._searchPrefix(word);
-        return node !== null && node.isEndOfWord;
-    }
+//     search(word) {
+//         let node = this._searchPrefix(word);
+//         return node !== null && node.isEndOfWord;
+//     }
 
-    startsWith(prefix) {
-        return this._searchPrefix(prefix) !== null;
-    }
+//     startsWith(prefix) {
+//         return this._searchPrefix(prefix) !== null;
+//     }
 
-    retriveFrom(prefix) {
-        let words = [];
-        let currentWord = '';
-        let node = this.root;
-        for (let char of prefix) {
-            if (!node.children[char]) {
-                return null;
-            }
-            while (!node.children[char].isEndOfWord) {
-                currentWord += node.value;
-                node = node.children[char];
-            }
-            words.push(currentWord);
-        }
+//     retriveFrom(prefix) {
+//         let words = [];
+//         let currentWord = '';
+//         let node = this.root;
+//         for (let char of prefix) {
+//             if (!node.children[char]) {
+//                 return null;
+//             }
+//             while (!node.children[char].isEndOfWord) {
+//                 currentWord += node.value;
+//                 node = node.children[char];
+//             }
+//             words.push(currentWord);
+//         }
 
-        return words;
-    }
+//         return words;
+//     }
 
-    _searchPrefix(prefix) {
-        let node = this.root;
-        for (let char of prefix) {
-            if (!node.children[char]) {
-                return null;
-            }
-            node = node.children[char];
-        }
-        return node;
-    }
-}
+//     _searchPrefix(prefix) {
+//         let node = this.root;
+//         for (let char of prefix) {
+//             if (!node.children[char]) {
+//                 return null;
+//             }
+//             node = node.children[char];
+//         }
+//         return node;
+//     }
+// }
 
-const trie = new Trie();
+// const trie = new Trie();
 
 // ********* Trie implementation end ***********************************************************************************************************************
 
@@ -302,6 +303,7 @@ function fillShelveDiv(relevantDiv, numberOfShelves) {
     for (let n = 1; n <= numberOfShelves; n++) {
         currentdiv.innerHTML += '<button id="shelveNumber' + n + '" class="shelveNum">' + n + '</button>';
     }
+    currentdiv.style.display = 'flex';
 }
 
 
@@ -704,6 +706,33 @@ function closeButtonClicked() {
     document.getElementById('addItem').style.display = 'block';
     unshaddowFoodTypes();
     unPressFoodTypes();
+}
+
+
+function inputBoxHasChanges() {
+    let newInput = document.getElementById('inputBox');
+    let dropDownItemDiv = document.getElementById('dropDownItemDiv');
+    dropDownItemDiv.innerHTML = '';
+
+    if (newInput.value !== '') {
+        content.forEach(function(item) {
+            let regex = new RegExp('^' + newInput.value);
+            if (item[1].match(regex)) {
+                dropDownItemDiv.innerHTML += '<button id="' + item[0] + '" class="dropDownButton"> ' 
+                + item[1] + '</button>';
+            }
+        });
+    
+        dropDownItemDiv.style.display = 'flex';
+    } else {
+        dropDownItemDiv.style.display = 'none';
+    }
+
+}
+
+
+function dropDownHaveBeenClicked(event) {
+
 }
 
 

@@ -1,4 +1,4 @@
-let VERSION = 1.008; // Change version number to facilitate updates
+let VERSION = 0.002; // Change version number to facilitate updates
 
 let FP_CACHE = 'FP-cache';
 let CACHED_URLS = [
