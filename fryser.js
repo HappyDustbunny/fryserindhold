@@ -2,7 +2,7 @@
 const fixedContent = [
     //[hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer, showItem]
     [3036860, 'brød', 1, 'bread', 4, 3, 1762349662007, true],
-    // [3036860, 'brød', 1, 'bread', 1, 5, 1761217795422, true],
+    [303686550, 'brød', 1, 'bread', 1, 5, 1761217795422, true],
     [254164556, 'kylling', 2, 'fowl', 2, 4, 1761217795422, true],
     [1677053109, 'grønne bønner', 1, 'veggie', 2, 8, 1743617600000, true],
     [11802677, "is", 1, "cake", 1, 1, 1762349662007, true],
@@ -49,6 +49,7 @@ document.getElementById('confirmButton').addEventListener('click', confirmButton
 document.getElementById('setUpConfirmButton').addEventListener('click', setUpConfirmButtonHasBeenClicked);
 document.getElementById('changeShelvesConfirmButton').addEventListener('click', changeShelvesConfirmButtonHasBeenClicked);
 document.getElementById('increment').addEventListener('click', incrementNumberOfItemsCounter);
+document.getElementById('shelveNumber').addEventListener('click', function(event) { shelveNumberHasBeenClicked(event); }, true);
 document.getElementById('numberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
 document.getElementById('newNumberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
 document.getElementById('inputBox').addEventListener('keyup', inputBoxHasChanges);
@@ -251,6 +252,17 @@ function askForNumberOfShelves() {
 
     fillShelveDiv('numberOfShelvesDiv', 8);
 
+}
+
+
+function shelveNumberHasBeenClicked(event) {
+    let clickedNumberID = event.target.id;
+    if (clickedNumberID != 'numberOfShelvesDiv' || clickedNumberID != 'changeShelveDiv' ) {
+        chosenShelf = Number(clickedNumberID.slice(12));
+        document.querySelectorAll('.shelveNum').forEach(button => button.classList.remove('numberActive'));
+        document.getElementById(clickedNumberID).classList.add('numberActive');
+    }
+    curItemObj.shelf = chosenShelf;
 }
 
 
@@ -671,6 +683,9 @@ function tabHasBeenClicked(event) {
         
         document.getElementById('inputBox').value = capitalizeFirst(curItemObj.itemName);
         document.getElementById('inputBoxMonth').value = monthNames[new Date().getMonth()] + ' ';
+
+        document.querySelectorAll('.shelveNum').forEach(button => button.classList.remove('numberActive'));
+        document.getElementById('shelveNumber' + curItemObj.shelf).classList.add('numberActive');
         
         shaddowFoodTypes();
         document.getElementById(curItemObj.type + 'Type').classList.remove('shaddowed');
@@ -712,14 +727,17 @@ function closeButtonClicked() {
 function inputBoxHasChanges() {
     let newInput = document.getElementById('inputBox');
     let dropDownItemDiv = document.getElementById('dropDownItemDiv');
+    let shownItems = [];
     dropDownItemDiv.innerHTML = '';
 
     if (newInput.value !== '') {
         content.forEach(function(item) {
             let regex = new RegExp('^' + newInput.value);
-            if (item[1].match(regex)) {
+            if (item[1].match(regex) && !(shownItems.includes(item[1]))) {
                 dropDownItemDiv.innerHTML += '<button id="' + item[0] + '" class="dropDownButton"> ' 
-                + item[1] + '</button>';
+                + capitalizeFirst(item[1]) + '</button>';
+
+                shownItems.push(item[1]);  // To exclude already shown suggestions
             }
         });
     
@@ -732,18 +750,41 @@ function inputBoxHasChanges() {
 
 
 function dropDownHaveBeenClicked(event) {
+    let clickedID = event.target.id;
 
+    curItemObj = findRelevantObject(clickedID);
+    curItemObj.number = 1;
+    
+    // Fill addItemPage
+    document.getElementById('inputBox').value = capitalizeFirst(curItemObj.itemName);
+    document.getElementById('inputBoxMonth').value = monthNames[new Date().getMonth()] + ' ';
+    shaddowFoodTypes();
+    document.getElementById(curItemObj.type + 'Type').classList.remove('shaddowed');
+    
+    document.getElementById('numberOfItemsInput').value = curItemObj.number;
+    
+    document.getElementById('keepsForText').value = curItemObj.keepsInMonths + ' mdr';
+    document.getElementById('minus3').disabled = false;
+    document.getElementById('minus1').disabled = false;
+    if (curItemObj.keepsInMonths < 4) { document.getElementById('minus3').disabled = true; }
+    if (curItemObj.keepsInMonths < 2) { document.getElementById('minus1').disabled = true; }
+    
+    // Clear drop down box
+    document.getElementById('dropDownItemDiv').innerHTML = '';
 }
 
 
 function confirmButtonHasBeenClicked() {
     if (document.getElementById('inputBox').value != '') {
-        let newHash = makeHash(document.getElementById('inputBox').value + document.getElementById('inputBoxMonth').value);
-        if (findRelevantObject(newHash)) {
-            oldItem = findRelevantObject(newHash);
-            oldItem.number += curItemObj.number;
-            updateRelevantObject(newHash, oldItem);
+        if (findRelevantObject(curItemObj.hash)) {
+            // oldItem = findRelevantObject(newHash);
+            // oldItem.number = curItemObj.number;
+            // oldItem.shelf = curItemObj.shelf;
+            // oldItem.keepsInMonths = curItemObj.keepsInMonths;
+            // updateRelevantObject(newHash, oldItem);
+            updateRelevantObject(curItemObj.hash, curItemObj);
         } else {
+            let newHash = makeHash(document.getElementById('inputBox').value + document.getElementById('inputBoxMonth').value);
             curItemObj.hash = newHash;
             curItemObj.itemName = document.getElementById('inputBox').value;
             curItemObj.addedToFreezer = new Date().getTime();
@@ -756,6 +797,7 @@ function confirmButtonHasBeenClicked() {
     
     closeButtonClicked();
     fillAllTab();
+    document.getElementById('dropDownItemDiv').innerHTML = '';  // Remove suggestions from inputbox
 }
 
 

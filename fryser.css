@@ -106,6 +106,7 @@ summary::marker {
     align-self: center;
     width: inherit;
     justify-content: space-around;
+    gap: .4em;
 }
 
 #dropDownItemDiv {
@@ -129,8 +130,7 @@ summary::marker {
     outline: none;
 }
 
-#inputDiv, #type, #numberOfItems, #keepsFor, #shelveNumber, #introDiv, #setUpDiv, #choseNumberOfShelves 
-.centerDialog {
+#inputDiv, #type, #numberOfItems, #keepsFor, #shelveNumber, #introDiv, #setUpDiv, #choseNumberOfShelves {
     align-self: center;
     gap: 2vh;
 }
@@ -344,9 +344,9 @@ summary::marker {
     width: 6em;
 }
 
-.nonVegansk {
+/* .nonVegansk {
 	display: none;
-}
+} */
 
 .numberActive {
   border: 1px inset;
