@@ -1,12 +1,12 @@
 // const content = new Map();
 const fixedContent = [
     //[hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer, showItem]
-    [3036860, 'brød', 1, 'bread', 4, 3, 1762349662007, true],
-    [303686550, 'brød', 1, 'bread', 1, 5, 1761217795422, true],
+    [0, 'brød', 0, 'bread', 0, 8, 0, false],
+    // [303686550, 'brød', 1, 'bread', 1, 5, 1761217795422, true],
     [254164556, 'kylling', 2, 'fowl', 2, 4, 1761217795422, true],
     [1677053109, 'grønne bønner', 1, 'veggie', 2, 8, 1743617600000, true],
     [11802677, "is", 1, "cake", 1, 1, 1762349662007, true],
-    [1180267467, "kage", 0, "cake", 1, 3, 1762349662007, true],
+    [1180267467, "kage", 0, "cake", 1, 3, 1761217795422, true],
     [11867467, "okse", 1, "meat", 1, 3, 1762349662007, true],
     [1186743467, "bao", 1, "meal", 1, 3, 1762349772007, true]
 ]
@@ -53,6 +53,7 @@ document.getElementById('shelveNumber').addEventListener('click', function(event
 document.getElementById('numberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
 document.getElementById('newNumberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
 document.getElementById('inputBox').addEventListener('keyup', inputBoxHasChanges);
+document.getElementById('inputBox').addEventListener('keypress', function(event) { inputBoxHasKeyPress(event); }, true);
 document.getElementById('dropDownItemDiv').addEventListener('click', function(event) { dropDownHaveBeenClicked(event); }, true);
 
 
@@ -232,6 +233,7 @@ function setUpFunction() {
         content = JSON.parse(localStorage.content);
     } else {
         content = fixedContent;
+        localStorage.content = JSON.stringify(content);
     }
 
     if (!localStorage.numberOfShelves) {
@@ -404,11 +406,12 @@ function fillTypeTab() {
             currentElement.nextElementSibling.innerHTML += '<div id="' + value[0] + '" class="itemDiv ' + noLeft + '">' +
             '<span id="edit_' + value[0] + '" class="goesLeft">' + ' ' + capitalizeFirst(value[1]) + '</span>' +
             '<span class="goesRight">' + monthFrosen + ' ' +
-            '<span class="' + bgColourClass + '"> ' + months + ' ' + timeUnit + ' </span>  ' +
             '<span> &#x2263;' + value[4] + '</span> ' + // Four bars symbolizing shelf number
+            '<span class="' + bgColourClass + '"> ' + months + ' ' + timeUnit + ' </span>  ' +
+            '<span id="stock_' + value[0] + '">' + stock + '</span> ' +
             '<button id="minus_' + value[0] + '" class="minus"> ' + minusOrTrashCan + ' </button> ' + 
-            '<span id="stock_' + value[0] + '">' + stock + '</span> ' + 
-            '<button id="plus_' + value[0] + '" class="plus"> &#10133; </button> </span> </div>';
+            '</span> </div>';
+            // '<button id="plus_' + value[0] + '" class="plus"> &#10133; </button> </span> </div>';
 
             bgColourClass = 'bglightgreen';
         }
@@ -468,11 +471,12 @@ function fillAllTab() {
             allTab.innerHTML += '<div id="' + value[0] + '" class="itemDiv ' + noLeft + '">' +
             '<span id="edit_' + value[0] + '" class="goesLeft">' + symbol + ' ' + capitalizeFirst(value[1]) + '</span>' +
             '<span class="goesRight">' + monthFrosen + ' ' +
-            '<span class="' + bgColourClass + '"> ' + months + ' ' + timeUnit + ' </span>  ' +
             '<span> &#x2263;' + value[4] + '</span> ' + // Four bars symbolizing shelf number
-            '<button id="minus_' + value[0] + '" class="minus"> ' + minusOrTrashCan + ' </button> ' + 
+            '<span class="' + bgColourClass + '"> ' + months + ' ' + timeUnit + ' </span>  ' +
             '<span id="stock_' + value[0] + '">' + stock + '</span> ' + 
-            '<button id="plus_' + value[0] + '" class="plus"> &#10133; </button> </span> </div>'
+            '<button id="minus_' + value[0] + '" class="minus"> ' + minusOrTrashCan + ' </button> ' + 
+            '</span> </div>'
+            // '<button id="plus_' + value[0] + '" class="plus"> &#10133; </button> </span> </div>'
             
             bgColourClass = 'bglightgreen';
         }
@@ -521,11 +525,12 @@ function fillOldestTab() {
             oldestTab.innerHTML += '<div id="' + value[0] + '" class="itemDiv ' + noLeft + '">' +
             '<span id="edit_' + value[0] + '" class="goesLeft">' + symbol + ' ' + capitalizeFirst(value[1]) + '</span>' +
             '<span class="goesRight">' + monthFrosen + ' ' +
-            '<span class="' + bgColourClass + '"> ' + months + ' ' + timeUnit + ' </span>  ' +
             '<span> &#x2263;' + value[4] + '</span> ' + // Four bars symbolizing shelf number
-            '<button id="minus_' + value[0] + '" class="minus"> ' + minusOrTrashCan + ' </button> ' + 
+            '<span class="' + bgColourClass + '"> ' + months + ' ' + timeUnit + ' </span>  ' +
             '<span id="stock_' + value[0] + '">' + stock + '</span> ' + 
-            '<button id="plus_' + value[0] + '" class="plus"> &#10133; </button> </span> </div>'
+            '<button id="minus_' + value[0] + '" class="minus"> ' + minusOrTrashCan + ' </button> ' + 
+            '</span> </div>';
+            // '<button id="plus_' + value[0] + '" class="plus"> &#10133; </button> </span> </div>;'
             
             bgColourClass = 'bglightgreen';
         }
@@ -554,6 +559,11 @@ function findRelevantObject(myID) {
 function updateRelevantObject(myID, relevantObject) {
     let relevantArray = Object.values(relevantObject);  // Transform the relevant object to the relevant array
     content = content.map(x => (x[0] === Number(myID) ? relevantArray : x));
+}
+
+
+function deleteRelevantObject(myID, relevantObject) {
+
 }
 
 
@@ -627,10 +637,12 @@ function tabHasBeenClicked(event) {
             document.getElementById('minus_' + myID).textContent = ' \u{1F5D1} ';  // Trash can
             document.getElementById('stock_' + myID).textContent = curItemObj.number;
         } else if (curItemObj.number == 0) {
-            curItemObj.showInAllTab = false;
-            document.getElementById(myID).classList.remove('noLeft');
-            document.getElementById('minus_' + myID).textContent = ' \u{2796} ';  // Minus
-            updateRelevantObject(myID, curItemObj);
+            // curItemObj.showInAllTab = false;
+            // document.getElementById(myID).classList.remove('noLeft');
+            // document.getElementById('minus_' + myID).textContent = ' \u{2796} ';  // Minus
+            // updateRelevantObject(myID, curItemObj);
+            let index = content.findIndex((value) => value[0] === Number(myID));
+            content.splice(index, 1); // Remove array with the given index
             switch(event.currentTarget.id) {
                 case 'typeTab':
                     fillTypeTab();
@@ -648,30 +660,30 @@ function tabHasBeenClicked(event) {
             //     fillAllTab();
             // }
         }
-    } else if (clickedID.slice(0, 4) == 'plus') {
-        myID = clickedID.slice(5);  // Remove 'plus_'
-        curItemObj = findRelevantObject(myID);
+    // } else if (clickedID.slice(0, 4) == 'plus') {
+    //     myID = clickedID.slice(5);  // Remove 'plus_'
+    //     curItemObj = findRelevantObject(myID);
 
-        document.getElementById('plusToolTip').style.display = 'flex';
-        document.getElementById('addItem').style.display = 'none'; 
+    //     document.getElementById('plusToolTip').style.display = 'flex';
+    //     document.getElementById('addItem').style.display = 'none'; 
 
-        let clickedTop =  document.getElementById(clickedID).getBoundingClientRect().top;
-        if (clickedTop < 300) { clickedTop += 30} else {clickedTop -= 80};
-        document.getElementById('plusToolTip').style.top = clickedTop + 'px';
+    //     let clickedTop =  document.getElementById(clickedID).getBoundingClientRect().top;
+    //     if (clickedTop < 300) { clickedTop += 30} else {clickedTop -= 80};
+    //     document.getElementById('plusToolTip').style.top = clickedTop + 'px';
 
-        document.getElementById('inputBox').value = capitalizeFirst(curItemObj.itemName);
-        document.getElementById('inputBoxMonth').value = monthNames[new Date().getMonth()] + ' ';
-        shaddowFoodTypes();
-        document.getElementById(curItemObj.type).classList.remove('shaddowed');
+    //     document.getElementById('inputBox').value = capitalizeFirst(curItemObj.itemName);
+    //     document.getElementById('inputBoxMonth').value = monthNames[new Date().getMonth()] + ' ';
+    //     shaddowFoodTypes();
+    //     document.getElementById(curItemObj.type).classList.remove('shaddowed');
         
-        document.getElementById('numberOfItemsInput').value = curItemObj.number;
-        document.getElementById('numberMinus1').disabled = true;
+    //     document.getElementById('numberOfItemsInput').value = curItemObj.number;
+    //     document.getElementById('numberMinus1').disabled = true;
         
-        document.getElementById('keepsForText').value = curItemObj.keepsInMonths + ' mdr';
-        document.getElementById('minus3').disabled = false;
-        document.getElementById('minus1').disabled = false;
-        if (curItemObj.keepsInMonths < 4) { document.getElementById('minus3').disabled = true; }
-        if (curItemObj.keepsInMonths < 2) { document.getElementById('minus1').disabled = true; }
+    //     document.getElementById('keepsForText').value = curItemObj.keepsInMonths + ' mdr';
+    //     document.getElementById('minus3').disabled = false;
+    //     document.getElementById('minus1').disabled = false;
+    //     if (curItemObj.keepsInMonths < 4) { document.getElementById('minus3').disabled = true; }
+    //     if (curItemObj.keepsInMonths < 2) { document.getElementById('minus1').disabled = true; }
         
     } else if (clickedID.slice(0, 4) == 'edit') {
         myID = clickedID.slice(5);  // Remove 'edit_';
@@ -736,16 +748,37 @@ function inputBoxHasChanges() {
             if (item[1].match(regex) && !(shownItems.includes(item[1]))) {
                 dropDownItemDiv.innerHTML += '<button id="' + item[0] + '" class="dropDownButton"> ' 
                 + capitalizeFirst(item[1]) + '</button>';
-
+                
                 shownItems.push(item[1]);  // To exclude already shown suggestions
             }
         });
-    
+        
         dropDownItemDiv.style.display = 'flex';
     } else {
         dropDownItemDiv.style.display = 'none';
     }
+    
+}
 
+
+function inputBoxHasKeyPress(event) {
+    let newInput = document.getElementById('inputBox');
+    if (event.key === 'Enter') {
+        if (document.getElementsByClassName('dropDownButton').length === 1) {
+            let currentID;
+            content.forEach(function(item) {
+                let regex = new RegExp('^' + newInput.value);
+                if (item[1].match(regex)    ) {
+                    currentID = item[0];
+                }
+            });
+            curItemObj = findRelevantObject(currentID);
+            curItemObj.number = 1;
+
+            fillAddItemPage(curItemObj);
+        }
+    // } else if (event.key === 'ArrowDown') {
+    }
 }
 
 
@@ -754,8 +787,12 @@ function dropDownHaveBeenClicked(event) {
 
     curItemObj = findRelevantObject(clickedID);
     curItemObj.number = 1;
-    
-    // Fill addItemPage
+
+    fillAddItemPage(curItemObj);    
+}
+
+
+function fillAddItemPage(curItemObj){
     document.getElementById('inputBox').value = capitalizeFirst(curItemObj.itemName);
     document.getElementById('inputBoxMonth').value = monthNames[new Date().getMonth()] + ' ';
     shaddowFoodTypes();
@@ -774,23 +811,25 @@ function dropDownHaveBeenClicked(event) {
 }
 
 
+
 function confirmButtonHasBeenClicked() {
     if (document.getElementById('inputBox').value != '') {
-        if (findRelevantObject(curItemObj.hash)) {
-            // oldItem = findRelevantObject(newHash);
-            // oldItem.number = curItemObj.number;
-            // oldItem.shelf = curItemObj.shelf;
-            // oldItem.keepsInMonths = curItemObj.keepsInMonths;
-            // updateRelevantObject(newHash, oldItem);
-            updateRelevantObject(curItemObj.hash, curItemObj);
-        } else {
-            let newHash = makeHash(document.getElementById('inputBox').value + document.getElementById('inputBoxMonth').value);
-            curItemObj.hash = newHash;
-            curItemObj.itemName = document.getElementById('inputBox').value;
-            curItemObj.addedToFreezer = new Date().getTime();
-            curItemObj.showInAllTab = true;
-            content.push(Object.values(curItemObj));
-        }
+        // if (curItemObj.hash != 0 && findRelevantObject(curItemObj.hash)) {
+        //     // oldItem = findRelevantObject(newHash);
+        //     // oldItem.number = curItemObj.number;
+        //     // oldItem.shelf = curItemObj.shelf;
+        //     // oldItem.keepsInMonths = curItemObj.keepsInMonths;
+        //     // updateRelevantObject(newHash, oldItem);
+        //     curItemObj.showInAllTab = true;
+        //     updateRelevantObject(curItemObj.hash, curItemObj);
+        // } else {
+        // }
+        let newHash = makeHash(document.getElementById('inputBox').value + document.getElementById('inputBoxMonth').value);
+        curItemObj.hash = newHash;
+        curItemObj.itemName = document.getElementById('inputBox').value.toLowerCase();
+        curItemObj.addedToFreezer = new Date().getTime();
+        curItemObj.showInAllTab = true;
+        content.push(Object.values(curItemObj));
     }
 
     localStorage.content = JSON.stringify(content);
@@ -850,9 +889,11 @@ function clearAddItemPage() {
     curItemObj = new itemObj(1, 'none', 1, 'noLabel', 1, 3, 176207000000); // hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer
 }
 
+
 function capitalizeFirst(string) {
     return string[0].toUpperCase() + string.slice(1)
 }
+
 
 // Usefull snippets
 
