@@ -45,6 +45,26 @@ const fixedContent = [
     [1291291654, 'inderlår okse uden kappe', 0, 'meat', 0, 10, 0, false],
     [1184232175, 'indmad', 0, 'meat', 0, 3, 0, false],
     [3370, 'is', 0, 'cake', 0, 3, 0, false],
+    [982482580 , 'porrer', 0, 'veggie', 0, 10, 0, false],
+    [365249293 , 'broccoli', 0, 'veggie', 0, 10, 0, false],
+    [21136086 , 'blomkål', 0, 'veggie', 0, 10, 0, false],
+    [1895447910 , 'gulerødder', 0, 'veggie', 0, 10, 0, false],
+    [3343837 , 'majs', 0, 'veggie', 0, 10, 0, false],
+    [442983890 , 'persille', 0, 'veggie', 0, 10, 0, false],
+    [3083453 , 'dild', 0, 'veggie', 0, 10, 0, false],
+    [976942674 , 'purløg', 0, 'veggie', 0, 10, 0, false],
+    [2053420871 , 'lime leaves', 0, 'veggie', 0, 10, 0, false],
+    [1577377590 , 'kaffe malet', 0, 'veggie', 0, 10, 0, false],
+    [1422659945, 'jordbær', 0, 'veggie', 0, 12, 0, false],
+    [921830999, 'hindbær', 0, 'veggie', 0, 12, 0, false],
+    [896785250, 'solbær', 0, 'veggie', 0, 12, 0, false],
+    [1645293686, 'stikkelsbær', 0, 'veggie', 0, 12, 0, false],
+    [3500232, 'ribs', 0, 'veggie', 0, 12, 0, false],
+    [95841653 , 'rabarber', 0, 'veggie', 0, 12, 0, false],
+    [1382646669 , 'blåbær', 0, 'veggie', 0, 12, 0, false],
+    [1677053109, 'grønne bønner', 0, 'veggie', 0, 12, 0, false],
+    [1256891325, 'bønner', 0, 'veggie', 0, 12, 0, false],
+    [215920725, 'ærter', 0, 'veggie', 0, 12, 0, false],
     [3284148, 'kage', 0, 'cake', 0, 3, 0, false],
     [1754768343, 'klump okse', 0, 'meat', 0, 10, 0, false],
     [1739753175, 'kuvertbrød', 0, 'bread', 0, 4, 0, false],
@@ -144,8 +164,12 @@ const fixedContent = [
     [96328907, 'vildt magert', 0, 'meat', 0, 19, 0, false],
     [489781325, 'yderlår okse', 0, 'meat', 0, 10, 0, false],
     [232542167, 'ørred', 0, 'fish', 0, 3, 0, false]
-
 ]
+
+// TODO: Dont suggest items with 'meat', 'fish' and 'fowl if some categories are excluded
+// TODO: Update Ret Antal Hylder in burger menu
+// TODO: Add logic to the buttons in choseCategories div
+
 const symbols = new Map([
     ['bread', '&#x1F35E;'],
     ['veggie', '&#x1F346;'],
@@ -178,13 +202,13 @@ document.getElementById('oldestTab').addEventListener('click', function(event) {
 document.getElementById('typeButtonsDiv1').addEventListener('click', function(event) { typeHasBeenClicked(event); }, true);
 document.getElementById('changeNumberDiv').addEventListener('click', function(event) {changeNumberButtonHasBeenClicked(event); }, true);
 document.getElementById('changeMonthsDiv').addEventListener('click', function(event) { changeMonthButtonHasBeenClicked(event); }, true);
-document.getElementById('addNew').addEventListener('click', addNewItem);
+// document.getElementById('addNew').addEventListener('click', addNewItem);
 document.getElementById('addItem').addEventListener('click', addItem);
 document.getElementById('closeButton').addEventListener('click', closeButtonClicked);
 document.getElementById('confirmButton').addEventListener('click', confirmButtonHasBeenClicked);
 document.getElementById('setUpConfirmButton').addEventListener('click', setUpConfirmButtonHasBeenClicked);
-document.getElementById('changeShelvesConfirmButton').addEventListener('click', changeShelvesConfirmButtonHasBeenClicked);
-document.getElementById('increment').addEventListener('click', incrementNumberOfItemsCounter);
+// document.getElementById('changeShelvesConfirmButton').addEventListener('click', changeShelvesConfirmButtonHasBeenClicked);
+// document.getElementById('increment').addEventListener('click', incrementNumberOfItemsCounter);
 document.getElementById('shelveNumber').addEventListener('click', function(event) { shelveNumberHasBeenClicked(event); }, true);
 document.getElementById('numberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
 document.getElementById('newNumberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
@@ -395,6 +419,7 @@ function askForNumberOfShelves() {
 
 function shelveNumberHasBeenClicked(event) {
     let clickedNumberID = event.target.id;
+    let chosenShelf;
     if (clickedNumberID != 'numberOfShelvesDiv' || clickedNumberID != 'changeShelveDiv' ) {
         chosenShelf = Number(clickedNumberID.slice(12));
         document.querySelectorAll('.shelveNum').forEach(button => button.classList.remove('numberActive'));
@@ -466,7 +491,7 @@ function typeButtonWasClicked() {
     document.getElementById('oldest').classList.remove('tabActive');
     // document.getElementById('type').style.background = 'rgba(153, 222, 238, 0.77)';
     // document.getElementById('all').style.background = 'rgba(211, 211, 211, 0.30)';
-    document.getElementById('plusToolTip').style.display = 'none';
+    // document.getElementById('plusToolTip').style.display = 'none';
     fillTypeTab();
 }
 
@@ -860,7 +885,7 @@ function addItem() {
 
 function addNewItem() {
     document.getElementById('addItemPage').style.display = 'flex';
-    document.getElementById('plusToolTip').style.display = 'none';
+    // document.getElementById('plusToolTip').style.display = 'none';
 }
 
 
@@ -947,32 +972,36 @@ function fillAddItemPage(curItemObj){
 }
 
 
+function newMessage(message, time) {
+    let messageDiv = document.getElementById('message');
+    messageDiv.style.display = 'flex';
+    messageDiv.innerHTML = '<p> ' + message + '</p>';
+    setTimeout(() => {
+        messageDiv.style.display = 'none';
+    }, time);
+}
+
+
 
 function confirmButtonHasBeenClicked() {
-    if (document.getElementById('inputBox').value != '') {
-        // if (curItemObj.hash != 0 && findRelevantObject(curItemObj.hash)) {
-        //     // oldItem = findRelevantObject(newHash);
-        //     // oldItem.number = curItemObj.number;
-        //     // oldItem.shelf = curItemObj.shelf;
-        //     // oldItem.keepsInMonths = curItemObj.keepsInMonths;
-        //     // updateRelevantObject(newHash, oldItem);
-        //     curItemObj.showInAllTab = true;
-        //     updateRelevantObject(curItemObj.hash, curItemObj);
-        // } else {
-        // }
+    if (document.getElementById('inputBox').value == '') {
+        newMessage('Skriv hvad det er du lægger <br> i fryseren under "Indhold"', 3000);
+    } else if (curItemObj.shelf === 0) {
+        newMessage('Vælg hvilken hylde du <br> vil lægge varen ind på', 3000);
+    } else if (document.getElementById('inputBox').value != '') {
         let newHash = makeHash(document.getElementById('inputBox').value + document.getElementById('inputBoxMonth').value);
         curItemObj.hash = newHash;
         curItemObj.itemName = document.getElementById('inputBox').value.toLowerCase();
         curItemObj.addedToFreezer = new Date().getTime();
         curItemObj.showInAllTab = true;
         content.push(Object.values(curItemObj));
+        
+        localStorage.content = JSON.stringify(content);
+        
+        closeButtonClicked();
+        fillAllTab();
+        document.getElementById('dropDownItemDiv').innerHTML = '';  // Remove suggestions from inputbox
     }
-
-    localStorage.content = JSON.stringify(content);
-    
-    closeButtonClicked();
-    fillAllTab();
-    document.getElementById('dropDownItemDiv').innerHTML = '';  // Remove suggestions from inputbox
 }
 
 
@@ -984,7 +1013,7 @@ function incrementNumberOfItemsCounter() {
     curItemObj.number += 1;
     updateRelevantObject(myID, curItemObj);
     document.getElementById('stock_' + myID).textContent = curItemObj.number;
-    document.getElementById('plusToolTip').style.display = 'none';
+    // document.getElementById('plusToolTip').style.display = 'none';
 
     localStorage.content = JSON.stringify(content);
 }
@@ -1038,3 +1067,5 @@ function capitalizeFirst(string) {
 //  value.style.backgroundColor = 'red';
 // } 
 
+// Make hashes for new items
+// ['rabarber', 'blåbær', 'stikkelsbær'].forEach(value => {console.log(makeHash(value), ", '" + value + "'")})

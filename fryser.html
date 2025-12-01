@@ -80,9 +80,7 @@
         <div id="oldestTab"> </div>
     </div>
 
-    <div id="plusToolTip">
-        <button id="addNew"> Jeg lægger noget nyt i fryseren </button>
-        <button id="increment"> Jeg lægger noget tilbage </button>
+    <div id="message">
     </div>
 
     <div id="addItemPage">
@@ -151,12 +149,28 @@
                 Du kan installere den ved at trykke på de tre prikker ved siden af der 
                 hvor du tilføjer tabs til din browser, og trykke på "Tilføj til hjemmeskærm" </p>
         </div>
+        
         <div id="choseNumberOfShelves" class="backgroundDiv centerDialog">
             <p class="backgroundHeading"> Antal hylder </p>
             <p class="textP">Vælg antallet af hylder (&#x2263;) i dit fryserskab</p>
             <div id="numberOfShelvesDiv"></div>
         </div>
-        <button id="setUpConfirmButton" class="confirmationButton"> Bekræft </button>
+        
+        <div id="choseCategories" class="backgroundDiv centerDialog">
+            <p class="backgroundHeading"> Vælg kategorier </p>
+            <p class="textP"> Appen foreslår kategorier og hvor lang tid ting i hver kategori kan holde sig. </p>
+            <p class="textP"> Tryk på de kategorier du IKKE får brug for </p>
+                <button id="breadButton" class="foodTypeSetUp"> &#x1F35E; Brød </summary>
+                <button id="veggieButton" class="foodTypeSetUp"> &#x1F346; Frugt og grønt</summary>
+                <button id="cakeButton" class="foodTypeSetUp"> &#x1F382; Is og kage </summary>
+                <button id="fishButton" class="foodTypeSetUp"> &#x1F41F; Fisk </summary>
+                <button id="fowlButton" class="foodTypeSetUp"> &#x1F414; Fjerkræ </summary>
+                <button id="meatButton" class="foodTypeSetUp"> &#x1F969; Kød </summary>
+                <button id="whatEvsButton" class="foodTypeSetUp"> &#x1F937; Tjah... </summary>
+                <button id="mealButton" class="foodTypeSetUp"> &#x1F37D;&#xFE0F; Måltid </summary>
+        </div>
+
+        <button id="setUpConfirmButton" class="confirmationButton"> Videre </button>
     </div>
 
     <div id="changeShelvesDiv" class="centerDialog">

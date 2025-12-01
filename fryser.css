@@ -130,9 +130,14 @@ summary::marker {
     outline: none;
 }
 
-#inputDiv, #type, #numberOfItems, #keepsFor, #shelveNumber, #introDiv, #setUpDiv, #choseNumberOfShelves {
+#inputDiv, #type, #numberOfItems, #keepsFor, #shelveNumber, 
+#introDiv, #setUpDiv, #choseNumberOfShelves, #choseCategories {
     align-self: center;
     gap: 2vh;
+}
+
+#choseCategories {
+    gap: 1vh;
 }
 
 #inputBoxDiv {
@@ -160,19 +165,21 @@ summary::marker {
     background: rgb(242, 242, 242);
 }
 
-#plusToolTip {
+#message {
 	display: none;
     justify-content: center;
 	gap: 0.5em;
-	background-color: white;
 	position: absolute;
-	top: 7vh;
-	width: 86vw;
+	top: 10vh;
+	width: 80vw;
 	left: 7vw;
 	border-radius: 30px;
-	border: 1px #acbad4 solid;
-	padding-top: 2vh;
+	border: 3px red solid;
+    background-color: white;
+    padding: 2vh;
+	padding-top: 1vh;
 	padding-bottom: 2vh;
+    z-index: 1;
 }
 
 #setUpDiv, #tabButtons {
@@ -294,10 +301,20 @@ summary::marker {
   border-radius: 7px;
 }
 
+
 .foodTypeActive {
     box-shadow: none;
     border: inset;
     background-color: white;
+}
+
+.foodTypeSetUp {
+    font-size: 1.5em;
+    width: 88%;
+    height: 1.5em;
+    border-radius: 7px;
+    background-color: white;
+    align-self: center;
 }
 
 .shaddowed {
