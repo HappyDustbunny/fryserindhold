@@ -335,9 +335,13 @@ summary::marker {
 }
 
 .itemDiv {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hideCat {
+    display: none;
 }
 
 .menuButton {

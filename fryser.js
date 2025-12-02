@@ -10,6 +10,7 @@ const fixedContent = [
     // [11867467, "okse", 1, "meat", 1, 3, 1762349662007, true],
     // [1186743467, "bao", 1, "meal", 1, 3, 1762349772007, true]
     [863840954, 'and hel', 0, 'fowl', 0, 11, 0, false],
+    [1239076312, 'isterninger', 0, 'whatEvs', 0, 12, 0, false],
     [747805084,	'andebryst', 0, 'fowl', 0, 8, 0, false],
     [747805084,	'andebryst', 0, 'fowl', 0, 8, 0, false],
     [756649692,	'andelever', 0, 'fowl', 0, 3, 0, false],
@@ -57,6 +58,7 @@ const fixedContent = [
     [1577377590 , 'kaffe malet', 0, 'veggie', 0, 10, 0, false],
     [1422659945, 'jordbær', 0, 'veggie', 0, 12, 0, false],
     [921830999, 'hindbær', 0, 'veggie', 0, 12, 0, false],
+    [896785250, 'brombær', 0, 'veggie', 0, 12, 0, false],
     [896785250, 'solbær', 0, 'veggie', 0, 12, 0, false],
     [1645293686, 'stikkelsbær', 0, 'veggie', 0, 12, 0, false],
     [3500232, 'ribs', 0, 'veggie', 0, 12, 0, false],
@@ -405,6 +407,7 @@ function setUpFunction() {
     if (!localStorage.numberOfShelves) {
         askForNumberOfShelves();
     } else {
+        document.getElementById('addItem').style.display = 'block';
         allButtonWasClicked();
         fillAllTab();
         clearAddItemPage();
@@ -416,6 +419,7 @@ function setUpFunction() {
 function askForNumberOfShelves() {
     document.getElementById('typeTab').style.display = 'none';
     document.getElementById('allTab').style.display = 'none';
+
     document.getElementById('setUpDiv').style.display = 'flex';
 
     fillShelveDiv('numberOfShelvesDiv', 8);
@@ -550,12 +554,20 @@ function makeHash(string) {  // Use for making unique hash from name
 };
 
 
+function hideCategories(postfix) {
+    fixedCategories.forEach(id => document.getElementById(id + postfix).classList.add('hideCat'));
+    categories.forEach(id => document.getElementById(id + postfix).classList.remove('hideCat'));
+}
+
+
 function fillTypeTab() {
     for (const value of symbols.keys()) {  // Scrub categories in Type tab
         let currentElement = document.getElementById(value);
         currentElement.nextElementSibling.innerHTML = '';
         currentElement.style.backgroundColor = 'rgba(84, 255, 255, 0.21)';  // Restore colour for categories that have recieved content since last repaint
     }
+
+    hideCategories('');
     
     allTab.innerHTML = '';  // Avoid HTML-elements with same ID
     oldestTab.innerHTML = '';
@@ -915,6 +927,7 @@ function addItem() {
     document.getElementById('addItem').style.display = 'none';
     clearAddItemPage();
     fillShelveDiv('changeShelveDiv', localStorage.numberOfShelves);
+    hideCategories('Type');
 }
     
 
@@ -941,7 +954,7 @@ function inputBoxHasChanges() {
     if (newInput.value !== '') {
         content.forEach(function(item) {
             let regex = new RegExp('^' + newInput.value);
-            if (item[1].match(regex) && !(shownItems.includes(item[1]))) {
+            if (item[1].match(regex) && !(shownItems.includes(item[1])) && (categories.includes(item[3]))) {
                 dropDownItemDiv.innerHTML += '<button id="' + item[0] + '" class="dropDownButton"> ' 
                 + capitalizeFirst(item[1]) + '</button>';
                 
