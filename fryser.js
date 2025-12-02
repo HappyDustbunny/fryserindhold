@@ -168,8 +168,9 @@ const fixedContent = [
 
 // TODO: Dont suggest items with 'meat', 'fish' and 'fowl if some categories are excluded
 // TODO: Update Ret Antal Hylder in burger menu
-// TODO: Add logic to the buttons in choseCategories div
+// TODO: Use categories when showing and suggesting stuf
 
+const fixedCategories = ['bread', 'veggie', 'cake', 'fish', 'fowl', 'meat', 'whatEvs', 'meal'];
 const symbols = new Map([
     ['bread', '&#x1F35E;'],
     ['veggie', '&#x1F346;'],
@@ -184,9 +185,11 @@ const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep
 const allTab = document.getElementById('allTab');
 const typeTab = document.getElementById('typeTab');
 
+
 let curItemObj;
 let numberOfShelves;
 let chosenShelf;
+let categories;
 
 window.addEventListener('click', function(event) {closeMenuByClickingAnywhere(event); }, true);
 
@@ -207,6 +210,7 @@ document.getElementById('addItem').addEventListener('click', addItem);
 document.getElementById('closeButton').addEventListener('click', closeButtonClicked);
 document.getElementById('confirmButton').addEventListener('click', confirmButtonHasBeenClicked);
 document.getElementById('setUpConfirmButton').addEventListener('click', setUpConfirmButtonHasBeenClicked);
+document.getElementById('foodTypeSetUpDiv').addEventListener('click', function(event) { foodTypeSetUpHasBeenClicked(event); }, true);
 // document.getElementById('changeShelvesConfirmButton').addEventListener('click', changeShelvesConfirmButtonHasBeenClicked);
 // document.getElementById('increment').addEventListener('click', incrementNumberOfItemsCounter);
 document.getElementById('shelveNumber').addEventListener('click', function(event) { shelveNumberHasBeenClicked(event); }, true);
@@ -391,9 +395,11 @@ function setUpFunction() {
 
     if (localStorage.getItem('content')) {
         content = JSON.parse(localStorage.content);
+        categories = JSON.parse(localStorage.categories);
     } else {
         content = fixedContent;
         localStorage.content = JSON.stringify(content);
+        categories = fixedCategories;
     }
 
     if (!localStorage.numberOfShelves) {
@@ -440,14 +446,28 @@ function numberOfShelvesHasBeenClicked(event) {
 
 
 function setUpConfirmButtonHasBeenClicked() {
-    document.getElementById('setUpDiv').style.display = 'none';
-    localStorage.numberOfShelves = chosenShelf;
+    if (!localStorage.setUpFinished) {  // Close Introduction and show Chose Number of Shelves
+        document.getElementById('introDiv').style.display = 'none';
+        document.getElementById('choseNumberOfShelves').style.display = 'flex';
+        localStorage.setUpFinished = 'notYet';
+    } else if (localStorage.setUpFinished === 'notYet') {  // Close Chose Number of Shelves and show Chose Categoriese
+        localStorage.numberOfShelves = chosenShelf;
+        document.getElementById('numberOfShelvesDiv').innerHTML = ''; // Remove shelve-number buttons to avoid id-clashes
 
-    document.getElementById('numberOfShelvesDiv').innerHTML = ''; // Remove shelve-number buttons to avoid id-clashes
-    
-    allButtonWasClicked();
-    fillAllTab();
-    clearAddItemPage();
+        document.getElementById('choseNumberOfShelves').style.display = 'none';
+        document.getElementById('choseCategories').style.display = 'flex';
+        localStorage.setUpFinished = 'nearlyThere';
+    } else if (localStorage.setUpFinished === 'nearlyThere') {  // Show Chose Categories
+        document.getElementById('choseCategories').style.display = 'none';
+        localStorage.setUpFinished = 'setUpDone';
+        
+        document.getElementById('setUpDiv').style.display = 'none';
+        document.getElementById('addItem').style.display = 'block';
+        
+        allButtonWasClicked();
+        fillAllTab();
+        clearAddItemPage();
+    }
 }
 
 
@@ -731,11 +751,26 @@ function deleteRelevantObject(myID, relevantObject) {
 function typeHasBeenClicked(event) {
     let clickedType = event.target.id;
     if (clickedType != 'typeButtonsDiv1') {
-    // if (clickedType != 'typeButtonsDiv1' && clickedType != 'typeButtonsDiv2') {
         unPressFoodTypes();
         document.getElementById(clickedType).classList.add('foodTypeActive');
         curItemObj.type = clickedType.replace('Type', '');
     }
+}
+
+
+function foodTypeSetUpHasBeenClicked(event) {
+    let clickedType = event.target.id;
+    if (clickedType != 'foodTypeSetUpDiv') {
+        if (document.getElementById(clickedType).classList.contains('shaddowed')) {
+            document.getElementById(clickedType).classList.remove('shaddowed');
+            categories.push(clickedType.slice(0, -6));
+        } else {
+            document.getElementById(clickedType).classList.add('shaddowed');
+            categories = categories.filter(item => item !== clickedType.slice(0, -6));
+        }
+    }
+
+    localStorage.categories = JSON.stringify(categories);
 }
 
 

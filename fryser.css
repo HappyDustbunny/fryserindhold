@@ -33,7 +33,7 @@ summary::marker {
 }
 
 #addItem {
-    display: block;
+    display: none;
     position: absolute;
     left: 68vw;
     bottom: 12vh;
@@ -136,7 +136,8 @@ summary::marker {
     gap: 2vh;
 }
 
-#choseCategories {
+#choseNumberOfShelves, #choseCategories {
+    display: none;
     gap: 1vh;
 }
 
@@ -391,4 +392,6 @@ summary::marker {
 .textP {
     padding-left: 1em;
     padding-right: 1em;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
 }
