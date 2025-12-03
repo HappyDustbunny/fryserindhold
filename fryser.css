@@ -51,7 +51,7 @@ summary::marker {
     opacity: 0.8;
 }
 
-#addItemPage, #setUpDiv, #menuDiv, #changeShelvesDiv, #choseVeganOrNot {
+#addItemPage, #setUpDiv, #menuDiv, #changeShelvesDiv, #adjustCategories {
     display: none;
     flex-direction: column;
     gap: 0.5em;
@@ -131,14 +131,21 @@ summary::marker {
 }
 
 #inputDiv, #type, #numberOfItems, #keepsFor, #shelveNumber, 
-#introDiv, #setUpDiv, #choseNumberOfShelves, #choseCategories {
+#introDiv, #setUpDiv, #choseNumberOfShelvesSetUp, #choseCategoriesSetUp, #choseNumberOfShelves {
     align-self: center;
     gap: 2vh;
 }
 
-#choseNumberOfShelves, #choseCategories {
+#choseNumberOfShelvesSetUp, #choseCategoriesSetUp {
     display: none;
     gap: 1vh;
+}
+
+#foodTypeSetUpDiv {
+	display: flex;
+	flex-direction: column;
+	align-self: center;
+    gap: .5em;
 }
 
 #inputBoxDiv {
@@ -311,7 +318,7 @@ summary::marker {
 
 .foodTypeSetUp {
     font-size: 1.5em;
-    width: 88%;
+    width: 110%;
     height: 1.5em;
     border-radius: 7px;
     background-color: white;
@@ -365,10 +372,6 @@ summary::marker {
     border-radius: 5px;
     width: 6em;
 }
-
-/* .nonVegansk {
-	display: none;
-} */
 
 .numberActive {
   border: 1px inset;

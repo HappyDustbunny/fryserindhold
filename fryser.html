@@ -22,7 +22,7 @@
 
         <div id="menuDiv" class="menuClass">
             <button id="changeNumberOfShelvesButton" class="menuButton"> Ret antal hylder </button>
-            <button id="veganButton" class="menuButton notImplemented" disabled> Vegansk eller ej </button>
+            <button id="adjustCategoriesButton" class="menuButton notImplemented" disabled> Ret kategorier </button>
             <button id="backUpButton" class="menuButton notImplemented" disabled> Tag backup </button>
             <button id="restoreBackUpButton" class="menuButton notImplemented" disabled> Genskab backup </button>
             <button id="deleteAllButton" class="menuButton notImplemented" disabled> Slet alt </button>
@@ -119,9 +119,9 @@
                 <button id="veggieType" class="foodType"> &#x1F346; </button>
                 <button id="cakeType" class="foodType"> &#x1F382; </button>
                 <button id="mealType" class="foodType">	&#x1F37D;&#xFE0F; </button>
-                <button id="fishType" class="foodType nonVegansk">&#x1F41F;</button>
-                <button id="fowlType" class="foodType nonVegansk">&#x1F414;</button>
-                <button id="meatType" class="foodType nonVegansk">&#x1F969;</button>
+                <button id="fishType" class="foodType">&#x1F41F;</button>
+                <button id="fowlType" class="foodType">&#x1F414;</button>
+                <button id="meatType" class="foodType">&#x1F969;</button>
                 <button id="whatEvsType" class="foodType">&#x1F937;</button>
             </div>
             <!-- <div id="typeButtonsDiv2">
@@ -153,13 +153,13 @@
                 i stedet for at hente hele appen hver gang  </p>
         </div>
         
-        <div id="choseNumberOfShelves" class="backgroundDiv centerDialog">
+        <div id="choseNumberOfShelvesSetUp" class="backgroundDiv centerDialog">
             <p class="backgroundHeading"> Antal hylder </p>
             <p class="textP">Vælg antallet af hylder (&#x2263;) i dit fryserskab</p>
             <div id="numberOfShelvesDiv"></div>
         </div>
         
-        <div id="choseCategories" class="backgroundDiv centerDialog">
+        <div id="choseCategoriesSetUp" class="backgroundDiv centerDialog">
             <p class="backgroundHeading"> Vælg kategorier </p>
             <p class="textP"> Appen foreslår kategorier og hvor lang tid ting i hver kategori kan holde sig. </p>
             <p class="textP"> Tryk på de kategorier du IKKE får brug for </p>
@@ -190,12 +190,11 @@
         <button id="changeShelvesConfirmButton" class="confirmationButton"> Bekræft </button>
     </div>
 
-    <div id="choseVeganOrNot" class="centerDialog">
-        <p class="backgroundHeading1">Vegansk eller ej?</p>
-        <div id="choseNumberOfShelves" class="backgroundDiv centerDialog">
+    <div id="adjustCategories" class="centerDialog">
+        <p class="backgroundHeading1">Ret kategorier</p>
+        <div id="choseNumberOfShelves1" class="backgroundDiv centerDialog">
             <!-- <p class="backgroundHeading"> Vælg hvilke kategorier der skal vises </p> -->
             <p> Vælg hvilke kategorier der skal vises </p>
-            <button>Vegansk</button>
             <button>Alle kategorier</button>
             <!-- <div id="newNumberOfShelvesDiv"></div> -->
         </div>

@@ -42,6 +42,7 @@ const fixedContent = [
     [188387694, 'hjerte okse', 0, 'meat', 0, 3, 0, false],
     [188517128, 'hjerte svin', 0, 'meat', 0, 3, 0, false],
     [1387362553, 'højreb okse', 0, 'meat', 0, 10, 0, false],
+    [3340103, 'høne', 0, 'meat', 0, 10, 0, false],
     [1138885820, 'inderlår okse med kappe', 0, 'meat', 0, 8, 0, false],
     [1291291654, 'inderlår okse uden kappe', 0, 'meat', 0, 10, 0, false],
     [1184232175, 'indmad', 0, 'meat', 0, 3, 0, false],
@@ -168,9 +169,7 @@ const fixedContent = [
     [232542167, 'ørred', 0, 'fish', 0, 3, 0, false]
 ]
 
-// TODO: Dont suggest items with 'meat', 'fish' and 'fowl if some categories are excluded
 // TODO: Update Ret Antal Hylder in burger menu
-// TODO: Use categories when showing and suggesting stuf
 
 const fixedCategories = ['bread', 'veggie', 'cake', 'fish', 'fowl', 'meat', 'whatEvs', 'meal'];
 const symbols = new Map([
@@ -213,7 +212,7 @@ document.getElementById('closeButton').addEventListener('click', closeButtonClic
 document.getElementById('confirmButton').addEventListener('click', confirmButtonHasBeenClicked);
 document.getElementById('setUpConfirmButton').addEventListener('click', setUpConfirmButtonHasBeenClicked);
 document.getElementById('foodTypeSetUpDiv').addEventListener('click', function(event) { foodTypeSetUpHasBeenClicked(event); }, true);
-// document.getElementById('changeShelvesConfirmButton').addEventListener('click', changeShelvesConfirmButtonHasBeenClicked);
+document.getElementById('changeShelvesConfirmButton').addEventListener('click', changeShelvesConfirmButtonHasBeenClicked);
 // document.getElementById('increment').addEventListener('click', incrementNumberOfItemsCounter);
 document.getElementById('shelveNumber').addEventListener('click', function(event) { shelveNumberHasBeenClicked(event); }, true);
 document.getElementById('numberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
@@ -259,8 +258,8 @@ function handleMenu(clickedID) {
         case 'changeNumberOfShelvesButton':
             changeNumberOfShelves();
             break;
-        case 'veganButton':
-            document.getElementById('choseVeganOrNot').style.display = 'flex';  // TODO: Make buttons in choseVeganOrNot add or remove class nonVegan apporpriately
+        case 'adjustCategoriesButton':
+            document.getElementById('adjustCategories').style.display = 'flex';
             break;
         case 'backUpButton':
             backUp();
@@ -277,6 +276,8 @@ function handleMenu(clickedID) {
 
 function changeNumberOfShelves() {
     document.getElementById('changeShelvesDiv').style.display = 'flex';
+    document.getElementById('choseNumberOfShelvesSetUp').style.display = 'flex';
+    // document.getElementById('adjustCategories').style.display = 'flex';
     fillShelveDiv('newNumberOfShelvesDiv', 8);
 
     // Highlight current number of shelves
@@ -452,17 +453,17 @@ function numberOfShelvesHasBeenClicked(event) {
 function setUpConfirmButtonHasBeenClicked() {
     if (!localStorage.setUpFinished) {  // Close Introduction and show Chose Number of Shelves
         document.getElementById('introDiv').style.display = 'none';
-        document.getElementById('choseNumberOfShelves').style.display = 'flex';
+        document.getElementById('choseNumberOfShelvesSetUp').style.display = 'flex';
         localStorage.setUpFinished = 'notYet';
     } else if (localStorage.setUpFinished === 'notYet') {  // Close Chose Number of Shelves and show Chose Categoriese
         localStorage.numberOfShelves = chosenShelf;
         document.getElementById('numberOfShelvesDiv').innerHTML = ''; // Remove shelve-number buttons to avoid id-clashes
 
-        document.getElementById('choseNumberOfShelves').style.display = 'none';
-        document.getElementById('choseCategories').style.display = 'flex';
+        document.getElementById('choseNumberOfShelvesSetUp').style.display = 'none';
+        document.getElementById('choseCategoriesSetUp').style.display = 'flex';
         localStorage.setUpFinished = 'nearlyThere';
     } else if (localStorage.setUpFinished === 'nearlyThere') {  // Show Chose Categories
-        document.getElementById('choseCategories').style.display = 'none';
+        document.getElementById('choseCategoriesSetUp').style.display = 'none';
         localStorage.setUpFinished = 'setUpDone';
         
         document.getElementById('setUpDiv').style.display = 'none';
@@ -491,7 +492,6 @@ function changeShelvesConfirmButtonHasBeenClicked() {
     allButtonWasClicked();
     fillAllTab();
     clearAddItemPage();
-
 }
 
 
@@ -940,8 +940,7 @@ function addNewItem() {
 function closeButtonClicked() {
     document.getElementById('addItemPage').style.display = 'none';
     document.getElementById('addItem').style.display = 'block';
-    unshaddowFoodTypes();
-    unPressFoodTypes();
+    clearAddItemPage();
 }
 
 
@@ -1009,6 +1008,10 @@ function fillAddItemPage(curItemObj){
     
     document.getElementById('numberOfItemsInput').value = curItemObj.number;
     
+    if (curItemObj.shelf !== 0) {
+        document.getElementById('shelveNumber' + curItemObj.shelf).classList.add('numberActive');
+    }
+    
     document.getElementById('keepsForText').value = curItemObj.keepsInMonths + ' mdr';
     document.getElementById('minus3').disabled = false;
     document.getElementById('minus1').disabled = false;
@@ -1036,6 +1039,8 @@ function confirmButtonHasBeenClicked() {
         newMessage('Skriv hvad det er du lægger <br> i fryseren under "Indhold"', 3000);
     } else if (curItemObj.shelf === 0) {
         newMessage('Vælg hvilken hylde du <br> vil lægge varen ind på', 3000);
+    } else if (curItemObj.type === 'noLabel') {
+        newMessage('Vælg hvilken kategori <br> varen er', 3000);
     } else if (document.getElementById('inputBox').value != '') {
         let newHash = makeHash(document.getElementById('inputBox').value + document.getElementById('inputBoxMonth').value);
         curItemObj.hash = newHash;
@@ -1099,7 +1104,7 @@ function clearAddItemPage() {
     document.getElementById('minus3').disabled = true;
     unPressFoodTypes();
     unshaddowFoodTypes();
-    curItemObj = new itemObj(1, 'none', 1, 'noLabel', 1, 3, 176207000000); // hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer
+    curItemObj = new itemObj(1, 'none', 1, 'noLabel', 0, 3, 176207000000); // hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer
 }
 
 
