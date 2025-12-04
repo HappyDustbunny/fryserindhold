@@ -211,8 +211,10 @@ document.getElementById('addItem').addEventListener('click', addItem);
 document.getElementById('closeButton').addEventListener('click', closeButtonClicked);
 document.getElementById('confirmButton').addEventListener('click', confirmButtonHasBeenClicked);
 document.getElementById('setUpConfirmButton').addEventListener('click', setUpConfirmButtonHasBeenClicked);
-document.getElementById('foodTypeSetUpDiv').addEventListener('click', function(event) { foodTypeSetUpHasBeenClicked(event); }, true);
+document.getElementById('foodTypeSetUpDiv').addEventListener('click', function(event) { foodTypeSetUpHasBeenClicked(event); });
+document.getElementById('adjustFoodTypeDiv').addEventListener('click', function(event) { foodTypeSetUpHasBeenClicked(event); });
 document.getElementById('changeShelvesConfirmButton').addEventListener('click', changeShelvesConfirmButtonHasBeenClicked);
+document.getElementById('changeCategoriesConfirmButton').addEventListener('click', changeCategoriesConfirmButtonHasBeenClicked);
 // document.getElementById('increment').addEventListener('click', incrementNumberOfItemsCounter);
 document.getElementById('shelveNumber').addEventListener('click', function(event) { shelveNumberHasBeenClicked(event); }, true);
 document.getElementById('numberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
@@ -260,6 +262,11 @@ function handleMenu(clickedID) {
             break;
         case 'adjustCategoriesButton':
             document.getElementById('adjustCategories').style.display = 'flex';
+            document.getElementById('addItem').style.display = 'none';
+            document.querySelectorAll('.foodTypeSetUp').forEach(button => {
+                button.classList.add('shaddowed');
+            });
+            categories.forEach(value => document.getElementById(value + 'AdjustButton').classList.remove('shaddowed'));
             break;
         case 'backUpButton':
             backUp();
@@ -492,6 +499,11 @@ function changeShelvesConfirmButtonHasBeenClicked() {
     allButtonWasClicked();
     fillAllTab();
     clearAddItemPage();
+}
+
+
+function changeCategoriesConfirmButtonHasBeenClicked() {
+    document.getElementById('adjustCategories').style.display = 'none';
 }
 
 
@@ -772,13 +784,21 @@ function typeHasBeenClicked(event) {
 
 function foodTypeSetUpHasBeenClicked(event) {
     let clickedType = event.target.id;
-    if (clickedType != 'foodTypeSetUpDiv') {
+    if (clickedType != 'foodTypeSetUpDiv' && clickedType != 'adjustFoodTypeDiv') {
         if (document.getElementById(clickedType).classList.contains('shaddowed')) {
             document.getElementById(clickedType).classList.remove('shaddowed');
-            categories.push(clickedType.slice(0, -6));
+            if (clickedType.includes('Adjust')) {
+                categories.push(clickedType.slice(0, -12));
+            } else {
+                categories.push(clickedType.slice(0, -6));
+            }
         } else {
             document.getElementById(clickedType).classList.add('shaddowed');
-            categories = categories.filter(item => item !== clickedType.slice(0, -6));
+            if (clickedType.includes('Adjust')) {
+                categories = categories.filter(item => item !== clickedType.slice(0, -12));
+            } else {
+                categories = categories.filter(item => item !== clickedType.slice(0, -6));
+            }
         }
     }
 
@@ -907,7 +927,7 @@ function tabHasBeenClicked(event) {
         document.querySelectorAll('.shelveNum').forEach(button => button.classList.remove('numberActive'));
         document.getElementById('shelveNumber' + curItemObj.shelf).classList.add('numberActive');
         
-        shaddowFoodTypes();
+        shaddowFoodTypes('.foodType');
         document.getElementById(curItemObj.type + 'Type').classList.remove('shaddowed');
         
         document.getElementById('numberOfItemsInput').value = curItemObj.number;
@@ -1003,7 +1023,7 @@ function dropDownHaveBeenClicked(event) {
 function fillAddItemPage(curItemObj){
     document.getElementById('inputBox').value = capitalizeFirst(curItemObj.itemName);
     document.getElementById('inputBoxMonth').value = monthNames[new Date().getMonth()] + ' ';
-    shaddowFoodTypes();
+    shaddowFoodTypes('.foodType');
     document.getElementById(curItemObj.type + 'Type').classList.remove('shaddowed');
     
     document.getElementById('numberOfItemsInput').value = curItemObj.number;
@@ -1072,12 +1092,11 @@ function incrementNumberOfItemsCounter() {
 }
 
 
-function shaddowFoodTypes() {
-    document.querySelectorAll('.foodType').forEach(button => {
+function shaddowFoodTypes(type) {
+    document.querySelectorAll(type).forEach(button => {
         button.classList.add('shaddowed');
         button.disabled = true;
     });
-    // document.querySelectorAll('.foodType').forEach(button => button.disabled = true);
 }
 
 function unshaddowFoodTypes() {

@@ -22,7 +22,7 @@
 
         <div id="menuDiv" class="menuClass">
             <button id="changeNumberOfShelvesButton" class="menuButton"> Ret antal hylder </button>
-            <button id="adjustCategoriesButton" class="menuButton notImplemented" disabled> Ret kategorier </button>
+            <button id="adjustCategoriesButton" class="menuButton"> Ret kategorier </button>
             <button id="backUpButton" class="menuButton notImplemented" disabled> Tag backup </button>
             <button id="restoreBackUpButton" class="menuButton notImplemented" disabled> Genskab backup </button>
             <button id="deleteAllButton" class="menuButton notImplemented" disabled> Slet alt </button>
@@ -163,18 +163,18 @@
             <p class="backgroundHeading"> Vælg kategorier </p>
             <p class="textP"> Appen foreslår kategorier og hvor lang tid ting i hver kategori kan holde sig. </p>
             <p class="textP"> Tryk på de kategorier du IKKE får brug for </p>
-            <div id="foodTypeSetUpDiv">
-                <button id="breadButton" class="foodTypeSetUp"> &#x1F35E; Brød </summary>
-                <button id="veggieButton" class="foodTypeSetUp"> &#x1F346; Frugt og grønt</summary>
-                <button id="cakeButton" class="foodTypeSetUp"> &#x1F382; Is og kage </summary>
-                <button id="fishButton" class="foodTypeSetUp"> &#x1F41F; Fisk </summary>
-                <button id="fowlButton" class="foodTypeSetUp"> &#x1F414; Fjerkræ </summary>
-                <button id="meatButton" class="foodTypeSetUp"> &#x1F969; Kød </summary>
-                <button id="mealButton" class="foodTypeSetUp"> &#x1F37D;&#xFE0F; Måltid </summary>
-                <button id="whatEvsButton" class="foodTypeSetUp"> &#x1F937; Tjah... </summary>
+            <div id="foodTypeSetUpDiv" class="foodTypeDiv">
+                <button id="breadButton" class="foodTypeSetUp"> &#x1F35E; Brød </button>
+                <button id="veggieButton" class="foodTypeSetUp"> &#x1F346; Frugt og grønt</button>
+                <button id="cakeButton" class="foodTypeSetUp"> &#x1F382; Is og kage </button>
+                <button id="fishButton" class="foodTypeSetUp"> &#x1F41F; Fisk </button>
+                <button id="fowlButton" class="foodTypeSetUp"> &#x1F414; Fjerkræ </button>
+                <button id="meatButton" class="foodTypeSetUp"> &#x1F969; Kød </button>
+                <button id="mealButton" class="foodTypeSetUp"> &#x1F37D;&#xFE0F; Måltid </button>
+                <button id="whatEvsButton" class="foodTypeSetUp"> &#x1F937; Tjah... </button>
             </div>
         </div>
-
+        
         <button id="setUpConfirmButton" class="confirmationButton"> Videre </button>
     </div>
 
@@ -189,16 +189,25 @@
         </div>
         <button id="changeShelvesConfirmButton" class="confirmationButton"> Bekræft </button>
     </div>
-
+    
     <div id="adjustCategories" class="centerDialog">
         <p class="backgroundHeading1">Ret kategorier</p>
-        <div id="choseNumberOfShelves1" class="backgroundDiv centerDialog">
+        <div id="adjustCategoriesDiv" class="backgroundDiv centerDialog">
             <!-- <p class="backgroundHeading"> Vælg hvilke kategorier der skal vises </p> -->
-            <p> Vælg hvilke kategorier der skal vises </p>
-            <button>Alle kategorier</button>
-            <!-- <div id="newNumberOfShelvesDiv"></div> -->
+            <p class="textP"> Vælg hvilke kategorier der skal vises </p>
+            <p class="textP"> BEMÆRK: Fjerner du en kategori, så vises varer med denne kategori ikke længere </p>
+            <div id="adjustFoodTypeDiv" class="foodTypeDiv">
+                <button id="breadAdjustButton" class="foodTypeSetUp"> &#x1F35E; Brød </button>
+                <button id="veggieAdjustButton" class="foodTypeSetUp"> &#x1F346; Frugt og grønt</button>
+                <button id="cakeAdjustButton" class="foodTypeSetUp"> &#x1F382; Is og kage </button>
+                <button id="fishAdjustButton" class="foodTypeSetUp"> &#x1F41F; Fisk </button>
+                <button id="fowlAdjustButton" class="foodTypeSetUp"> &#x1F414; Fjerkræ </button>
+                <button id="meatAdjustButton" class="foodTypeSetUp"> &#x1F969; Kød </button>
+                <button id="mealAdjustButton" class="foodTypeSetUp"> &#x1F37D;&#xFE0F; Måltid </button>
+                <button id="whatEvsAdjustButton" class="foodTypeSetUp"> &#x1F937; Tjah... </button>
+            </div>
         </div>
-        <button id="changeShelvesConfirmButton" class="confirmationButton"> Bekræft </button>
+        <button id="changeCategoriesConfirmButton" class="confirmationButton"> Bekræft </button>
     </div>
 </body>
 </html>

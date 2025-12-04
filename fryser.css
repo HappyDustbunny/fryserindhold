@@ -131,7 +131,8 @@ summary::marker {
 }
 
 #inputDiv, #type, #numberOfItems, #keepsFor, #shelveNumber, 
-#introDiv, #setUpDiv, #choseNumberOfShelvesSetUp, #choseCategoriesSetUp, #choseNumberOfShelves {
+#introDiv, #setUpDiv, #choseNumberOfShelvesSetUp, #choseCategoriesSetUp, 
+#choseNumberOfShelves, #adjustCategoriesDiv {
     align-self: center;
     gap: 2vh;
 }
@@ -139,13 +140,6 @@ summary::marker {
 #choseNumberOfShelvesSetUp, #choseCategoriesSetUp {
     display: none;
     gap: 1vh;
-}
-
-#foodTypeSetUpDiv {
-	display: flex;
-	flex-direction: column;
-	align-self: center;
-    gap: .5em;
 }
 
 #inputBoxDiv {
@@ -174,7 +168,7 @@ summary::marker {
 }
 
 #message {
-	display: none;
+    display: none;
     justify-content: center;
 	gap: 0.5em;
 	position: absolute;
@@ -209,10 +203,10 @@ summary::marker {
 }
 
 #typeButtonsDiv1, #typeButtonsDiv2 {
-  display: flex;
-  justify-content: space-around;
-  gap: 0.2em;
-  font-size: 4vw;
+    display: flex;
+    justify-content: space-around;
+    gap: 0.2em;
+    font-size: 4vw;
   flex-wrap: wrap;
 }
 
@@ -293,8 +287,8 @@ summary::marker {
 }
 
 .dateColour {
-  background-color: lightgreen;
-  margin-right: 5px;
+    background-color: lightgreen;
+    margin-right: 5px;
 }
 
 .dropDownButton {
@@ -303,12 +297,18 @@ summary::marker {
 }
 
 .foodType {
-  font-size: 2.2em;
-  /* width: 25%; */
-  height: 1.5em;
-  border-radius: 7px;
+    font-size: 2.2em;
+    /* width: 25%; */
+    height: 1.5em;
+    border-radius: 7px;
 }
 
+.foodTypeDiv {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    gap: .5em;
+}
 
 .foodTypeActive {
     box-shadow: none;
@@ -318,11 +318,11 @@ summary::marker {
 
 .foodTypeSetUp {
     font-size: 1.5em;
-    width: 110%;
+    /* width: 110%; */
     height: 1.5em;
     border-radius: 7px;
     background-color: white;
-    align-self: center;
+    /* align-self: center; */
 }
 
 .shaddowed {
