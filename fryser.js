@@ -193,6 +193,7 @@ let curItemObj;
 let numberOfShelves;
 let chosenShelf;
 let categories;
+let backupFileName = '';
 
 window.addEventListener('click', function(event) {closeMenuByClickingAnywhere(event); }, true);
 
@@ -224,6 +225,7 @@ document.getElementById('newNumberOfShelvesDiv').addEventListener('click', funct
 document.getElementById('inputBox').addEventListener('keyup', inputBoxHasChanges);
 document.getElementById('inputBox').addEventListener('keypress', function(event) { inputBoxHasKeyPress(event); }, true);
 document.getElementById('dropDownItemDiv').addEventListener('click', function(event) { dropDownHaveBeenClicked(event); }, true);
+document.getElementById('cancelBackUpButton').addEventListener('click', cancelBackUpButtonClicked);
 
 
 function showMenu() {
@@ -263,22 +265,17 @@ function handleMenu(clickedID) {
             changeNumberOfShelves();
             break;
         case 'adjustCategoriesButton':
-            document.getElementById('adjustCategories').style.display = 'flex';
-            document.getElementById('addItem').style.display = 'none';
-            document.querySelectorAll('.foodTypeSetUp').forEach(button => {
-                button.classList.add('shaddowed');
-            });
-            categories.forEach(value => document.getElementById(value + 'AdjustButton').classList.remove('shaddowed'));
+            adjustCategories();
             break;
         case 'backUpButton':
-            backUp();
+            showBackUpDialog();
             break;
         case 'restoreBackUpButton':
             restoreBackUp();
             break;
-        case 'deleteAllButton':
-            deleteAll();
-            break;
+            case 'deleteAllButton':
+                deleteAll();
+                break;
     }
 }
 
@@ -288,14 +285,37 @@ function changeNumberOfShelves() {
     document.getElementById('choseNumberOfShelvesSetUp').style.display = 'flex';
     // document.getElementById('adjustCategories').style.display = 'flex';
     fillShelveDiv('newNumberOfShelvesDiv', 8);
-
+    
     // Highlight current number of shelves
     document.getElementById('shelveNumber' + localStorage.numberOfShelves).classList.add('numberActive');
 }
 
 
-function backUp() {
-    console.log('backUp');
+function adjustCategories() {
+    document.getElementById('adjustCategories').style.display = 'flex';
+    document.getElementById('addItem').style.display = 'none';
+    document.querySelectorAll('.foodTypeSetUp').forEach(button => {
+        button.classList.add('shaddowed');
+    });
+    categories.forEach(value => document.getElementById(value + 'AdjustButton').classList.remove('shaddowed'));
+}
+
+
+function showBackUpDialog() {
+    document.getElementById('takeBackUp').style.display = 'flex';
+    document.getElementById('addItem').style.display = 'none';
+    
+    let now = new Date();
+    let date = now.getDate().toString() + '-' + (now.getMonth() + 1).toString() + '-' + now.getFullYear().toString();
+    backupFileName = 'FryserBackup_' + date + '.txt';
+    document.getElementById('backUpName').value = backupFileName;
+}
+
+function cancelBackUpButtonClicked() {
+    document.getElementById('takeBackUp').style.display = 'none';
+    document.getElementById('addItem').style.display = 'block';
+    
+    newMessage('Intet blev ændret', 3000);
 }
 
 

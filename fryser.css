@@ -51,7 +51,7 @@ summary::marker {
     opacity: 0.8;
 }
 
-#addItemPage, #setUpDiv, #menuDiv, #changeShelvesDiv, #adjustCategories {
+#addItemPage, #setUpDiv, #menuDiv, #changeShelvesDiv, #adjustCategories, #takeBackUp {
     display: none;
     flex-direction: column;
     gap: 0.5em;
@@ -70,6 +70,11 @@ summary::marker {
 	height: 5vh;
 	border-radius: 15px;
     background-color: rgba(153, 222, 238, 0.77);
+}
+
+#backUpName {
+    width: 60vw;
+    border-radius: 10px;
 }
 
 #burger {
@@ -95,6 +100,13 @@ summary::marker {
 
 .confirmationButton {
     background-image: linear-gradient(#05b020, #0bfb31, #0bfb31, #0bfb31, #0bfb31, #05b020);
+    width: 30vw;
+    border-radius: 10px;
+    align-self: center;
+}
+
+.cancelButton {
+    background-image: linear-gradient(#b005057c, #fb0b0b7e, #fb0b0b77, #fb0b0b7c, #fb0b0b81, #b005057e);
     width: 30vw;
     border-radius: 10px;
     align-self: center;
@@ -132,7 +144,7 @@ summary::marker {
 
 #inputDiv, #type, #numberOfItems, #keepsFor, #shelveNumber, 
 #introDiv, #setUpDiv, #choseNumberOfShelvesSetUp, #choseCategoriesSetUp, 
-#choseNumberOfShelves, #adjustCategoriesDiv {
+#choseNumberOfShelves, #adjustCategoriesDiv, #takeBackUp, #takeBackUpDiv {
     align-self: center;
     gap: 2vh;
 }
@@ -202,12 +214,12 @@ summary::marker {
     position: relative;
 }
 
-#typeButtonsDiv1, #typeButtonsDiv2 {
+#typeButtonsDiv1, #typeButtonsDiv2, #backUpInputDiv, #cancelConfirmDiv {
     display: flex;
     justify-content: space-around;
     gap: 0.2em;
     font-size: 4vw;
-  flex-wrap: wrap;
+    flex-wrap: wrap;
 }
 
 .backgroundDiv {

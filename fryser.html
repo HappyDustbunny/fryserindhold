@@ -23,7 +23,7 @@
         <div id="menuDiv" class="menuClass">
             <button id="changeNumberOfShelvesButton" class="menuButton"> Ret antal hylder </button>
             <button id="adjustCategoriesButton" class="menuButton"> Ret kategorier </button>
-            <button id="backUpButton" class="menuButton notImplemented" disabled> Tag backup </button>
+            <button id="backUpButton" class="menuButton"> Tag backup </button>
             <button id="restoreBackUpButton" class="menuButton notImplemented" disabled> Genskab backup </button>
             <button id="deleteAllButton" class="menuButton notImplemented" disabled> Slet alt </button>
         </div>
@@ -208,6 +208,22 @@
             </div>
         </div>
         <button id="changeCategoriesConfirmButton" class="confirmationButton"> Bekræft </button>
+    </div>
+
+    <div id="takeBackUp" class="centerDialog">
+        <p class="backgroundHeading1"> Tag backup </p>
+        <div id="takeBackUpDiv" class="backgroundDiv centerDialog">
+            <p class="textP"> Tag en backup af fryserens nuværende indhold </p>
+            <div id="backUpInputDiv">
+                <input id="backUpInput" type="file" accept=".txt">
+                <input id="backUpName" type="text">
+            </div>
+            <div id="cancelConfirmDiv">
+                <button id="cancelBackUpButton" class="cancelButton"> Fortryd </button>
+                <button id="takeBackUpButton" class="confirmationButton"> Backup </button>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>
