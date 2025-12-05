@@ -42,7 +42,7 @@ const fixedContent = [
     [188387694, 'hjerte okse', 0, 'meat', 0, 3, 0, false],
     [188517128, 'hjerte svin', 0, 'meat', 0, 3, 0, false],
     [1387362553, 'højreb okse', 0, 'meat', 0, 10, 0, false],
-    [3340103, 'høne', 0, 'meat', 0, 10, 0, false],
+    [3340103, 'høne', 0, 'fowl', 0, 10, 0, false],
     [1138885820, 'inderlår okse med kappe', 0, 'meat', 0, 8, 0, false],
     [1291291654, 'inderlår okse uden kappe', 0, 'meat', 0, 10, 0, false],
     [1184232175, 'indmad', 0, 'meat', 0, 3, 0, false],
@@ -69,6 +69,8 @@ const fixedContent = [
     [1256891325, 'bønner', 0, 'veggie', 0, 12, 0, false],
     [215920725, 'ærter', 0, 'veggie', 0, 12, 0, false],
     [3284148, 'kage', 0, 'cake', 0, 3, 0, false],
+    [58415802, 'lagkage', 0, 'cake', 0, 3, 0, false],
+    [896610501, 'sorbet', 0, 'cake', 0, 4, 0, false],
     [1754768343, 'klump okse', 0, 'meat', 0, 10, 0, false],
     [1739753175, 'kuvertbrød', 0, 'bread', 0, 4, 0, false],
     [2046171485, 'kylling hel', 0, 'fowl', 0, 1, 0, false],
@@ -504,6 +506,7 @@ function changeShelvesConfirmButtonHasBeenClicked() {
 
 function changeCategoriesConfirmButtonHasBeenClicked() {
     document.getElementById('adjustCategories').style.display = 'none';
+    document.getElementById('addItem').style.display = 'block';
 }
 
 
@@ -1074,6 +1077,7 @@ function confirmButtonHasBeenClicked() {
         closeButtonClicked();
         fillAllTab();
         document.getElementById('dropDownItemDiv').innerHTML = '';  // Remove suggestions from inputbox
+        document.getElementById('changeShelveDiv').innerHTML = '';  // Remove shelves to avoid id clash
     }
 }
 
