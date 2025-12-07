@@ -1,4 +1,15 @@
-// const content = new Map();
+let curItemObj;
+let numberOfShelves;
+let chosenShelf;
+let categories;
+let backupFileName = '';
+let itemIsBeingEdited = false;
+
+
+const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
+const allTab = document.getElementById('allTab');
+const typeTab = document.getElementById('typeTab');
+
 const fixedContent = [
     //[hash, itemName, number, type, shelf, keepsInMonths, addedToFreezer, showItem]
     // [0, 'brød', 0, 'bread', 0, 8, 0, false],
@@ -72,6 +83,7 @@ const fixedContent = [
     [58415802, 'lagkage', 0, 'cake', 0, 3, 0, false],
     [896610501, 'sorbet', 0, 'cake', 0, 4, 0, false],
     [1754768343, 'klump okse', 0, 'meat', 0, 10, 0, false],
+    [1120271721, 'kuller', 0, 'fish', 0, 10, 0, false],
     [1739753175, 'kuvertbrød', 0, 'bread', 0, 4, 0, false],
     [2046171485, 'kylling hel', 0, 'fowl', 0, 1, 0, false],
     [1600469063, 'kyllingebryst', 0, 'fowl', 0, 7, 0, false],
@@ -184,16 +196,6 @@ const symbols = new Map([
     ['whatEvs', '&#x1F937'],
     ['meal', '&#x1F37D;&#xFE0F;']
 ]);
-const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
-const allTab = document.getElementById('allTab');
-const typeTab = document.getElementById('typeTab');
-
-
-let curItemObj;
-let numberOfShelves;
-let chosenShelf;
-let categories;
-let backupFileName = '';
 
 window.addEventListener('click', function(event) {closeMenuByClickingAnywhere(event); }, true);
 
@@ -225,6 +227,7 @@ document.getElementById('newNumberOfShelvesDiv').addEventListener('click', funct
 document.getElementById('inputBox').addEventListener('keyup', inputBoxHasChanges);
 document.getElementById('inputBox').addEventListener('keypress', function(event) { inputBoxHasKeyPress(event); }, true);
 document.getElementById('dropDownItemDiv').addEventListener('click', function(event) { dropDownHaveBeenClicked(event); }, true);
+document.getElementById('takeBackUpButton').addEventListener('click', takeBackUpButtonClicked);
 document.getElementById('cancelBackUpButton').addEventListener('click', cancelBackUpButtonClicked);
 
 
@@ -310,6 +313,31 @@ function showBackUpDialog() {
     backupFileName = 'FryserBackup_' + date + '.txt';
     document.getElementById('backUpName').value = backupFileName;
 }
+
+
+function takeBackUpButtonClicked() {
+    // Wrap up data from localStorage in a blob
+    let data = JSON.stringify(localStorage);
+    let blob = new Blob([data], { type: 'text/plain;charset=utf-8' });
+    
+    // Store the blob by creating a link element, clicking it and removing it again
+    let url = window.URL.createObjectURL(blob);
+    console.log(url);
+    
+    let element = window.document.createElement('a');
+    element.href = url;
+    element.download = backupFileName;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+
+    // Clean up
+    window.URL.revokeObjectURL(url);
+    
+    document.getElementById('takeBackUp').style.display = 'none';
+    document.getElementById('addItem').style.display = 'block';
+}
+
 
 function cancelBackUpButtonClicked() {
     document.getElementById('takeBackUp').style.display = 'none';
@@ -432,6 +460,7 @@ function setUpFunction() {
         content = fixedContent;
         localStorage.content = JSON.stringify(content);
         categories = fixedCategories;
+        localStorage.categories = JSON.stringify(categories);
     }
 
     if (!localStorage.numberOfShelves) {
@@ -527,6 +556,7 @@ function changeShelvesConfirmButtonHasBeenClicked() {
 function changeCategoriesConfirmButtonHasBeenClicked() {
     document.getElementById('adjustCategories').style.display = 'none';
     document.getElementById('addItem').style.display = 'block';
+    localStorage.categories = JSON.stringify(categories);
 }
 
 
@@ -940,6 +970,8 @@ function tabHasBeenClicked(event) {
         myID = clickedID.slice(5);  // Remove 'edit_';
         curItemObj = findRelevantObject(myID);
         
+        itemIsBeingEdited = true;
+        
         document.getElementById('addItemPage').style.display = 'flex';
         fillShelveDiv('changeShelveDiv', localStorage.numberOfShelves);
         document.getElementById('addItem').style.display = 'none'; 
@@ -954,7 +986,7 @@ function tabHasBeenClicked(event) {
         document.getElementById(curItemObj.type + 'Type').classList.remove('shaddowed');
         
         document.getElementById('numberOfItemsInput').value = curItemObj.number;
-        if (curItemObj.number < 2) { document.getElementById('numberMinus1').disabled = true; }
+        if (1 < curItemObj.number) { document.getElementById('numberMinus1').disabled = false; }
         
         document.getElementById('keepsForText').value = curItemObj.keepsInMonths + ' mdr';
         document.getElementById('minus3').disabled = false;
@@ -1085,12 +1117,18 @@ function confirmButtonHasBeenClicked() {
     } else if (curItemObj.type === 'noLabel') {
         newMessage('Vælg hvilken kategori <br> varen er', 3000);
     } else if (document.getElementById('inputBox').value != '') {
-        let newHash = makeHash(document.getElementById('inputBox').value + document.getElementById('inputBoxMonth').value);
-        curItemObj.hash = newHash;
-        curItemObj.itemName = document.getElementById('inputBox').value.toLowerCase();
-        curItemObj.addedToFreezer = new Date().getTime();
-        curItemObj.showInAllTab = true;
-        content.push(Object.values(curItemObj));
+        if (itemIsBeingEdited) {
+            // Remove duplicate items from the same month, then add the item with new number/shelve/keepsFor...
+            content = content.map(value => (value[0] !== Number(curItemObj.hash)) ? value: undefined).filter(Boolean);
+            content.push(Object.values(curItemObj));
+        } else {
+            let newHash = makeHash(document.getElementById('inputBox').value + new Date().getTime().toString());  // + document.getElementById('inputBoxMonth').value);
+            curItemObj.hash = newHash;
+            curItemObj.itemName = document.getElementById('inputBox').value.toLowerCase();
+            curItemObj.addedToFreezer = new Date().getTime();
+            curItemObj.showInAllTab = true;
+            content.push(Object.values(curItemObj));
+        }
         
         localStorage.content = JSON.stringify(content);
         
@@ -1099,6 +1137,8 @@ function confirmButtonHasBeenClicked() {
         document.getElementById('dropDownItemDiv').innerHTML = '';  // Remove suggestions from inputbox
         document.getElementById('changeShelveDiv').innerHTML = '';  // Remove shelves to avoid id clash
     }
+
+    itemIsBeingEdited = false;
 }
 
 
