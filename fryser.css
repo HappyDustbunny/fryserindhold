@@ -51,7 +51,7 @@ summary::marker {
     opacity: 0.8;
 }
 
-#addItemPage, #setUpDiv, #menuDiv, #changeShelvesDiv, #adjustCategories, #takeBackUp {
+#addItemPage, #setUpDiv, #menuDiv, #changeShelvesDiv, #adjustCategories, #takeBackUp, #restoreBackUp {
     display: none;
     flex-direction: column;
     gap: 0.5em;
@@ -144,7 +144,8 @@ summary::marker {
 
 #inputDiv, #type, #numberOfItems, #keepsFor, #shelveNumber, 
 #introDiv, #setUpDiv, #choseNumberOfShelvesSetUp, #choseCategoriesSetUp, 
-#choseNumberOfShelves, #adjustCategoriesDiv, #takeBackUp, #takeBackUpDiv {
+#choseNumberOfShelves, #adjustCategoriesDiv, #takeBackUp, #takeBackUpDiv,
+#restoreBackUp, #restoreBackUpDiv {
     align-self: center;
     gap: 2vh;
 }
@@ -214,7 +215,8 @@ summary::marker {
     position: relative;
 }
 
-#typeButtonsDiv1, #typeButtonsDiv2, #backUpInputDiv, #cancelConfirmDiv {
+#typeButtonsDiv1, #typeButtonsDiv2, #backUpInputDiv, #cancelConfirmDiv,
+#restoreBackUpInputDiv, #cancelRestoreConfirmDiv {
     display: flex;
     justify-content: space-around;
     gap: 0.2em;

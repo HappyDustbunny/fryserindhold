@@ -228,7 +228,9 @@ document.getElementById('inputBox').addEventListener('keyup', inputBoxHasChanges
 document.getElementById('inputBox').addEventListener('keypress', function(event) { inputBoxHasKeyPress(event); }, true);
 document.getElementById('dropDownItemDiv').addEventListener('click', function(event) { dropDownHaveBeenClicked(event); }, true);
 document.getElementById('takeBackUpButton').addEventListener('click', takeBackUpButtonClicked);
+document.getElementById('confirmRestoreBackUpButton').addEventListener('click', confirmRestoreBackUpButtonClicked);
 document.getElementById('cancelBackUpButton').addEventListener('click', cancelBackUpButtonClicked);
+document.getElementById('cancelRestoreBackUpButton').addEventListener('click', cancelRestoreBackUpButtonClicked);
 
 
 function showMenu() {
@@ -274,11 +276,11 @@ function handleMenu(clickedID) {
             showBackUpDialog();
             break;
         case 'restoreBackUpButton':
-            restoreBackUp();
+            showRestoreBackUpDialog();
             break;
-            case 'deleteAllButton':
-                deleteAll();
-                break;
+        case 'deleteAllButton':
+            deleteAll();
+            break;
     }
 }
 
@@ -315,6 +317,12 @@ function showBackUpDialog() {
 }
 
 
+function showRestoreBackUpDialog() {
+    document.getElementById('restoreBackUp').style.display = 'flex';
+    document.getElementById('addItem').style.display = 'none';
+}
+
+
 function takeBackUpButtonClicked() {
     // Wrap up data from localStorage in a blob
     let data = JSON.stringify(localStorage);
@@ -339,8 +347,21 @@ function takeBackUpButtonClicked() {
 }
 
 
+function confirmRestoreBackUpButtonClicked() {
+    console.log('rap');
+}
+
+
 function cancelBackUpButtonClicked() {
     document.getElementById('takeBackUp').style.display = 'none';
+    document.getElementById('addItem').style.display = 'block';
+    
+    newMessage('Intet blev ændret', 3000);
+}
+
+
+function cancelRestoreBackUpButtonClicked() {
+    document.getElementById('restoreBackUp').style.display = 'none';
     document.getElementById('addItem').style.display = 'block';
     
     newMessage('Intet blev ændret', 3000);
