@@ -232,6 +232,8 @@ document.getElementById('takeBackUpButton').addEventListener('click', takeBackUp
 document.getElementById('confirmRestoreBackUpButton').addEventListener('click', confirmRestoreBackUpButtonClicked);
 document.getElementById('cancelBackUpButton').addEventListener('click', cancelBackUpButtonClicked);
 document.getElementById('cancelRestoreBackUpButton').addEventListener('click', cancelRestoreBackUpButtonClicked);
+document.getElementById('confirmDeleteAllButton').addEventListener('click', confirmDeleteAllButtonClicked);
+document.getElementById('cancelDeleteAllButton').addEventListener('click', cancelDeleteAllButtonClicked);
 
 
 function showMenu() {
@@ -280,7 +282,7 @@ function handleMenu(clickedID) {
             showRestoreBackUpDialog();
             break;
         case 'deleteAllButton':
-            deleteAll();
+            showDeleteAllDialog();
             break;
     }
 }
@@ -356,10 +358,6 @@ function confirmRestoreBackUpButtonClicked() {
     } else {
       newMessage('Der skete ingen ændringer', 2500);
     }
-
-    // document.getElementById('restoreBackup').hidden = false;
-    
-    // document.getElementById('restoreBackupSection').hidden = true;
   }
 }
 
@@ -405,22 +403,39 @@ function cancelRestoreBackUpButtonClicked() {
 }
 
 
-function restoreBackUp() {
-    console.log('restoreBackUp');
+// function restoreBackUp() {
+    //     console.log('restoreBackUp');
+    // }
+
+    
+function showDeleteAllDialog() {
+    document.getElementById('deleteAll').style.display = 'flex';
+    document.getElementById('addItem').style.display = 'none';
 }
 
 
-function deleteAll() {
-    console.log('deleteAll');
+function cancelDeleteAllButtonClicked() {
+    document.getElementById('deleteAll').style.display = 'none';
+    document.getElementById('addItem').style.display = 'block';
+    
+    newMessage('Intet blev ændret', 3000);
 }
-// function changeNumberOfShelvesButtonHasBeenClicked(){
-//     document.getElementById('changeNumberOfShelvesButton').classList.add('buttonPressed');
-//     setTimeout(() => {
-//         document.getElementById('changeNumberOfShelvesButton').classList.remove('buttonPressed');
-//         closeMenu();
-//         console.log('rap');
-//     }, 200);
-// }
+
+
+function confirmDeleteAllButtonClicked() {
+    let answer = confirm('Er du SIKKER på at du vil slette alt?!?');
+    if (answer) {
+        localStorage.clear();
+
+        newMessage('Alt er blevet slettet og siden genindlæses om lidt', 2500);
+
+        setTimeout(() => {
+            location.reload();
+        }, 2600);
+    } else {
+        newMessage('Der skete ingen ændringer', 2500)
+    }
+}
 
 
 class itemObj {

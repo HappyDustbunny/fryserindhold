@@ -51,7 +51,8 @@ summary::marker {
     opacity: 0.8;
 }
 
-#addItemPage, #setUpDiv, #menuDiv, #changeShelvesDiv, #adjustCategories, #takeBackUp, #restoreBackUp {
+/* #addItemPage, #setUpDiv, #menuDiv, #changeShelvesDiv, #adjustCategories, #takeBackUp, #restoreBackUp  */
+.dialogBox {
     display: none;
     flex-direction: column;
     gap: 0.5em;

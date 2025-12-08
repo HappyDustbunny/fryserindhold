@@ -20,7 +20,7 @@
             <div id="spacerDiv"></div>
         </div>
 
-        <div id="menuDiv" class="menuClass">
+        <div id="menuDiv" class="dialogBox menuClass">
             <button id="changeNumberOfShelvesButton" class="menuButton"> Ret antal hylder </button>
             <button id="adjustCategoriesButton" class="menuButton"> Ret kategorier </button>
             <button id="backUpButton" class="menuButton"> Tag backup </button>
@@ -83,7 +83,7 @@
     <div id="message">
     </div>
 
-    <div id="addItemPage">
+    <div id="addItemPage" class="dialogBox">
         <p class="backgroundHeading1">Tilføj vare</p>
         <button id="closeButton">&times;</button>
         <div id="inputDiv" class="backgroundDiv centerStuff">
@@ -141,7 +141,7 @@
     </div>
     <button id="addItem">+</button>
 
-    <div id="setUpDiv" class="centerStuff">
+    <div id="setUpDiv" class="dialogBox centerStuff">
         <p class="backgroundHeading1">Velkommen</p>
         <div id="introDiv" class="backgroundDiv centerStuff">
             <p class="backgroundHeading">Introduktion</p>
@@ -178,7 +178,7 @@
         <button id="setUpConfirmButton" class="confirmationButton"> Videre </button>
     </div>
 
-    <div id="changeShelvesDiv" class="centerStuff">
+    <div id="changeShelvesDiv" class="dialogBox centerStuff">
         <p class="backgroundHeading1">Ret antal hylder</p>
         <div id="choseNumberOfShelves" class="backgroundDiv centerStuff">
             <p class="backgroundHeading"> Antal hylder </p>
@@ -190,7 +190,7 @@
         <button id="changeShelvesConfirmButton" class="confirmationButton"> Bekræft </button>
     </div>
     
-    <div id="adjustCategories" class="centerStuff">
+    <div id="adjustCategories" class="dialogBox centerStuff">
         <p class="backgroundHeading1">Ret kategorier</p>
         <div id="adjustCategoriesDiv" class="backgroundDiv centerStuff">
             <!-- <p class="backgroundHeading"> Vælg hvilke kategorier der skal vises </p> -->
@@ -210,7 +210,7 @@
         <button id="changeCategoriesConfirmButton" class="confirmationButton"> Bekræft </button>
     </div>
 
-    <div id="takeBackUp" class="centerStuff">
+    <div id="takeBackUp" class="dialogBox centerStuff">
         <p class="backgroundHeading1"> Tag backup </p>
         <div id="takeBakcUpDiv" class="backgroundDiv centerStuff">
             <p class="textP"> Tag en backup af fryserens nuværende indhold </p>
@@ -225,7 +225,7 @@
         </div>
     </div>
     
-    <div id="restoreBackUp" class="centerStuff">
+    <div id="restoreBackUp" class="dialogBox centerStuff">
         <p class="backgroundHeading1"> Gendan backup </p>
         <div id="restoreBackUpDiv" class="backgroundDiv centerStuff">
             <p class="textP"> Gendan en backup </p>
@@ -235,6 +235,17 @@
             <div id="cancelRestoreConfirmDiv" class="buttonDiv2">
                 <button id="cancelRestoreBackUpButton" class="cancelButton"> Fortryd </button>
                 <button id="confirmRestoreBackUpButton" class="confirmationButton">  Gendan Backup </button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="deleteAll" class="dialogBox centerStuff">
+        <p class="backgroundHeading1"> Slet alt </p>
+        <div id="deleteAllDiv" class="backgroundDiv centerStuff">
+            <p class="textP"> Skal alt lokalt indhold slettes? </p>
+            <div id="cancelConfirmDeletAllDiv" class="buttonDiv2">
+                <button id="cancelDeleteAllButton" class="cancelButton"> Fortryd </button>
+                <button id="confirmDeleteAllButton" class="confirmationButton">  Slet alt </button>
             </div>
         </div>
     </div>
