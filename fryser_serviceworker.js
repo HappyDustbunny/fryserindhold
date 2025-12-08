@@ -1,16 +1,17 @@
-let VERSION = 0.002; // Change version number to facilitate updates
+let VERSION = 0.003; // Change version number to facilitate updates
 
 let FP_CACHE = 'FP-cache';
 let CACHED_URLS = [
   'fryser.css',
   'fryser.js',
-  'apple-touch-icon.png',
-  'favicon.ico',
   '/',
   'fryser.html',
   'manifest.json',
   'images/icon192x192scalable.png',
-  'images/icon192x192.png'
+  'images/icon192x192.png',
+  'images/favicon.ico',
+  'images/favicon2.ico',
+  'images/burger.svg'
 ];
 
 self.addEventListener('install', function(event) {
