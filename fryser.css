@@ -142,13 +142,6 @@ summary::marker {
     outline: none;
 }
 
-#inputDiv, #type, #numberOfItems, #keepsFor, #shelveNumber, 
-#introDiv, #setUpDiv, #choseNumberOfShelvesSetUp, #choseCategoriesSetUp, 
-#choseNumberOfShelves, #adjustCategoriesDiv, #takeBackUp, #takeBackUpDiv,
-#restoreBackUp, #restoreBackUpDiv {
-    align-self: center;
-    gap: 2vh;
-}
 
 #choseNumberOfShelvesSetUp, #choseCategoriesSetUp {
     display: none;
@@ -215,8 +208,7 @@ summary::marker {
     position: relative;
 }
 
-#typeButtonsDiv1, #typeButtonsDiv2, #backUpInputDiv, #cancelConfirmDiv,
-#restoreBackUpInputDiv, #cancelRestoreConfirmDiv {
+.buttonDiv2 {
     display: flex;
     justify-content: space-around;
     gap: 0.2em;
@@ -289,7 +281,7 @@ summary::marker {
 }
 
 .buttonDiv {
-	display: flex;
+    display: flex;
 	gap: 0.3em;
 	align-self: center;
     font-size: 4vw;
@@ -298,6 +290,11 @@ summary::marker {
 .buttonPressed {
     border: inset;
     background-color: #c1c1c1;
+}
+
+.centerStuff {
+    align-self: center;
+    gap: 2vh;
 }
 
 .dateColour {

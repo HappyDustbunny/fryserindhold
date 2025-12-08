@@ -25,7 +25,7 @@
             <button id="adjustCategoriesButton" class="menuButton"> Ret kategorier </button>
             <button id="backUpButton" class="menuButton"> Tag backup </button>
             <button id="restoreBackUpButton" class="menuButton"> Genskab backup </button>
-            <button id="deleteAllButton" class="menuButton notImplemented" disabled> Slet alt </button>
+            <button id="deleteAllButton" class="menuButton"> Slet alt </button>
         </div>
 
         <div id="tabButtons">
@@ -86,7 +86,7 @@
     <div id="addItemPage">
         <p class="backgroundHeading1">Tilføj vare</p>
         <button id="closeButton">&times;</button>
-        <div id="inputDiv" class="backgroundDiv centerDialog">
+        <div id="inputDiv" class="backgroundDiv centerStuff">
             <p class="backgroundHeading">Indhold</p>
             <div id="textBoxDiv" class="buttonDiv">
                 <div id="inputBoxDiv">
@@ -100,7 +100,7 @@
                 </div>
             </div>
         </div>
-        <div id="numberOfItems" class="backgroundDiv centerDialog">
+        <div id="numberOfItems" class="backgroundDiv centerStuff">
             <p class="backgroundHeading">Antal</p>
             <div id="changeNumberDiv" class="buttonDiv">
                 <button id="numberMinus1">-1</button>
@@ -108,13 +108,13 @@
                 <button id="numberPlus1">+1</button>
             </div>
         </div>
-        <div id="shelveNumber" class="backgroundDiv centerDialog">
+        <div id="shelveNumber" class="backgroundDiv centerStuff">
             <p class="backgroundHeading">Hylde &#x2263;</p>
             <div id="changeShelveDiv" class="buttonDiv"></div>
         </div>
-        <div id="type" class="backgroundDiv centerDialog">
+        <div id="type" class="backgroundDiv centerStuff">
             <p class="backgroundHeading">Type</p>
-            <div id="typeButtonsDiv1">
+            <div id="typeButtonsDiv1" class="buttonDiv2">
                 <button id="breadType" class="foodType"> &#x1F35E; </button>
                 <button id="veggieType" class="foodType"> &#x1F346; </button>
                 <button id="cakeType" class="foodType"> &#x1F382; </button>
@@ -127,7 +127,7 @@
             <!-- <div id="typeButtonsDiv2">
             </div> -->
         </div>
-        <div id="keepsFor" class="backgroundDiv centerDialog">
+        <div id="keepsFor" class="backgroundDiv centerStuff">
             <p class="backgroundHeading">Holdbarhed</p>
             <div id="changeMonthsDiv" class="buttonDiv">
                 <button id="minus3">-3</button>
@@ -141,9 +141,9 @@
     </div>
     <button id="addItem">+</button>
 
-    <div id="setUpDiv" class="centerDialog">
+    <div id="setUpDiv" class="centerStuff">
         <p class="backgroundHeading1">Velkommen</p>
-        <div id="introDiv" class="backgroundDiv centerDialog">
+        <div id="introDiv" class="backgroundDiv centerStuff">
             <p class="backgroundHeading">Introduktion</p>
             <p class="textP"> Denne app kan hjælpe med at holde styr på indholdet af dit fryserskab.</p>
             <p class="textP"> Alle data bliver på din telefon </p>
@@ -153,13 +153,13 @@
                 i stedet for at hente hele appen hver gang  </p>
         </div>
         
-        <div id="choseNumberOfShelvesSetUp" class="backgroundDiv centerDialog">
+        <div id="choseNumberOfShelvesSetUp" class="backgroundDiv centerStuff">
             <p class="backgroundHeading"> Antal hylder </p>
             <p class="textP">Vælg antallet af hylder (&#x2263;) i dit fryserskab</p>
             <div id="numberOfShelvesDiv"></div>
         </div>
         
-        <div id="choseCategoriesSetUp" class="backgroundDiv centerDialog">
+        <div id="choseCategoriesSetUp" class="backgroundDiv centerStuff">
             <p class="backgroundHeading"> Vælg kategorier </p>
             <p class="textP"> Appen foreslår kategorier og hvor lang tid ting i hver kategori kan holde sig. </p>
             <p class="textP"> Tryk på de kategorier du IKKE får brug for </p>
@@ -178,9 +178,9 @@
         <button id="setUpConfirmButton" class="confirmationButton"> Videre </button>
     </div>
 
-    <div id="changeShelvesDiv" class="centerDialog">
+    <div id="changeShelvesDiv" class="centerStuff">
         <p class="backgroundHeading1">Ret antal hylder</p>
-        <div id="choseNumberOfShelves" class="backgroundDiv centerDialog">
+        <div id="choseNumberOfShelves" class="backgroundDiv centerStuff">
             <p class="backgroundHeading"> Antal hylder </p>
             <p class="textP">Ret antallet af hylder i appen <br><br>
             BEMÆRK: Hvis du retter til færre hylder, vil alle varer der nu er 
@@ -190,9 +190,9 @@
         <button id="changeShelvesConfirmButton" class="confirmationButton"> Bekræft </button>
     </div>
     
-    <div id="adjustCategories" class="centerDialog">
+    <div id="adjustCategories" class="centerStuff">
         <p class="backgroundHeading1">Ret kategorier</p>
-        <div id="adjustCategoriesDiv" class="backgroundDiv centerDialog">
+        <div id="adjustCategoriesDiv" class="backgroundDiv centerStuff">
             <!-- <p class="backgroundHeading"> Vælg hvilke kategorier der skal vises </p> -->
             <p class="textP"> Vælg hvilke kategorier der skal vises </p>
             <p class="textP"> BEMÆRK: Fjerner du en kategori, så vises varer med denne kategori ikke længere </p>
@@ -210,29 +210,29 @@
         <button id="changeCategoriesConfirmButton" class="confirmationButton"> Bekræft </button>
     </div>
 
-    <div id="takeBackUp" class="centerDialog">
+    <div id="takeBackUp" class="centerStuff">
         <p class="backgroundHeading1"> Tag backup </p>
-        <div id="takeBakcUpDiv" class="backgroundDiv centerDialog">
+        <div id="takeBakcUpDiv" class="backgroundDiv centerStuff">
             <p class="textP"> Tag en backup af fryserens nuværende indhold </p>
-            <div id="backUpInputDiv">
+            <div id="backUpInputDiv" class="buttonDiv2">
                 <input id="backUpInput" type="file" accept=".txt">
                 <input id="backUpName" type="text">
             </div>
-            <div id="cancelConfirmDiv">
+            <div id="cancelConfirmDiv" class="buttonDiv2">
                 <button id="cancelBackUpButton" class="cancelButton"> Fortryd </button>
                 <button id="takeBackUpButton" class="confirmationButton"> Backup </button>
             </div>
         </div>
     </div>
     
-    <div id="restoreBackUp" class="centerDialog">
+    <div id="restoreBackUp" class="centerStuff">
         <p class="backgroundHeading1"> Gendan backup </p>
-        <div id="restoreBackUpDiv" class="backgroundDiv centerDialog">
+        <div id="restoreBackUpDiv" class="backgroundDiv centerStuff">
             <p class="textP"> Gendan en backup </p>
-            <div id="restoreBackUpInputDiv">
+            <div id="restoreBackUpInputDiv" class="buttonDiv2">
                 <input id="restoreBackUpInput" type="file" accept=".txt">
             </div>
-            <div id="cancelRestoreConfirmDiv">
+            <div id="cancelRestoreConfirmDiv" class="buttonDiv2">
                 <button id="cancelRestoreBackUpButton" class="cancelButton"> Fortryd </button>
                 <button id="confirmRestoreBackUpButton" class="confirmationButton">  Gendan Backup </button>
             </div>
