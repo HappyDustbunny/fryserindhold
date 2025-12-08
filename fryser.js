@@ -3,6 +3,7 @@ let numberOfShelves;
 let chosenShelf;
 let categories;
 let backupFileName = '';
+let totalBackUp;
 let itemIsBeingEdited = false;
 
 
@@ -320,6 +321,46 @@ function showBackUpDialog() {
 function showRestoreBackUpDialog() {
     document.getElementById('restoreBackUp').style.display = 'flex';
     document.getElementById('addItem').style.display = 'none';
+
+    document.getElementById('restoreBackUpInput').addEventListener('change', readFile, false);
+}
+
+
+function readFile(event) {
+  let file = event.target.files[0];
+  if (!file) {
+    return;
+  }
+
+  let reader = new FileReader();
+  reader.onload = function(event) {
+    totalBackUp = JSON.parse(event.target.result);
+  }
+
+  reader.readAsText(file);
+}
+
+
+function confirmRestoreBackUpButtonClicked() {
+  if (document.getElementById('restoreBackUpInput').value == '') {
+    newMessage('Vælg en backup fil', 2500);
+  } else {
+    let answer = confirm('Er du sikker på at du vil gendanne denne backup?');
+    if (answer) {
+      for (item in totalBackUp) {
+        localStorage[item] = totalBackUp[item];
+      }
+
+      location.reload();
+
+    } else {
+      newMessage('Der skete ingen ændringer', 2500);
+    }
+
+    // document.getElementById('restoreBackup').hidden = false;
+    
+    // document.getElementById('restoreBackupSection').hidden = true;
+  }
 }
 
 
@@ -346,10 +387,6 @@ function takeBackUpButtonClicked() {
     document.getElementById('addItem').style.display = 'block';
 }
 
-
-function confirmRestoreBackUpButtonClicked() {
-    console.log('rap');
-}
 
 
 function cancelBackUpButtonClicked() {
