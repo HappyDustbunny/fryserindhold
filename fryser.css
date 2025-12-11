@@ -202,6 +202,13 @@ summary::marker {
 #star {
     display: none;
     color: red;
+    animation: blinker 1.5s step-start infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
 }
 
 #tabButtons {
@@ -318,6 +325,7 @@ summary::marker {
     /* width: 25%; */
     height: 1.5em;
     border-radius: 7px;
+    color: red;  /* Necessary to prevent Chrome from greying out disabled buttons */
 }
 
 .foodTypeDiv {

@@ -222,7 +222,7 @@ document.getElementById('adjustFoodTypeDiv').addEventListener('click', function(
 document.getElementById('changeShelvesConfirmButton').addEventListener('click', changeShelvesConfirmButtonHasBeenClicked);
 document.getElementById('changeCategoriesConfirmButton').addEventListener('click', changeCategoriesConfirmButtonHasBeenClicked);
 // document.getElementById('increment').addEventListener('click', incrementNumberOfItemsCounter);
-document.getElementById('shelveNumber').addEventListener('click', function(event) { shelveNumberHasBeenClicked(event); }, true);
+document.getElementById('changeShelveDiv').addEventListener('click', function(event) { shelveNumberHasBeenClicked(event); }, true);
 document.getElementById('numberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
 document.getElementById('newNumberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
 document.getElementById('inputBox').addEventListener('beforeinput', (event) => {inputBoxHasChanges(event)});
@@ -562,7 +562,7 @@ function askForNumberOfShelves() {
 function shelveNumberHasBeenClicked(event) {
     let clickedNumberID = event.target.id;
     let chosenShelf;
-    if (clickedNumberID != 'numberOfShelvesDiv' || clickedNumberID != 'changeShelveDiv' ) {
+    if (clickedNumberID != 'numberOfShelvesDiv' && clickedNumberID != 'changeShelveDiv') {
         chosenShelf = Number(clickedNumberID.slice(12));
         document.querySelectorAll('.shelveNum').forEach(button => button.classList.remove('numberActive'));
         document.getElementById(clickedNumberID).classList.add('numberActive');
