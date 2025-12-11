@@ -225,8 +225,8 @@ document.getElementById('changeCategoriesConfirmButton').addEventListener('click
 document.getElementById('shelveNumber').addEventListener('click', function(event) { shelveNumberHasBeenClicked(event); }, true);
 document.getElementById('numberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
 document.getElementById('newNumberOfShelvesDiv').addEventListener('click', function(event) { numberOfShelvesHasBeenClicked(event); }, true);
-document.getElementById('inputBox').addEventListener('keyup', inputBoxHasChanges);
-document.getElementById('inputBox').addEventListener('keypress', function(event) { inputBoxHasKeyPress(event); }, true);
+document.getElementById('inputBox').addEventListener('beforeinput', (event) => {inputBoxHasChanges(event)});
+document.getElementById('inputBox').addEventListener('keydown', function(event) { inputBoxHasKeyPress(event); }, true);
 document.getElementById('dropDownItemDiv').addEventListener('click', function(event) { dropDownHaveBeenClicked(event); }, true);
 document.getElementById('takeBackUpButton').addEventListener('click', takeBackUpButtonClicked);
 document.getElementById('confirmRestoreBackUpButton').addEventListener('click', confirmRestoreBackUpButtonClicked);
@@ -1092,13 +1092,17 @@ function closeButtonClicked() {
 }
 
 
-function inputBoxHasChanges() {
+function inputBoxHasChanges(event) {
+    const newChar = event.data;
     let newInput = document.getElementById('inputBox');
     let dropDownItemDiv = document.getElementById('dropDownItemDiv');
     let shownItems = [];
     dropDownItemDiv.innerHTML = '';
 
-    if (newInput.value !== '') {
+    if (newChar && (!/[a-zA-Z0-9æøåÆØÅ]/.test(newChar) && !/\s/.test(newChar))) {
+        event.preventDefault();
+        alert('Brug kun bogstaver og tal, tak')
+    } else if (newChar) {
         content.forEach(function(item) {
             let regex = new RegExp('^' + newInput.value);
             if (item[1].match(regex) && !(shownItems.includes(item[1])) && (categories.includes(item[3]))) {
