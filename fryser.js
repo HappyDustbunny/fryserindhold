@@ -568,6 +568,8 @@ function shelveNumberHasBeenClicked(event) {
         document.getElementById(clickedNumberID).classList.add('numberActive');
     }
     curItemObj.shelf = chosenShelf;
+
+    document.getElementById('star').style.display = 'none';
 }
 
 
@@ -1104,7 +1106,8 @@ function inputBoxHasChanges(event) {
         alert('Brug kun bogstaver og tal, tak')
     } else if (newChar) {
         content.forEach(function(item) {
-            let regex = new RegExp('^' + newInput.value);
+            let curText = newInput.value + newChar;  // Necessary hen using beforeinput to screen for special characters. The new character is not yet in the inputbox, but as the check has passed it is okay to use the chareacter
+            let regex = new RegExp('^' + curText);
             if (item[1].match(regex) && !(shownItems.includes(item[1])) && (categories.includes(item[3]))) {
                 dropDownItemDiv.innerHTML += '<button id="' + item[0] + '" class="dropDownButton"> ' 
                 + capitalizeFirst(item[1]) + '</button>';
@@ -1136,6 +1139,8 @@ function inputBoxHasKeyPress(event) {
             curItemObj.number = 1;
 
             fillAddItemPage(curItemObj);
+            
+            document.getElementById('star').style.display = 'inline';
         }
     // } else if (event.key === 'ArrowDown') {
     }
@@ -1148,7 +1153,9 @@ function dropDownHaveBeenClicked(event) {
     curItemObj = findRelevantObject(clickedID);
     curItemObj.number = 1;
 
-    fillAddItemPage(curItemObj);    
+    fillAddItemPage(curItemObj);
+
+    document.getElementById('star').style.display = 'inline';
 }
 
 

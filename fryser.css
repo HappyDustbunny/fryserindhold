@@ -199,6 +199,11 @@ summary::marker {
     width: 7vw;
 }
 
+#star {
+    display: none;
+    color: red;
+}
+
 #tabButtons {
     display: flex;
     justify-content: space-between;
