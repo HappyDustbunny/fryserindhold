@@ -589,12 +589,17 @@ function setUpConfirmButtonHasBeenClicked() {
         document.getElementById('choseNumberOfShelvesSetUp').style.display = 'flex';
         localStorage.setUpFinished = 'notYet';
     } else if (localStorage.setUpFinished === 'notYet') {  // Close Chose Number of Shelves and show Chose Categoriese
-        localStorage.numberOfShelves = chosenShelf;
-        document.getElementById('numberOfShelvesDiv').innerHTML = ''; // Remove shelve-number buttons to avoid id-clashes
-
-        document.getElementById('choseNumberOfShelvesSetUp').style.display = 'none';
-        document.getElementById('choseCategoriesSetUp').style.display = 'flex';
-        localStorage.setUpFinished = 'nearlyThere';
+        if (chosenShelf) {
+            localStorage.numberOfShelves = chosenShelf;
+            document.getElementById('numberOfShelvesDiv').innerHTML = ''; // Remove shelve-number buttons to avoid id-clashes
+    
+            document.getElementById('choseNumberOfShelvesSetUp').style.display = 'none';
+            document.getElementById('choseCategoriesSetUp').style.display = 'flex';
+            localStorage.setUpFinished = 'nearlyThere';
+        } else {
+            newMessage('Vælg antallet af hylder i fryseskabet', 2500);
+        }
+        
     } else if (localStorage.setUpFinished === 'nearlyThere') {  // Show Chose Categories
         document.getElementById('choseCategoriesSetUp').style.display = 'none';
         localStorage.setUpFinished = 'setUpDone';
@@ -1106,8 +1111,8 @@ function inputBoxHasChanges(event) {
         alert('Brug kun bogstaver og tal, tak')
     } else if (newChar) {
         content.forEach(function(item) {
-            let curText = newInput.value + newChar;  // Necessary hen using beforeinput to screen for special characters. The new character is not yet in the inputbox, but as the check has passed it is okay to use the chareacter
-            let regex = new RegExp('^' + curText);
+            let curText = newInput.value + newChar.slice(-1);  // Necessary when using beforeinput to screen for special characters. The new character is not yet in the inputbox, but as the check has passed it is okay to use the character. The .slice(-1) is a hack to avoid confusion on mobile and only get the last entered character
+            let regex = new RegExp('^' + curText.toLowerCase());
             if (item[1].match(regex) && !(shownItems.includes(item[1])) && (categories.includes(item[3]))) {
                 dropDownItemDiv.innerHTML += '<button id="' + item[0] + '" class="dropDownButton"> ' 
                 + capitalizeFirst(item[1]) + '</button>';
@@ -1130,7 +1135,7 @@ function inputBoxHasKeyPress(event) {
         if (document.getElementsByClassName('dropDownButton').length === 1) {
             let currentID;
             content.forEach(function(item) {
-                let regex = new RegExp('^' + newInput.value);
+                let regex = new RegExp('^' + newInput.value.toLowerCase());
                 if (item[1].match(regex)    ) {
                     currentID = item[0];
                 }

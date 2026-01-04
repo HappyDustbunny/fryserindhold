@@ -1,6 +1,6 @@
-let VERSION = 0.003; // Change version number to facilitate updates
+let VERSION = 0.004; // Change version number to facilitate updates
 
-let FP_CACHE = 'FP-cache';
+let FP_CACHE = 'Fryser-cache';
 let CACHED_URLS = [
   'fryser.css',
   'fryser.js',
@@ -23,11 +23,11 @@ self.addEventListener('install', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
-  // console.log('Fetch request for: ', event.request.url);
+  console.log('Fetch request for: ', event.request.url);
   event.respondWith( caches.match(event.request, {ignoreVary: true}).then( // ignoreVary should make the cache match ignore flags and stuff that can make a mathc fail unintentionally
     function(response) {
       if (response) {
-        // console.log('Yay, retrieved from cache!', response.url);
+        console.log('Yay, retrieved from cache!', response.url);
         return response
       } else {
         console.log('Strange, requested online request...', response.url);
