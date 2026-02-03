@@ -1,4 +1,4 @@
-let VERSION = 0.004; // Change version number to facilitate updates
+let VERSION = 0.006; // Change version number to facilitate updates
 
 let FP_CACHE = 'Fryser-cache';
 let CACHED_URLS = [

@@ -228,6 +228,7 @@ document.getElementById('newNumberOfShelvesDiv').addEventListener('click', funct
 document.getElementById('inputBox').addEventListener('beforeinput', (event) => {inputBoxHasChanges(event)});
 document.getElementById('inputBox').addEventListener('keydown', function(event) { inputBoxHasKeyPress(event); }, true);
 document.getElementById('dropDownItemDiv').addEventListener('click', function(event) { dropDownHaveBeenClicked(event); }, true);
+document.getElementById('dropDownItemDiv').addEventListener('touchend', function(event) { dropDownHaveBeenClicked(event); }, true);
 document.getElementById('takeBackUpButton').addEventListener('click', takeBackUpButtonClicked);
 document.getElementById('confirmRestoreBackUpButton').addEventListener('click', confirmRestoreBackUpButtonClicked);
 document.getElementById('cancelBackUpButton').addEventListener('click', cancelBackUpButtonClicked);
@@ -1008,35 +1009,35 @@ function tabHasBeenClicked(event) {
                 case 'typeTab':
                     fillTypeTab();
                     break;
-                case 'allTab':
+                    case 'allTab':
                     fillAllTab();
                     break;
-                case 'oldestTab':
-                    fillOldestTab();
-                    break;
-            }
-            // if (event.currentTarget.id === 'typeTab') {  // Necessary as each clear the other in order to avoid ID collisions
-            //     fillTypeTab();
-            // } else {
-            //     fillAllTab();
-            // }
-        }
-    // } else if (clickedID.slice(0, 4) == 'plus') {
-    //     myID = clickedID.slice(5);  // Remove 'plus_'
-    //     curItemObj = findRelevantObject(myID);
-
+                    case 'oldestTab':
+                        fillOldestTab();
+                        break;
+                    }
+                    // if (event.currentTarget.id === 'typeTab') {  // Necessary as each clear the other in order to avoid ID collisions
+                    //     fillTypeTab();
+                    // } else {
+                        //     fillAllTab();
+                        // }
+                    }
+                    // } else if (clickedID.slice(0, 4) == 'plus') {
+                        //     myID = clickedID.slice(5);  // Remove 'plus_'
+                        //     curItemObj = findRelevantObject(myID);
+                        
     //     document.getElementById('plusToolTip').style.display = 'flex';
     //     document.getElementById('addItem').style.display = 'none'; 
 
     //     let clickedTop =  document.getElementById(clickedID).getBoundingClientRect().top;
     //     if (clickedTop < 300) { clickedTop += 30} else {clickedTop -= 80};
     //     document.getElementById('plusToolTip').style.top = clickedTop + 'px';
-
+    
     //     document.getElementById('inputBox').value = capitalizeFirst(curItemObj.itemName);
     //     document.getElementById('inputBoxMonth').value = monthNames[new Date().getMonth()] + ' ';
     //     shaddowFoodTypes();
     //     document.getElementById(curItemObj.type).classList.remove('shaddowed');
-        
+    
     //     document.getElementById('numberOfItemsInput').value = curItemObj.number;
     //     document.getElementById('numberMinus1').disabled = true;
         
@@ -1045,9 +1046,9 @@ function tabHasBeenClicked(event) {
     //     document.getElementById('minus1').disabled = false;
     //     if (curItemObj.keepsInMonths < 4) { document.getElementById('minus3').disabled = true; }
     //     if (curItemObj.keepsInMonths < 2) { document.getElementById('minus1').disabled = true; }
-        
-    } else if (clickedID.slice(0, 4) == 'edit') {
-        myID = clickedID.slice(5);  // Remove 'edit_';
+    
+} else if (clickedID.slice(0, 4) == 'edit') {
+    myID = clickedID.slice(5);  // Remove 'edit_';
         curItemObj = findRelevantObject(myID);
         
         itemIsBeingEdited = true;
@@ -1075,6 +1076,8 @@ function tabHasBeenClicked(event) {
         if (curItemObj.keepsInMonths < 2) { document.getElementById('minus1').disabled = true; }
         document.getElementById(curItemObj.type).classList.add('foodTypeActive');
     }
+
+    localStorage.content = JSON.stringify(content);
 }
 
 function addItem() {
