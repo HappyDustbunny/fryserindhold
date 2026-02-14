@@ -75,6 +75,7 @@ const fixedContent = [
     [896785250, 'solbær', 0, 'veggie', 0, 12, 0, false],
     [1645293686, 'stikkelsbær', 0, 'veggie', 0, 12, 0, false],
     [3500232, 'ribs', 0, 'veggie', 0, 12, 0, false],
+    [108395396 , 'rejer', 0, 'fish', 0, 6, 0, false],
     [95841653 , 'rabarber', 0, 'veggie', 0, 12, 0, false],
     [1382646669 , 'blåbær', 0, 'veggie', 0, 12, 0, false],
     [1677053109, 'grønne bønner', 0, 'veggie', 0, 12, 0, false],

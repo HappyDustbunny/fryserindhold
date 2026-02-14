@@ -1,11 +1,12 @@
-let VERSION = 0.006; // Change version number to facilitate updates
+let VERSION = 1.000; // Change version number to facilitate updates
 
 let FP_CACHE = 'Fryser-cache';
 let CACHED_URLS = [
-  'fryser.css',
-  'fryser.js',
   '/',
   'fryser.html',
+  'fryser.css',
+  'fryser.js',
+  'index.html',
   'manifest.json',
   'images/icon192x192scalable.png',
   'images/icon192x192.png',
